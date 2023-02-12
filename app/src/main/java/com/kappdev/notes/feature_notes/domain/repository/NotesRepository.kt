@@ -11,5 +11,5 @@ interface NotesRepository {
 
     fun getNoteById(id: Long): Note
 
-    suspend fun removeNote(note: Note): Long
+    suspend fun removeNote(note: Note): Int
 }

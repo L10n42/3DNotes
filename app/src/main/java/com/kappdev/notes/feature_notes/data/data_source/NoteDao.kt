@@ -17,5 +17,5 @@ interface NoteDao {
     fun getNoteById(id: Long): Note
 
     @Delete
-    suspend fun removeNote(note: Note): Long
+    suspend fun removeNote(note: Note): Int
 }

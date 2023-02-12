@@ -21,7 +21,7 @@ class NotesRepositoryImpl(
         return noteDao.getNoteById(id)
     }
 
-    override suspend fun removeNote(note: Note): Long {
+    override suspend fun removeNote(note: Note): Int {
         return noteDao.removeNote(note)
     }
 }
