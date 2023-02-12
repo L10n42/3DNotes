@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">3DNotes</string>
+
+    <string name="error_empty_note_content">The content of the note can\'t be empty.</string>
+    <string name="error_could_not_insert_note">Something went wrong, could not insert the note.</string>
+    <string name="error_could_not_remove_note">Something went wrong, could not remove the note.</string>
+
 </resources>
