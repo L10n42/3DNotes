@@ -5,4 +5,9 @@
     <string name="error_could_not_insert_note">Something went wrong, could not insert the note.</string>
     <string name="error_could_not_remove_note">Something went wrong, could not remove the note.</string>
 
+    <!-- add note sub button labels -->
+    <string name="note_text">Text note</string>
+    <string name="note_todo_list">To-do list</string>
+    <string name="notes_folder">Folder</string>
+
 </resources>

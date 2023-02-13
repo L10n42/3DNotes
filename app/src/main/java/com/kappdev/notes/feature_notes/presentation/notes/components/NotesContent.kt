@@ -37,7 +37,7 @@ fun NotesContent(
         )
     )
 
-    val backgroundImage = painterResource(id = R.drawable.background_image_1)
+    val backgroundImage = painterResource(R.drawable.background_image_1)
 
     BackgroundImage(
         image = backgroundImage,
