@@ -13,6 +13,7 @@ import androidx.navigation.NavHostController
 import com.kappdev.notes.feature_notes.presentation.notes.NotesViewModel
 import com.kappdev.notes.feature_notes.presentation.util.SubButtons
 import com.kappdev.notes.feature_notes.presentation.util.components.AnimatedMultiAddButton
+import com.kappdev.notes.feature_notes.presentation.util.components.AnimatedMultiAddButtonColors
 
 @ExperimentalMaterialApi
 @Composable

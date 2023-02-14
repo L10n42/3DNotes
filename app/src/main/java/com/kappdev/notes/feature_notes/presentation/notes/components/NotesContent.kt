@@ -24,7 +24,7 @@ fun NotesContent(
     val notes = listOf(
         Folder(
             id = 1,
-            name = "Some folder.",
+            name = "Some folder. with very long name to test how does it work, and even longer than old name so here we go",
             items = 12,
             timestamp = 1676209419
         ),

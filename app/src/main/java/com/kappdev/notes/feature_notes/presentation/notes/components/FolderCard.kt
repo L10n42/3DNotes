@@ -1,5 +1,6 @@
 package com.kappdev.notes.feature_notes.presentation.notes.components
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -12,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -23,7 +25,6 @@ fun FolderCard(
     modifier: Modifier = Modifier,
     folder: Folder
 ) {
-
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(16.dp),
@@ -32,18 +33,39 @@ fun FolderCard(
     ) {
         Row(
             modifier = Modifier.padding(all = 16.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             LeadingIcon()
 
-            Spacer(Modifier.width(16.dp))
-            FolderName(text = folder.name)
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                val configuration = LocalConfiguration.current
+                val nameFraction = if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 0.95f else 0.9f
+                FolderName(folder.name, Modifier.fillMaxWidth(nameFraction))
+
+                Items(folder.items)
+            }
         }
     }
 }
 
 @Composable
-private fun FolderName(text: String) {
+private fun Items(items: Int, modifier: Modifier = Modifier) {
+    Text(
+        text = items.toString(),
+        fontSize = 16.sp,
+        color = MaterialTheme.colors.onBackground,
+        maxLines = 1,
+        modifier = modifier
+    )
+}
+
+@Composable
+private fun FolderName(text: String, modifier: Modifier = Modifier) {
     Text(
         text = text,
         fontSize = 18.sp,
@@ -51,7 +73,7 @@ private fun FolderName(text: String) {
         color = MaterialTheme.colors.onSurface,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier
     )
 }
 
@@ -61,6 +83,6 @@ private fun LeadingIcon() {
         imageVector = Icons.Default.Folder,
         contentDescription = "folder icon",
         tint = Color.Yellow,
-        modifier = Modifier.size(32.dp)
+        modifier = Modifier.size(42.dp)
     )
 }

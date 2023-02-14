@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.kappdev.notes.core.presentation.navigation.Screen
+import com.kappdev.notes.feature_notes.presentation.add_edit_note.components.AddEditNoteScreen
 import com.kappdev.notes.feature_notes.presentation.notes.components.NotesScreen
 
 @ExperimentalMaterialApi
@@ -17,6 +18,10 @@ fun SetupNavGraph(
         navController = navController,
         startDestination = Screen.Notes.route
     ) {
+        composable(route = Screen.AddEditNote.route) {
+            AddEditNoteScreen(navController)
+        }
+
         composable(route = Screen.Notes.route) {
             NotesScreen(navController)
         }

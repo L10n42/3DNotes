@@ -42,8 +42,17 @@ data class AnimatedMultiAddButtonColors(
 
 @Composable
 fun AnimatedMultiAddButton(
-    colors: AnimatedMultiAddButtonColors = AnimatedMultiAddButtonColors(),
     buttonsShape: Shape = DefaultButtonShape,
+    colors: AnimatedMultiAddButtonColors = AnimatedMultiAddButtonColors(
+        activeMainBtnBackgroundColor = MaterialTheme.colors.primary,
+        activeMainBtnContentColor = MaterialTheme.colors.onSurface,
+        subButtonsBackgroundColor = MaterialTheme.colors.surface,
+        subButtonsContentColor = MaterialTheme.colors.primary,
+        inactiveMainBtnContentColor = MaterialTheme.colors.onSecondary,
+        inactiveMainBtnBackgroundColor = MaterialTheme.colors.secondary,
+        backgroundColor = MaterialTheme.colors.surface.copy(alpha = 0.64f),
+        labelsColor = MaterialTheme.colors.onSurface
+    ),
     buttonsElevation: FloatingActionButtonElevation = FloatingActionButtonDefaults.elevation(
         defaultElevation = DefaultButtonElevation,
         pressedElevation = DefaultButtonPressedElevation,
@@ -269,7 +278,6 @@ private fun BoxScope.AnimatedBackground(
             .padding(bottom = padding, end = padding)
             .scale(scale)
             .size(SubButtonSize)
-            //.alpha(alpha)
             .clickable { onClick() }
             .align(Alignment.BottomEnd)
             .background(
