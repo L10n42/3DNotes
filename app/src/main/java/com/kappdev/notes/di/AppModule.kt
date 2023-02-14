@@ -25,13 +25,13 @@ object AppModule {
             app,
             NotesDatabase::class.java,
             NotesDatabase.DATABASE_NAME
-        ).build()
+        ).fallbackToDestructiveMigration().build()
     }
 
     @Provides
     @ViewModelScoped
     fun provideNotesRepository(db: NotesDatabase): NotesRepository {
-        return NotesRepositoryImpl(db.noteDao)
+        return NotesRepositoryImpl(db.noteDao, db.folderDao)
     }
 
     @Provides

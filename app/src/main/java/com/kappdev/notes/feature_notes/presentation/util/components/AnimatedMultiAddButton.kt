@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalConfiguration
@@ -101,7 +102,7 @@ private fun BoxScope.AnimatedMainButton(
 ) {
     val mainButtonBackgroundColor by transition.animateColor(
         transitionSpec = {
-            tween(durationMillis = BACKGROUND_ANIM_DURATION)
+            tween(durationMillis = ANIM_DURATION)
         },
         label = "mainButtonRotation",
         targetValueByState = { isActive ->
@@ -111,7 +112,7 @@ private fun BoxScope.AnimatedMainButton(
 
     val mainButtonContentColor by transition.animateColor(
         transitionSpec = {
-            tween(durationMillis = BACKGROUND_ANIM_DURATION)
+            tween(durationMillis = ANIM_DURATION)
         },
         label = "mainButtonRotation",
         targetValueByState = { isActive ->
@@ -181,7 +182,7 @@ private fun BoxScope.AnimatedSubButton(
                 )
             } else {
                 tween(
-                    durationMillis = POPUP_ITEMS_ANIM_DURATION,
+                    durationMillis = ANIM_DURATION,
                     easing = LinearEasing
                 )
             }
@@ -193,7 +194,7 @@ private fun BoxScope.AnimatedSubButton(
     )
 
     val animAlpha by transition.animateFloat(
-        transitionSpec = { tween(POPUP_ITEMS_ANIM_DURATION) },
+        transitionSpec = { tween(ANIM_DURATION) },
         label = "animatedAlpha",
         targetValueByState = { isActive ->
             if (isActive) 1f else 0f
@@ -236,47 +237,60 @@ private fun BoxScope.AnimatedBackground(
     color: Color = Color.Black.copy(alpha = 0.5f),
     onClick: () -> Unit
 ) {
-    val size by transition.animateDp(
-        transitionSpec = { tween(BACKGROUND_ANIM_DURATION) },
-        label = "backgroundSize",
+    val scale by transition.animateFloat(
+        transitionSpec = {
+            tween(
+                durationMillis = ANIM_DURATION,
+                easing = LinearEasing
+            )
+        },
+        label = "backgroundScale",
         targetValueByState = { isActive ->
-            if (isActive) getMaxSize() else 0.dp
+            if (isActive) getMaxScale() else 1f
         }
     )
-    val alpha by transition.animateFloat(
-        transitionSpec = { tween(BACKGROUND_ANIM_DURATION) },
-        label = "backgroundAlpha",
-        targetValueByState = { isActive ->
-            if (isActive) 1f else 0f
-        }
-    )
+
     val shape by transition.animateInt(
-        transitionSpec = { tween(BACKGROUND_ANIM_DURATION) },
+        transitionSpec = {
+            tween(
+                durationMillis = ANIM_DURATION,
+                easing = LinearEasing
+            )
+        },
         label = "backgroundShape",
         targetValueByState = { isActive ->
             if (isActive) 0 else 100
         }
     )
 
+    val padding = 16.dp + ((MainButtonSize - SubButtonSize) / 2)
     Spacer(
         modifier = Modifier
-            .size(size)
-            .alpha(alpha)
+            .padding(bottom = padding, end = padding)
+            .scale(scale)
+            .size(SubButtonSize)
+            //.alpha(alpha)
             .clickable { onClick() }
             .align(Alignment.BottomEnd)
             .background(
                 color = color,
-                shape = RoundedCornerShape(topStartPercent = shape)
+                shape = RoundedCornerShape(shape)
             )
     )
 }
 
 @Composable
-private fun getMaxSize(): Dp {
+private fun getMaxScale(): Float {
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
     val screenWidth = configuration.screenWidthDp.dp
-    return if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) screenWidth * 2 else return screenHeight * 2
+    if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        val maxSize = screenWidth * 2
+        return maxSize / SubButtonSize
+    } else {
+        val maxSize = screenHeight * 2
+        return maxSize / SubButtonSize
+    }
 }
 
 private val DefaultButtonShape: Shape = CircleShape
@@ -287,5 +301,4 @@ private val BtnPadding = 16.dp
 private val MainButtonSize = 56.dp
 private val SubButtonSize = 42.dp
 
-private const val BACKGROUND_ANIM_DURATION = 500
-private const val POPUP_ITEMS_ANIM_DURATION = 300
+private const val ANIM_DURATION = 300

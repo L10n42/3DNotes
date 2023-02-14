@@ -10,6 +10,7 @@ import com.kappdev.notes.R
 import com.kappdev.notes.core.presentation.components.BackgroundImage
 import com.kappdev.notes.core.presentation.components.LazyColumnScrollDirection
 import com.kappdev.notes.core.presentation.components.LazyColumnWithScrollIndicator
+import com.kappdev.notes.feature_notes.domain.model.Folder
 import com.kappdev.notes.feature_notes.domain.model.Note
 import com.kappdev.notes.feature_notes.domain.util.NoteType
 import com.kappdev.notes.feature_notes.presentation.notes.NotesViewModel
@@ -21,18 +22,22 @@ fun NotesContent(
     var scrollingToTop by remember { mutableStateOf(false) }
 
     val notes = listOf(
-        Note(
-            id = 0,
-            title = "Some thoughts",
-            content = "thought number 1, I don't know something is here",
-            type = NoteType.SHEET,
+        Folder(
+            id = 1,
+            name = "Some folder.",
+            items = 12,
             timestamp = 1676209419
         ),
         Note(
             id = 0,
+            title = "Some thoughts",
+            content = "thought number 1, I don't know something is here",
+            timestamp = 1676209419
+        ),
+        Note(
+            id = 1,
             title = "Some stuff here.",
             content = "I need to write something here, so here we go.",
-            type = NoteType.SHEET,
             timestamp = 1676209485
         )
     )
@@ -54,11 +59,25 @@ fun NotesContent(
                 }
             }
         ) {
-            items(notes) { note ->
-                NoteCard(
-                    note = note,
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp)
-                )
+            items(notes) { content ->
+                when (content) {
+                    is Note -> {
+                        NoteCard(
+                            note = content,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 8.dp)
+                        )
+                    }
+                    is Folder -> {
+                        FolderCard(
+                            folder = content,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 8.dp)
+                        )
+                    }
+                }
             }
         }
     }

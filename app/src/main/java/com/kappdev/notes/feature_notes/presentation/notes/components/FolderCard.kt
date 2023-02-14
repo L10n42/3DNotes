@@ -3,21 +3,25 @@ package com.kappdev.notes.feature_notes.presentation.notes.components
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Folder
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.kappdev.notes.feature_notes.domain.model.Note
-import com.kappdev.notes.feature_notes.domain.util.DateConvertor
+import com.kappdev.notes.feature_notes.domain.model.Folder
 
 @Composable
-fun NoteCard(
+fun FolderCard(
     modifier: Modifier = Modifier,
-    note: Note
+    folder: Folder
 ) {
 
     Card(
@@ -26,47 +30,20 @@ fun NoteCard(
         elevation = 0.dp,
         backgroundColor = MaterialTheme.colors.surface.copy(alpha = 0.16f)
     ) {
-        Column(
+        Row(
             modifier = Modifier.padding(all = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp)
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Title(note.title)
+            LeadingIcon()
 
-            Content(note.content)
-
-            Time(note.timestamp)
+            Spacer(Modifier.width(16.dp))
+            FolderName(text = folder.name)
         }
     }
 }
 
 @Composable
-private fun Time(timestamp: Long) {
-    val time = DateConvertor.getDateString(timestamp)
-
-    Text(
-        text = time,
-        fontSize = 14.sp,
-        color = MaterialTheme.colors.onBackground,
-        maxLines = 1,
-        overflow = TextOverflow.Ellipsis,
-        modifier = Modifier.fillMaxWidth()
-    )
-}
-
-@Composable
-private fun Content(text: String) {
-    Text(
-        text = text,
-        fontSize = 16.sp,
-        color = MaterialTheme.colors.onBackground,
-        maxLines = 2,
-        overflow = TextOverflow.Ellipsis,
-        modifier = Modifier.fillMaxWidth()
-    )
-}
-
-@Composable
-private fun Title(text: String) {
+private fun FolderName(text: String) {
     Text(
         text = text,
         fontSize = 18.sp,
@@ -75,5 +52,15 @@ private fun Title(text: String) {
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
         modifier = Modifier.fillMaxWidth()
+    )
+}
+
+@Composable
+private fun LeadingIcon() {
+    Icon(
+        imageVector = Icons.Default.Folder,
+        contentDescription = "folder icon",
+        tint = Color.Yellow,
+        modifier = Modifier.size(32.dp)
     )
 }
