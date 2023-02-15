@@ -7,9 +7,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.kappdev.notes.core.presentation.navigation.Screen
 import com.kappdev.notes.feature_notes.presentation.notes.NotesViewModel
 import com.kappdev.notes.feature_notes.presentation.util.SubButtons
 import com.kappdev.notes.feature_notes.presentation.util.components.AnimatedMultiAddButton
@@ -34,16 +36,16 @@ fun NotesScreen(
     ) {
         Scaffold(
             scaffoldState = scaffoldState,
-            backgroundColor = MaterialTheme.colors.background
+            backgroundColor = Color.Transparent
         ) {
             Box(modifier = Modifier.fillMaxSize()) {
                 NotesContent(viewModel)
 
                 AnimatedMultiAddButton { buttonId ->
                     when(buttonId) {
-                        SubButtons.NotesFolder.id -> Log.d("onClick", "new folder btn was clicked!")
-                        SubButtons.NoteText.id -> Log.d("onClick", "new note text btn was clicked!")
+                        SubButtons.NoteText.id -> navController.navigate(Screen.AddEditNote.route)
                         SubButtons.ToDoList.id -> Log.d("onClick", "new todo list btn was clicked!")
+                        SubButtons.NotesFolder.id -> Log.d("onClick", "new folder btn was clicked!")
                     }
                 }
             }

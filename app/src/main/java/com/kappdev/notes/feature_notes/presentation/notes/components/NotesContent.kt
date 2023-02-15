@@ -42,41 +42,34 @@ fun NotesContent(
         )
     )
 
-    val backgroundImage = painterResource(R.drawable.background_image_1)
-
-    BackgroundImage(
-        image = backgroundImage,
-        modifier = Modifier.fillMaxSize()
-    ) {
-        LazyColumnWithScrollIndicator(
-            verticalArrangement = Arrangement.spacedBy(ListItemsPadding),
-            contentPadding = PaddingValues(vertical = ListItemsPadding),
-            modifier = Modifier.fillMaxSize(),
-            onScroll = { direction ->
-                scrollingToTop = when (direction) {
-                    LazyColumnScrollDirection.TOP -> true
-                    LazyColumnScrollDirection.BOTTOM -> false
-                }
+    LazyColumnWithScrollIndicator(
+        verticalArrangement = Arrangement.spacedBy(ListItemsPadding),
+        contentPadding = PaddingValues(vertical = ListItemsPadding),
+        modifier = Modifier.fillMaxSize(),
+        onScroll = { direction ->
+            scrollingToTop = when (direction) {
+                LazyColumnScrollDirection.TOP -> true
+                LazyColumnScrollDirection.BOTTOM -> false
             }
-        ) {
-            items(notes) { content ->
-                when (content) {
-                    is Note -> {
-                        NoteCard(
-                            note = content,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 8.dp)
-                        )
-                    }
-                    is Folder -> {
-                        FolderCard(
-                            folder = content,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 8.dp)
-                        )
-                    }
+        }
+    ) {
+        items(notes) { content ->
+            when (content) {
+                is Note -> {
+                    NoteCard(
+                        note = content,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp)
+                    )
+                }
+                is Folder -> {
+                    FolderCard(
+                        folder = content,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp)
+                    )
                 }
             }
         }
