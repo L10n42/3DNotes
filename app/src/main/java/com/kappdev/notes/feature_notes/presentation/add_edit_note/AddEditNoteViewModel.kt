@@ -18,6 +18,10 @@ class AddEditNoteViewModel @Inject constructor(
     val noteContent: State<String> = _noteContent
 
 
+    fun undo() {}
+    fun redo() {}
+    fun save() {}
+
     fun setTitle(value: String) { _noteTitle.value = value }
     fun setContent(value: String) { _noteContent.value = value }
 }
