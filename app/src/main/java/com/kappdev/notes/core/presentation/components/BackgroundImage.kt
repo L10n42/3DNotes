@@ -24,10 +24,6 @@ fun BackgroundImage(
             modifier = Modifier.fillMaxSize()
         )
 
-        Box(
-            modifier = Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding()
-        ) {
-            content()
-        }
+        content()
     }
 }

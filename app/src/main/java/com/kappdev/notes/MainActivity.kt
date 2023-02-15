@@ -32,12 +32,11 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterialApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
             NotesTheme {
                 val systemUiController = rememberSystemUiController()
-                val color = MaterialTheme.colors.surface.copy(alpha = 0.16f)
+                val color = MaterialTheme.colors.primary
                 SideEffect {
                     systemUiController.setStatusBarColor(color, darkIcons = false)
                 }

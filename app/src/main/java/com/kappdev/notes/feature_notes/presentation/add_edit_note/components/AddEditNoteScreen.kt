@@ -1,16 +1,13 @@
 package com.kappdev.notes.feature_notes.presentation.add_edit_note.components
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
-import androidx.compose.material.SnackbarDefaults.backgroundColor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -19,9 +16,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.kappdev.notes.R
-import com.kappdev.notes.core.presentation.components.BackgroundImage
 import com.kappdev.notes.core.presentation.components.TransparentTextField
-import com.kappdev.notes.core.presentation.navigation.componets.SetupNavGraph
 import com.kappdev.notes.feature_notes.presentation.add_edit_note.AddEditNoteViewModel
 
 @ExperimentalMaterialApi
@@ -84,9 +79,7 @@ private fun ScreenContent(viewModel: AddEditNoteViewModel) {
 
             TransparentTextField(
                 text = noteContent,
-                textFieldModifier = Modifier
-                    .fillMaxSize()
-                    .verticalScroll(rememberScrollState()),
+                textFieldModifier = Modifier.fillMaxSize(),
                 textStyle = TextStyle(
                     fontSize = 18.sp,
                     color = MaterialTheme.colors.onSurface
