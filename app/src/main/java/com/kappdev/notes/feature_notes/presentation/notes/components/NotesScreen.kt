@@ -23,8 +23,6 @@ fun NotesScreen(
     navController: NavHostController,
     viewModel: NotesViewModel = hiltViewModel()
 ) {
-    val notes = viewModel.notes.value
-
     val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
     val scaffoldState = rememberScaffoldState()
 

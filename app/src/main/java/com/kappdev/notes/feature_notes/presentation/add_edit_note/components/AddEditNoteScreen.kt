@@ -30,10 +30,9 @@ fun AddEditNoteScreen(
             scaffoldState = scaffoldState,
             backgroundColor = Color.Transparent,
             topBar = {
-                AddEditNoteTopBar(
-                    viewModel = viewModel,
-                    goBack = { navController.navigate(Screen.Notes.route) }
-                )
+                AddEditNoteTopBar(viewModel) {
+                    navController.navigate(Screen.Notes.route)
+                }
             }
         ) {
             AddEditNoteContent(viewModel)

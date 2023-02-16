@@ -13,10 +13,12 @@ class InsertNote(
 
     @Throws(InsertNoteException::class)
     suspend operator fun invoke(note: Note) {
-        if (note.title.isBlank()) throw InsertNoteException(context.getString(R.string.error_empty_note_content))
+        var insertNote = note
+        if (note.title.trim().isBlank()) {
+            insertNote = note.copy(title = context.getString(R.string.untitled))
+        }
+        val result = repository.insertNote(insertNote)
 
-        val result = repository.insertNote(note)
-
-        if (result < 0) throw InsertNoteException(context.getString(R.string.error_empty_note_content))
+        if (result <= 0) throw InsertNoteException(context.getString(R.string.error_could_not_insert_note))
     }
 }

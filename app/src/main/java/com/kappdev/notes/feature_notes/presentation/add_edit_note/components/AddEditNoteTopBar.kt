@@ -6,7 +6,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
@@ -15,14 +15,21 @@ import com.kappdev.notes.feature_notes.presentation.add_edit_note.AddEditNoteVie
 @Composable
 fun AddEditNoteTopBar(
     viewModel: AddEditNoteViewModel,
-    goBack: () -> Unit
+    goToNotes: () -> Unit
 ) {
+    val noteContent = viewModel.noteContent.value
+    val undo = TopBarItem(icon = Icons.Default.Undo, id = "undo_btn", enable = true)
+    val redo = TopBarItem(icon = Icons.Default.Redo, id = "redo_btn", enable = true)
+    val more = TopBarItem(icon = Icons.Default.MoreVert, id = "more_btn", enable = true)
+    val done = TopBarItem(icon = Icons.Default.Done, id = "done_btn", enable = noteContent.isNotBlank())
+    val itemsList = listOf(undo, redo, done, more)
+
     TopAppBar(
         title = {},
         elevation = 0.dp,
         backgroundColor = Color.Transparent,
         navigationIcon = {
-            IconButton(onClick = goBack) {
+            IconButton(onClick = goToNotes) {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
                     contentDescription = "back button",
@@ -31,21 +38,22 @@ fun AddEditNoteTopBar(
             }
         },
         actions = {
-            TopBarItem.ItemsList.forEach { item ->
+            itemsList.forEach { item ->
                 IconButton(
+                    enabled = item.enable,
                     onClick = {
                         when (item) {
-                            TopBarItem.Undo -> viewModel.undo()
-                            TopBarItem.Redo -> viewModel.redo()
-                            TopBarItem.More -> {}
-                            TopBarItem.Done -> viewModel.save()
+                            undo -> viewModel.undo()
+                            redo -> viewModel.redo()
+                            more -> {}
+                            done -> viewModel.save(onFinish = goToNotes)
                         }
                     }
                 ) {
                     Icon(
                         imageVector = item.icon,
                         contentDescription = item.id,
-                        tint = MaterialTheme.colors.surface
+                        tint = if (item.enable) MaterialTheme.colors.surface else MaterialTheme.colors.background
                     )
                 }
             }
@@ -53,12 +61,4 @@ fun AddEditNoteTopBar(
     )
 }
 
-private data class TopBarItem(val icon: ImageVector, val id: String) {
-    companion object {
-        val Undo = TopBarItem(Icons.Default.Undo, "undo_btn")
-        val Redo = TopBarItem(Icons.Default.Redo, "redo_btn")
-        val More = TopBarItem(Icons.Default.MoreVert, "more_btn")
-        val Done = TopBarItem(Icons.Default.Done, "done_btn")
-        val ItemsList = listOf(Undo, Redo, Done, More)
-    }
-}
+private data class TopBarItem(val icon: ImageVector, val id: String, val enable: Boolean = true)

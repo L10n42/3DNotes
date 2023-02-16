@@ -14,12 +14,10 @@ object DateConvertor {
     private val currentDayDateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
 
     fun getDateString(timestamp: Long): String {
-        val date = timestamp * 1000L
-
         return when {
-            isCurrentYear(timestamp) && isCurrentDay(timestamp) -> currentDayDateFormat.format(date)
-            isCurrentYear(timestamp) -> currentYearDateFormat.format(date)
-            else -> fullDateFormat.format(date)
+            isCurrentYear(timestamp) && isCurrentDay(timestamp) -> currentDayDateFormat.format(timestamp)
+            isCurrentYear(timestamp) -> currentYearDateFormat.format(timestamp)
+            else -> fullDateFormat.format(timestamp)
         }
     }
 
@@ -33,7 +31,7 @@ object DateConvertor {
 
     private fun getDayFrom(timestamp: Long): Int {
         val calendar = Calendar.getInstance()
-        calendar.timeInMillis = timestamp * 1000L
+        calendar.timeInMillis = timestamp
         return calendar.get(Calendar.DAY_OF_YEAR)
     }
 
@@ -47,7 +45,7 @@ object DateConvertor {
 
     private fun getYearFrom(timestamp: Long): Int {
         val calendar = Calendar.getInstance()
-        calendar.timeInMillis = timestamp * 1000L
+        calendar.timeInMillis = timestamp
         return calendar.get(Calendar.YEAR)
     }
 }
