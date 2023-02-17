@@ -1,5 +1,6 @@
 package com.kappdev.notes.feature_notes.presentation.notes.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -11,15 +12,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import com.kappdev.notes.core.presentation.navigation.Screen
 import com.kappdev.notes.feature_notes.domain.model.Note
 import com.kappdev.notes.feature_notes.domain.util.DateConvertor
 
 @Composable
 fun NoteCard(
     modifier: Modifier = Modifier,
+    navController: NavHostController,
     note: Note
 ) {
-
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(16.dp),
@@ -27,7 +30,9 @@ fun NoteCard(
         backgroundColor = MaterialTheme.colors.surface.copy(alpha = 0.16f)
     ) {
         Column(
-            modifier = Modifier.padding(all = 16.dp),
+            modifier = Modifier.padding(all = 16.dp).clickable {
+                navController.navigate(Screen.AddEditNote.route.plus("?noteId=${note.id}"))
+            },
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             Title(note.title)

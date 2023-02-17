@@ -2,6 +2,7 @@ package com.kappdev.notes.feature_notes.presentation.add_edit_note
 
 import android.util.Log
 import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,7 +18,11 @@ import javax.inject.Inject
 class AddEditNoteViewModel @Inject constructor(
     private val notesUseCases: NotesUseCases
 ) : ViewModel() {
-    private val editNoteId: Long = 0
+    private var editNoteId: Long = 0
+
+    var currentStack = 0
+        private set
+    val textBackStack = mutableStateListOf<String>()
 
     private val _noteTitle = mutableStateOf("")
     val noteTitle: State<String> = _noteTitle
@@ -25,8 +30,14 @@ class AddEditNoteViewModel @Inject constructor(
     private val _noteContent = mutableStateOf("")
     val noteContent: State<String> = _noteContent
 
-    fun undo() {}
-    fun redo() {}
+    fun undo() {
+        currentStack--
+        _noteContent.value = textBackStack[currentStack]
+    }
+    fun redo() {
+        currentStack++
+        _noteContent.value = textBackStack[currentStack]
+    }
 
     fun save(onFinish: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -42,6 +53,28 @@ class AddEditNoteViewModel @Inject constructor(
         }
     }
 
+    fun getNoteById() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val editNote = notesUseCases.getNoteById(editNoteId)
+            setTitle(editNote.title)
+            setContent(editNote.content)
+        }
+    }
+
     fun setTitle(value: String) { _noteTitle.value = value }
-    fun setContent(value: String) { _noteContent.value = value }
+
+    fun setEditNoteId(id: Long) {
+        editNoteId = id
+        if (id == 0.toLong()) updateBackStack("")
+    }
+
+    fun setContent(value: String) {
+        _noteContent.value = value
+        updateBackStack(value)
+    }
+
+    private fun updateBackStack(value: String) {
+        textBackStack.add(value)
+        currentStack = textBackStack.lastIndex
+    }
 }

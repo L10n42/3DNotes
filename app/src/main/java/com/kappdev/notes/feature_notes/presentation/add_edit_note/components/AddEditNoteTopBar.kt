@@ -1,5 +1,6 @@
 package com.kappdev.notes.feature_notes.presentation.add_edit_note.components
 
+import android.util.Log
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -18,8 +19,10 @@ fun AddEditNoteTopBar(
     goToNotes: () -> Unit
 ) {
     val noteContent = viewModel.noteContent.value
-    val undo = TopBarItem(icon = Icons.Default.Undo, id = "undo_btn", enable = true)
-    val redo = TopBarItem(icon = Icons.Default.Redo, id = "redo_btn", enable = true)
+    val currentStack = viewModel.currentStack
+    val backStack = viewModel.textBackStack
+    val undo = TopBarItem(icon = Icons.Default.Undo, id = "undo_btn", enable = (backStack.isNotEmpty() && currentStack > 0))
+    val redo = TopBarItem(icon = Icons.Default.Redo, id = "redo_btn", enable = (currentStack < backStack.lastIndex))
     val more = TopBarItem(icon = Icons.Default.MoreVert, id = "more_btn", enable = true)
     val done = TopBarItem(icon = Icons.Default.Done, id = "done_btn", enable = noteContent.isNotBlank())
     val itemsList = listOf(undo, redo, done, more)
@@ -42,18 +45,21 @@ fun AddEditNoteTopBar(
                 IconButton(
                     enabled = item.enable,
                     onClick = {
-                        when (item) {
-                            undo -> viewModel.undo()
-                            redo -> viewModel.redo()
-                            more -> {}
-                            done -> viewModel.save(onFinish = goToNotes)
+                        when (item.id) {
+                            undo.id -> {
+                                Log.d("AddEditNoteTopBar", "hello from here!")
+                                viewModel.undo()
+                            }
+                            redo.id -> viewModel.redo()
+                            more.id -> {}
+                            done.id -> viewModel.save(onFinish = goToNotes)
                         }
                     }
                 ) {
                     Icon(
                         imageVector = item.icon,
                         contentDescription = item.id,
-                        tint = if (item.enable) MaterialTheme.colors.surface else MaterialTheme.colors.background
+                        tint = if (item.enable) MaterialTheme.colors.surface else MaterialTheme.colors.surface.copy(alpha = 0.5f)
                     )
                 }
             }

@@ -3,6 +3,7 @@ package com.kappdev.notes.feature_notes.presentation.add_edit_note.components
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -14,11 +15,17 @@ import com.kappdev.notes.feature_notes.presentation.add_edit_note.AddEditNoteVie
 @ExperimentalMaterialApi
 @Composable
 fun AddEditNoteScreen(
+    noteId: Long,
     navController: NavHostController,
     viewModel: AddEditNoteViewModel = hiltViewModel()
 ) {
     val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
     val scaffoldState = rememberScaffoldState()
+
+    LaunchedEffect(key1 = true) {
+        viewModel.setEditNoteId(noteId)
+        if (noteId > 0) viewModel.getNoteById()
+    }
 
     ModalBottomSheetLayout(
         sheetState = sheetState,
@@ -31,7 +38,7 @@ fun AddEditNoteScreen(
             backgroundColor = Color.Transparent,
             topBar = {
                 AddEditNoteTopBar(viewModel) {
-                    navController.navigate(Screen.Notes.route)
+                    navController.navigate(Screen.Notes.route) { popUpTo(0) }
                 }
             }
         ) {

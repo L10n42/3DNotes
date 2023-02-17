@@ -37,7 +37,7 @@ fun NotesScreen(
             backgroundColor = Color.Transparent
         ) {
             Box(modifier = Modifier.fillMaxSize()) {
-                NotesContent(viewModel)
+                NotesContent(viewModel, navController)
 
                 AnimatedMultiAddButton { buttonId ->
                     when(buttonId) {

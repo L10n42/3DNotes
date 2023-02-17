@@ -5,6 +5,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.kappdev.notes.core.presentation.components.LazyColumnScrollDirection
 import com.kappdev.notes.core.presentation.components.LazyColumnWithScrollIndicator
 import com.kappdev.notes.feature_notes.domain.model.Note
@@ -12,7 +13,8 @@ import com.kappdev.notes.feature_notes.presentation.notes.NotesViewModel
 
 @Composable
 fun NotesContent(
-    viewModel: NotesViewModel
+    viewModel: NotesViewModel,
+    navController: NavHostController
 ) {
     var scrollingToTop by remember { mutableStateOf(false) }
     val databaseNotes = viewModel.notes.value
@@ -33,6 +35,7 @@ fun NotesContent(
                 is Note -> {
                     NoteCard(
                         note = content,
+                        navController = navController,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 8.dp)
