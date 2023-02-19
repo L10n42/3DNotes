@@ -15,28 +15,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import com.kappdev.notes.core.presentation.navigation.Screen
 import com.kappdev.notes.feature_notes.domain.model.Note
 import com.kappdev.notes.feature_notes.domain.util.DateConvertor
+import com.kappdev.notes.feature_notes.presentation.notes.NotesViewModel
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun NoteCard(
-    modifier: Modifier = Modifier,
-    navController: NavHostController,
-    note: Note
+    note: Note,
+    onClick: (id: Long) -> Unit
 ) {
     Card(
-        modifier = modifier,
+        modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
         elevation = 0.dp,
         backgroundColor = MaterialTheme.colors.surface.copy(alpha = 0.12f),
-        onClick = {
-            navController.navigate(Screen.AddEditNote.route.plus("?noteId=${note.id}")) {
-                popUpTo(Screen.Notes.route)
-            }
-        }
+        onClick = { onClick(note.id) }
     ) {
         Column(
             modifier = Modifier.padding(all = 16.dp),
@@ -44,7 +39,7 @@ fun NoteCard(
         ) {
             Title(note.title)
 
-            Content(note.content)
+            if (note.content.isNotEmpty()) Content(note.content)
 
             Time(note.timestamp)
         }

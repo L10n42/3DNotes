@@ -25,7 +25,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kappdev.notes.feature_notes.presentation.util.SubButton
-import com.kappdev.notes.feature_notes.presentation.util.SubButtons
 import com.kappdev.notes.ui.theme.Purple500
 import com.kappdev.notes.ui.theme.Teal200
 import kotlinx.coroutines.delay
@@ -44,6 +43,7 @@ data class AnimatedMultiAddButtonColors(
 
 @Composable
 fun AnimatedMultiAddButton(
+    buttons: List<SubButton>,
     buttonsShape: Shape = DefaultButtonShape,
     colors: AnimatedMultiAddButtonColors = AnimatedMultiAddButtonColors(
         activeMainBtnBackgroundColor = MaterialTheme.colors.primary,
@@ -81,7 +81,7 @@ fun AnimatedMultiAddButton(
             onClick = switchState
         )
 
-        SubButtons.buttonsList.forEachIndexed { index, button ->
+        buttons.forEachIndexed { index, button ->
             AnimatedSubButton(
                 transition = transition,
                 activePadding = calculateSubButtonPadding(index),

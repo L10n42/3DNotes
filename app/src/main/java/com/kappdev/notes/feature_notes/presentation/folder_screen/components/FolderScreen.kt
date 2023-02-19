@@ -1,4 +1,4 @@
-package com.kappdev.notes.feature_notes.presentation.notes.components
+package com.kappdev.notes.feature_notes.presentation.folder_screen.components
 
 import android.util.Log
 import androidx.compose.foundation.layout.Box
@@ -12,26 +12,23 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.kappdev.notes.core.presentation.navigation.Screen
+import com.kappdev.notes.feature_notes.presentation.folder_screen.FolderViewModel
 import com.kappdev.notes.feature_notes.presentation.notes.NotesBottomSheet
-import com.kappdev.notes.feature_notes.presentation.notes.NotesViewModel
 import com.kappdev.notes.feature_notes.presentation.util.SubButton
 import com.kappdev.notes.feature_notes.presentation.util.components.AnimatedMultiAddButton
 import kotlinx.coroutines.launch
 
-@ExperimentalMaterialApi
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun NotesScreen(
+fun FolderScreen(
+    folderId: Long,
     navController: NavHostController,
-    viewModel: NotesViewModel = hiltViewModel()
+    viewModel: FolderViewModel = hiltViewModel()
 ) {
     val scope = rememberCoroutineScope()
     val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
     val scaffoldState = rememberScaffoldState()
     val navigate = viewModel.navigate.value
-
-    LaunchedEffect(key1 = true) {
-        viewModel.getAllData()
-    }
 
     LaunchedEffect(key1 = navigate) {
         navigate?.let { route ->
@@ -57,28 +54,25 @@ fun NotesScreen(
         sheetElevation = 0.dp,
         sheetContent = {
             if (currentBottomSheet != null) {
-                NotesBottomSheetController(
-                    viewModel = viewModel,
-                    currentSheet = currentBottomSheet!!,
-                    closeBS = closeSheet
-                )
+
             } else Box(Modifier.height(1.dp))
         }
     ) {
         Scaffold(
             scaffoldState = scaffoldState,
-            backgroundColor = Color.Transparent
+            backgroundColor = Color.Transparent,
+            topBar = {
+                FolderScreenTopBar(title = "Some Folder", viewModel)
+            }
         ) {
             Box(modifier = Modifier.fillMaxSize()) {
-                NotesContent(viewModel)
 
                 AnimatedMultiAddButton(
-                    buttons = listOf(SubButton.NotesFolder, SubButton.ToDoList, SubButton.NoteText)
+                    buttons = listOf(SubButton.ToDoList, SubButton.NoteText)
                 ) { buttonId ->
                     when(buttonId) {
-                        SubButton.NoteText.id -> viewModel.navigate(Screen.AddEditNote.route)
+                        SubButton.NoteText.id -> navController.navigate(Screen.AddEditNote.route)
                         SubButton.ToDoList.id -> Log.d("onClick", "new todo list btn was clicked!")
-                        SubButton.NotesFolder.id -> openSheet(NotesBottomSheet.NewFolder)
                     }
                 }
             }

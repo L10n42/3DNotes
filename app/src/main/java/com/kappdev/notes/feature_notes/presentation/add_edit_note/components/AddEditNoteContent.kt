@@ -7,7 +7,6 @@ import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -21,8 +20,6 @@ import androidx.lifecycle.LifecycleEventObserver
 import com.kappdev.notes.R
 import com.kappdev.notes.core.presentation.components.TransparentTextField
 import com.kappdev.notes.feature_notes.presentation.add_edit_note.AddEditNoteViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 @Composable
 fun AddEditNoteContent(viewModel: AddEditNoteViewModel) {
@@ -33,7 +30,7 @@ fun AddEditNoteContent(viewModel: AddEditNoteViewModel) {
     val lifecycleOwner = LocalLifecycleOwner.current
     DisposableEffect(key1 = lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_STOP && noteContent.isNotBlank()) {
+            if (event == Lifecycle.Event.ON_STOP && viewModel.noteIsNotBlank() && viewModel.noteChanged()) {
                 viewModel.save(
                     onSuccess = { Toast.makeText(context, R.string.msg_saved, Toast.LENGTH_SHORT).show() },
                     onFailure = { Toast.makeText(context, R.string.msg_could_not_save, Toast.LENGTH_SHORT).show() }

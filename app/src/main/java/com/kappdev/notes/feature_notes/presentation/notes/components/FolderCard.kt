@@ -3,10 +3,7 @@ package com.kappdev.notes.feature_notes.presentation.notes.components
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Folder
 import androidx.compose.runtime.Composable
@@ -21,16 +18,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kappdev.notes.feature_notes.domain.model.Folder
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun FolderCard(
-    modifier: Modifier = Modifier,
-    folder: Folder
+    folder: Folder,
+    onClick: (id: Long) -> Unit
 ) {
     Card(
-        modifier = modifier,
+        modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
         elevation = 0.dp,
-        backgroundColor = MaterialTheme.colors.surface.copy(alpha = 0.16f)
+        backgroundColor = MaterialTheme.colors.surface.copy(alpha = 0.16f),
+        onClick = { onClick(folder.id) }
     ) {
         Row(
             modifier = Modifier.padding(all = 16.dp),

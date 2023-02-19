@@ -28,14 +28,13 @@ fun AddEditNoteTopBar(
     var expanded by remember { mutableStateOf(false) }
     var showRemoveDialog by remember { mutableStateOf(false) }
     val noteId = viewModel.currentNoteId.value
-    val noteContent = viewModel.noteContent.value
     val currentStack = viewModel.currentStack
     val backStack = viewModel.textBackStack
 
     val undo = TopBarItem(icon = Icons.Default.Undo, id = "undo_btn", enable = (backStack.isNotEmpty() && currentStack > 0))
     val redo = TopBarItem(icon = Icons.Default.Redo, id = "redo_btn", enable = (currentStack < backStack.lastIndex))
     val more = TopBarItem(icon = Icons.Default.MoreVert, id = "more_btn", enable = true)
-    val done = TopBarItem(icon = Icons.Default.Done, id = "done_btn", enable = noteContent.isNotBlank())
+    val done = TopBarItem(icon = Icons.Default.Done, id = "done_btn", enable = viewModel.noteIsNotBlank() && viewModel.noteChanged())
 
     if (showRemoveDialog) {
         ConfirmDialog(

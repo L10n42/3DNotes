@@ -22,6 +22,9 @@ class AddEditNoteViewModel @Inject constructor(
         private set
     val textBackStack = mutableStateListOf<String>()
 
+    private var originalTitle = ""
+    private var originalContent = ""
+
     private val _currentNoteId = mutableStateOf<Long>(0)
     val currentNoteId: State<Long> = _currentNoteId
 
@@ -49,25 +52,17 @@ class AddEditNoteViewModel @Inject constructor(
     }
 
     fun save(onFailure: (msg: String) -> Unit, onSuccess: () -> Unit) {
-        if (_currentNoteId.value >= 0) {
+        if (currentNoteId.value >= 0) {
             viewModelScope.launch(Dispatchers.IO) {
                 try {
                     val noteId = notesUseCases.insertNote(
-                        Note(
-                            currentNoteId.value,
-                            noteTitle.value,
-                            noteContent.value,
-                            System.currentTimeMillis()
-                        )
+                        Note(currentNoteId.value, noteTitle.value, noteContent.value, System.currentTimeMillis())
                     )
                     _currentNoteId.value = noteId
-                    this.launch(Dispatchers.Main) {
-                        onSuccess()
-                    }
+                    getNoteById()
+                    this.launch(Dispatchers.Main) { onSuccess() }
                 } catch (e: InsertNoteException) {
-                    this.launch(Dispatchers.Main) {
-                        onFailure(e.message.toString())
-                    }
+                    this.launch(Dispatchers.Main) { onFailure(e.message.toString()) }
                 }
             }
         }
@@ -76,9 +71,15 @@ class AddEditNoteViewModel @Inject constructor(
     fun getNoteById() {
         viewModelScope.launch(Dispatchers.IO) {
             val editNote = notesUseCases.getNoteById(currentNoteId.value)
-            setTitle(editNote.title)
-            setContent(editNote.content)
+            fillData(editNote)
         }
+    }
+
+    private fun fillData(note: Note) {
+        setTitle(note.title)
+        setContent(note.content)
+        originalTitle = note.title
+        originalContent = note.content
     }
 
     fun setTitle(value: String) { _noteTitle.value = value }
@@ -92,6 +93,9 @@ class AddEditNoteViewModel @Inject constructor(
         _noteContent.value = value
         updateBackStack(value)
     }
+
+    fun noteIsNotBlank() = noteContent.value.trim().isNotBlank() || noteTitle.value.trim().isNotBlank()
+    fun noteChanged() = originalTitle != noteTitle.value || originalContent != noteContent.value
 
     private fun updateBackStack(value: String) {
         textBackStack.add(value)
