@@ -41,10 +41,13 @@ object AppModule {
         @ApplicationContext appContext: Context
     ): NotesUseCases {
         return NotesUseCases(
+            getAllData = GetAllData(repository),
             insertNote = InsertNote(repository, appContext),
+            insertFolder = InsertFolder(repository),
             getNotes = GetNotes(repository),
             getNoteById = GetNoteById(repository),
-            removeNote = RemoveNote(repository, appContext)
+            removeNote = RemoveNote(repository, appContext),
+            removeNoteById = RemoveNoteById(repository)
         )
     }
 

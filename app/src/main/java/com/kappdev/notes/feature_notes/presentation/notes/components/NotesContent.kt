@@ -8,6 +8,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.kappdev.notes.core.presentation.components.LazyColumnScrollDirection
 import com.kappdev.notes.core.presentation.components.LazyColumnWithScrollIndicator
+import com.kappdev.notes.feature_notes.domain.model.Folder
 import com.kappdev.notes.feature_notes.domain.model.Note
 import com.kappdev.notes.feature_notes.presentation.notes.NotesViewModel
 
@@ -17,11 +18,11 @@ fun NotesContent(
     navController: NavHostController
 ) {
     var scrollingToTop by remember { mutableStateOf(false) }
-    val databaseNotes = viewModel.notes.value
+    val dataList = viewModel.data
 
     LazyColumnWithScrollIndicator(
         verticalArrangement = Arrangement.spacedBy(ListItemsPadding),
-        contentPadding = PaddingValues(vertical = ListItemsPadding),
+        contentPadding = PaddingValues(all = ListItemsPadding),
         modifier = Modifier.fillMaxSize(),
         onScroll = { direction ->
             scrollingToTop = when (direction) {
@@ -30,27 +31,24 @@ fun NotesContent(
             }
         }
     ) {
-        items(databaseNotes) { content ->
+        items(dataList) { content ->
             when (content) {
                 is Note -> {
                     NoteCard(
                         note = content,
                         navController = navController,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp)
+                        modifier = Modifier.fillMaxWidth()
                     )
                 }
-//                is Folder -> {
-//                    FolderCard(
-//                        folder = content,
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .padding(horizontal = 8.dp)
-//                    )
-//                }
+                is Folder -> {
+                    FolderCard(
+                        folder = content,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
             }
         }
     }
 }
+
 private val ListItemsPadding = 8.dp

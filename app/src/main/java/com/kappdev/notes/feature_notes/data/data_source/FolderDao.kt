@@ -12,7 +12,10 @@ interface FolderDao {
     suspend fun insertFolder(folder: Folder): Long
 
     @Query("SELECT * FROM folders_table")
-    fun getFolders() : Flow<List<Folder>>
+    fun getFoldersFlow() : Flow<List<Folder>>
+
+    @Query("SELECT * FROM folders_table")
+    fun getFoldersList(): List<Folder>
 
     @Query("SELECT * FROM folders_table WHERE id = :id LIMIT 1")
     fun getFolderById(id: Long): Folder

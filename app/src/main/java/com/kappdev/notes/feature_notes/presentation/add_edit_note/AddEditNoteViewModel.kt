@@ -1,6 +1,5 @@
 package com.kappdev.notes.feature_notes.presentation.add_edit_note
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -18,11 +17,13 @@ import javax.inject.Inject
 class AddEditNoteViewModel @Inject constructor(
     private val notesUseCases: NotesUseCases
 ) : ViewModel() {
-    private var editNoteId: Long = 0
 
     var currentStack = 0
         private set
     val textBackStack = mutableStateListOf<String>()
+
+    private val _currentNoteId = mutableStateOf<Long>(0)
+    val currentNoteId: State<Long> = _currentNoteId
 
     private val _noteTitle = mutableStateOf("")
     val noteTitle: State<String> = _noteTitle
@@ -39,23 +40,42 @@ class AddEditNoteViewModel @Inject constructor(
         _noteContent.value = textBackStack[currentStack]
     }
 
-    fun save(onFinish: () -> Unit) {
+    fun removeNote(onFinish: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            try {
-                notesUseCases.insertNote(
-                    Note(editNoteId, noteTitle.value, noteContent.value, System.currentTimeMillis())
-                )
-            } catch (e: InsertNoteException) {
-                Log.e("SaveNote", e.message.toString())
-            } finally {
-                this.launch(Dispatchers.Main) { onFinish() }
+            notesUseCases.removeNoteById(currentNoteId.value)
+            _currentNoteId.value = -1
+            this.launch(Dispatchers.Main) { onFinish() }
+        }
+    }
+
+    fun save(onFailure: (msg: String) -> Unit, onSuccess: () -> Unit) {
+        if (_currentNoteId.value >= 0) {
+            viewModelScope.launch(Dispatchers.IO) {
+                try {
+                    val noteId = notesUseCases.insertNote(
+                        Note(
+                            currentNoteId.value,
+                            noteTitle.value,
+                            noteContent.value,
+                            System.currentTimeMillis()
+                        )
+                    )
+                    _currentNoteId.value = noteId
+                    this.launch(Dispatchers.Main) {
+                        onSuccess()
+                    }
+                } catch (e: InsertNoteException) {
+                    this.launch(Dispatchers.Main) {
+                        onFailure(e.message.toString())
+                    }
+                }
             }
         }
     }
 
     fun getNoteById() {
         viewModelScope.launch(Dispatchers.IO) {
-            val editNote = notesUseCases.getNoteById(editNoteId)
+            val editNote = notesUseCases.getNoteById(currentNoteId.value)
             setTitle(editNote.title)
             setContent(editNote.content)
         }
@@ -64,7 +84,7 @@ class AddEditNoteViewModel @Inject constructor(
     fun setTitle(value: String) { _noteTitle.value = value }
 
     fun setEditNoteId(id: Long) {
-        editNoteId = id
+        _currentNoteId.value = id
         if (id == 0.toLong()) updateBackStack("")
     }
 

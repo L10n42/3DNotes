@@ -11,10 +11,16 @@ interface NoteDao {
     suspend fun insertNote(note: Note): Long
 
     @Query("SELECT * FROM notes_table")
-    fun getNotes() : Flow<List<Note>>
+    fun getNotesFlow() : Flow<List<Note>>
+
+    @Query("SELECT * FROM notes_table")
+    fun getNotesList(): List<Note>
 
     @Query("SELECT * FROM notes_table WHERE id = :id LIMIT 1")
     fun getNoteById(id: Long): Note
+
+    @Query("DELETE FROM notes_table WHERE id = :id")
+    fun removeNoteById(id: Long)
 
     @Delete
     suspend fun removeNote(note: Note): Int

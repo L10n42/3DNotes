@@ -9,14 +9,19 @@ import kotlinx.coroutines.flow.Flow
 
 class NotesRepositoryImpl(
     private val noteDao: NoteDao,
-    private val folderDao: FolderDao
+    private val folderDao: FolderDao,
 ): NotesRepository {
+
     override suspend fun insertFolder(folder: Folder): Long {
         return folderDao.insertFolder(folder)
     }
 
-    override fun getFolders(): Flow<List<Folder>> {
-        return folderDao.getFolders()
+    override fun getFoldersFlow(): Flow<List<Folder>> {
+        return folderDao.getFoldersFlow()
+    }
+
+    override fun getFoldersList(): List<Folder> {
+        return folderDao.getFoldersList()
     }
 
     override fun getFolderById(id: Long): Folder {
@@ -31,12 +36,20 @@ class NotesRepositoryImpl(
         return noteDao.insertNote(note)
     }
 
-    override fun getNotes(): Flow<List<Note>> {
-        return  noteDao.getNotes()
+    override fun getNotesFlow(): Flow<List<Note>> {
+        return  noteDao.getNotesFlow()
+    }
+
+    override fun getNotesList(): List<Note> {
+        return noteDao.getNotesList()
     }
 
     override fun getNoteById(id: Long): Note {
         return noteDao.getNoteById(id)
+    }
+
+    override fun removeNoteById(id: Long) {
+        noteDao.removeNoteById(id)
     }
 
     override suspend fun removeNote(note: Note): Int {

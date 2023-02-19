@@ -9,6 +9,6 @@ class GetNotes(
 ) {
 
     operator fun invoke(): Flow<List<Note>> {
-        return repository.getNotes()
+        return repository.getNotesFlow()
     }
 }

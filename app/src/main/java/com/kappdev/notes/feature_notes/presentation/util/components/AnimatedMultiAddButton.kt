@@ -28,6 +28,8 @@ import com.kappdev.notes.feature_notes.presentation.util.SubButton
 import com.kappdev.notes.feature_notes.presentation.util.SubButtons
 import com.kappdev.notes.ui.theme.Purple500
 import com.kappdev.notes.ui.theme.Teal200
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 data class AnimatedMultiAddButtonColors(
     val backgroundColor: Color = Color.White.copy(alpha = 0.64f),
@@ -61,6 +63,7 @@ fun AnimatedMultiAddButton(
     ),
     onClick: (buttonId: String) -> Unit
 ) {
+    val scope = rememberCoroutineScope()
     var isBtnActive by remember { mutableStateOf(false) }
     val switchState: () -> Unit = { isBtnActive = !isBtnActive }
 
@@ -86,7 +89,13 @@ fun AnimatedMultiAddButton(
                 shape = buttonsShape,
                 elevation = buttonsElevation,
                 colors = colors,
-                onClick = onClick
+                onClick = { id ->
+                    scope.launch {
+                        switchState()
+                        delay(ANIM_DURATION.toLong())
+                        onClick(id)
+                    }
+                }
             )
         }
 

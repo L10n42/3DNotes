@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.Folder
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
@@ -55,10 +56,11 @@ fun FolderCard(
 
 @Composable
 private fun Items(items: Int, modifier: Modifier = Modifier) {
+    val text = if (items >= 100) "99+" else items.toString()
     Text(
-        text = items.toString(),
+        text = text,
         fontSize = 16.sp,
-        color = MaterialTheme.colors.onBackground,
+        color = MaterialTheme.colors.onSurface,
         maxLines = 1,
         modifier = modifier
     )
@@ -83,6 +85,6 @@ private fun LeadingIcon() {
         imageVector = Icons.Default.Folder,
         contentDescription = "folder icon",
         tint = Color.Yellow,
-        modifier = Modifier.size(42.dp)
+        modifier = Modifier.size(42.dp).alpha(0.9f)
     )
 }

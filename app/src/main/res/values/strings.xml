@@ -14,4 +14,15 @@
 
     <string name="untitled">Untitled</string>
 
+    <string name="title_remove">Remove</string>
+    <string name="confirm_remove_msg">Are you sure you want to remove this note?</string>
+
+    <string name="btn_remove">Remove</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="btn_ok">OK</string>
+    <string name="msg_saved">saved</string>
+    <string name="msg_could_not_save">couldn\'t save.</string>
+    <string name="title_new_folder">New folder</string>
+    <string name="hint_name">Name</string>
+
 </resources>
