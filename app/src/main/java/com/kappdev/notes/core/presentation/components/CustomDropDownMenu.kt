@@ -47,8 +47,14 @@ fun CustomDropDownMenu(
         ) {
             AnimatedVisibility(
                 visibleState = expandedState,
-                enter = scaleIn(transformOrigin = TransformOrigin(1f, 0f)) + fadeIn(),
-                exit = scaleOut(transformOrigin = TransformOrigin(1f, 0f)) + fadeOut()
+                enter = scaleIn(
+                    initialScale = 0.5f,
+                    transformOrigin = TransformOrigin(1f, 0f)
+                ) + fadeIn(),
+                exit = scaleOut(
+                    targetScale = 0.5f,
+                    transformOrigin = TransformOrigin(1f, 0f)
+                ) + fadeOut()
             ) {
                 Surface(
                     shape = shape,
