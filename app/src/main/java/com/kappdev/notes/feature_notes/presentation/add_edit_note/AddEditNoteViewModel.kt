@@ -38,6 +38,7 @@ class AddEditNoteViewModel @Inject constructor(
         currentStack--
         _noteContent.value = textBackStack[currentStack]
     }
+
     fun redo() {
         currentStack++
         _noteContent.value = textBackStack[currentStack]

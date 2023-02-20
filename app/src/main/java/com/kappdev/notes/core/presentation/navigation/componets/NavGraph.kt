@@ -2,7 +2,6 @@ package com.kappdev.notes.core.presentation.navigation.componets
 
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavArgument
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -12,6 +11,7 @@ import com.kappdev.notes.core.presentation.navigation.Screen
 import com.kappdev.notes.feature_notes.presentation.add_edit_note.components.AddEditNoteScreen
 import com.kappdev.notes.feature_notes.presentation.folder_screen.components.FolderScreen
 import com.kappdev.notes.feature_notes.presentation.notes.components.NotesScreen
+import com.kappdev.notes.feature_notes.presentation.settings.components.SettingsScreen
 
 @ExperimentalMaterialApi
 @Composable
@@ -22,6 +22,10 @@ fun SetupNavGraph(
         navController = navController,
         startDestination = Screen.Notes.route
     ) {
+        composable(Screen.Settings.route) {
+            SettingsScreen(navController)
+        }
+
         composable(
             route = Screen.FolderScreen.route.plus("folderId={folderId}"),
             arguments = listOf(
