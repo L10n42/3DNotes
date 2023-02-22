@@ -67,7 +67,12 @@ fun NotesScreen(
     ) {
         Scaffold(
             scaffoldState = scaffoldState,
-            backgroundColor = Color.Transparent
+            backgroundColor = Color.Transparent,
+            topBar = {
+//                NotesTopBar(
+//                    goToSettings = { navController.navigate(Screen.Settings.route) }
+//                )
+            }
         ) {
             Box(modifier = Modifier.fillMaxSize()) {
                 NotesContent(viewModel)

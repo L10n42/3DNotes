@@ -3,6 +3,8 @@ package com.kappdev.notes.di
 import android.app.Application
 import android.content.Context
 import androidx.room.Room
+import com.kappdev.notes.core.data.repository.SettingRepositoryImpl
+import com.kappdev.notes.core.domain.repository.SettingRepository
 import com.kappdev.notes.feature_notes.data.data_source.NotesDatabase
 import com.kappdev.notes.feature_notes.data.repository.NotesRepositoryImpl
 import com.kappdev.notes.feature_notes.domain.repository.NotesRepository
@@ -32,6 +34,12 @@ object AppModule {
     @ViewModelScoped
     fun provideNotesRepository(db: NotesDatabase): NotesRepository {
         return NotesRepositoryImpl(db.noteDao, db.folderDao)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideSetting(@ApplicationContext appContext: Context): SettingRepository {
+        return SettingRepositoryImpl(appContext)
     }
 
     @Provides

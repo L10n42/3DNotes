@@ -2,7 +2,9 @@ package com.kappdev.notes.feature_notes.presentation.add_edit_note.components
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -44,7 +46,8 @@ fun AddEditNoteContent(viewModel: AddEditNoteViewModel) {
     Card(
         modifier = Modifier
             .fillMaxSize()
-            .padding(all = 16.dp),
+            .padding(all = 16.dp)
+        ,
         elevation = 0.dp,
         shape = RoundedCornerShape(8.dp),
         backgroundColor = MaterialTheme.colors.surface.copy(alpha = 0.12f)

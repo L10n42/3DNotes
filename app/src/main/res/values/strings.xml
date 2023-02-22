@@ -24,6 +24,8 @@
     <string name="msg_could_not_save">couldn\'t save.</string>
     <string name="title_new_folder">New folder</string>
     <string name="hint_name">Name</string>
-    <string name="settings_screen_label">Settings</string>
+    <string name="settings_label">Settings</string>
+    <string name="hint_search">Search</string>
+    <string name="switch_theme_title">Dark theme</string>
 
 </resources>
