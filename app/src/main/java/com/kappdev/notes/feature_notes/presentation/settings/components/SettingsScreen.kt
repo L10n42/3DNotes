@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,6 +23,7 @@ fun SettingsScreen(
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
     val isThemeDark = viewModel.theme.value
+    val backgroundOpacity = viewModel.backgroundOpacity.value
 
     Scaffold(
         backgroundColor = Color.Transparent,
@@ -37,17 +38,65 @@ fun SettingsScreen(
             contentPadding = PaddingValues(all = 16.dp),
             modifier = Modifier.fillMaxSize()
         ) {
-           item {
-               SwitchCard(
-                   titleResId = R.string.switch_theme_title,
-                   isChecked = isThemeDark,
-                   onCheckedChange = {
-                       viewModel.changeTheme(it)
-                   }
-               )
-           }
+
+            item {
+                SwitchCard(
+                    titleResId = R.string.switch_theme_title,
+                    isChecked = isThemeDark,
+                    onCheckedChange = {
+                        viewModel.changeTheme(it)
+                    }
+                )
+            }
+
+            item {
+                SliderCard(
+                    titleResId = R.string.setting_title_opacity,
+                    value = backgroundOpacity,
+                    onValueChange = { viewModel.changeBackgroundOpacity(it) },
+                    onValueChangeFinish = { viewModel.saveBackgroundOpacity() }
+                )
+            }
         }
     }
+}
+
+@Composable
+private fun SliderCard(
+    titleResId: Int,
+    value: Float,
+    onValueChange: (value: Float) -> Unit,
+    onValueChangeFinish: () -> Unit
+) {
+    val valueInPercentages = (value * 100).toInt()
+
+    Card {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(
+                text = stringResource(titleResId) + " - ${valueInPercentages}%",
+                fontSize = 18.sp,
+                color = MaterialTheme.colors.onSurface
+            )
+
+            Slider(
+                value = value,
+                onValueChange = onValueChange,
+                valueRange = 0f..1f,
+                onValueChangeFinished = onValueChangeFinish,
+                steps = 0,
+                colors = SliderDefaults.colors(
+                    thumbColor = MaterialTheme.colors.primary,
+                    activeTrackColor = MaterialTheme.colors.primary
+                )
+            )
+        }
+    }
+
 }
 
 @Composable
@@ -87,9 +136,12 @@ private fun SwitchCard(
 }
 
 @Composable
-private fun Card(content: @Composable () -> Unit) {
+private fun Card(
+    viewModel: SettingsViewModel = hiltViewModel(),
+    content: @Composable () -> Unit
+) {
     Surface(
-        color = MaterialTheme.colors.surface.copy(alpha = 0.12f),
+        color = MaterialTheme.colors.surface.copy(alpha = viewModel.getBackgroundOpacity()),
         shape = RoundedCornerShape(16.dp),
         modifier = Modifier.fillMaxWidth(),
         content = content

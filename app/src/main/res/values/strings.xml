@@ -27,5 +27,6 @@
     <string name="settings_label">Settings</string>
     <string name="hint_search">Search</string>
     <string name="switch_theme_title">Dark theme</string>
+    <string name="setting_title_opacity">Background Opacity</string>
 
 </resources>
