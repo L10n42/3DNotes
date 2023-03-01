@@ -1,10 +1,7 @@
 package com.kappdev.notes.feature_notes.presentation.add_edit_note.components
 
-import androidx.compose.foundation.ScrollState
-import androidx.compose.foundation.gestures.rememberScrollableState
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.height
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -15,6 +12,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.kappdev.notes.core.presentation.navigation.Screen
 import com.kappdev.notes.feature_notes.presentation.add_edit_note.AddEditNoteViewModel
+import com.kappdev.notes.ui.custom_theme.CustomTheme
 
 @ExperimentalMaterialApi
 @Composable
@@ -33,7 +31,7 @@ fun AddEditNoteScreen(
 
     ModalBottomSheetLayout(
         sheetState = sheetState,
-        scrimColor = MaterialTheme.colors.onSurface.copy(alpha = 0.16f),
+        scrimColor = CustomTheme.colors.onSurface.copy(alpha = 0.16f),
         sheetElevation = 0.dp,
         sheetContent = { Box(Modifier.height(1.dp)) }
     ) {

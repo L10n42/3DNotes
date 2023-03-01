@@ -1,18 +1,17 @@
 package com.kappdev.notes.core.presentation.components
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.AlertDialog
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kappdev.notes.R
+import com.kappdev.notes.ui.custom_theme.CustomTheme
 
 @Composable
 fun ConfirmDialog(
@@ -24,23 +23,24 @@ fun ConfirmDialog(
     onCancel: () -> Unit = closeDialog,
     onConfirm: () -> Unit,
 ) {
+    val buttonPadding = PaddingValues(end = CustomTheme.spaces.medium, bottom = CustomTheme.spaces.medium)
     AlertDialog(
         onDismissRequest = closeDialog,
-        shape = RoundedCornerShape(8.dp),
-        backgroundColor = MaterialTheme.colors.surface,
+        shape = CustomTheme.shapes.medium,
+        backgroundColor = CustomTheme.colors.surface,
         title = {
             Text(
                 text = title,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colors.onSurface
+                color = CustomTheme.colors.onSurface
             )
         },
         text = {
             Text(
                 text = message,
                 fontSize = 16.sp,
-                color = MaterialTheme.colors.onSurface
+                color = CustomTheme.colors.onSurface
             )
         },
         confirmButton = {
@@ -48,8 +48,8 @@ fun ConfirmDialog(
                 Text(
                     text = confirmText,
                     fontSize = 16.sp,
-                    color = MaterialTheme.colors.primary,
-                    modifier = Modifier.padding(end = 8.dp, bottom = 8.dp)
+                    color = CustomTheme.colors.primary,
+                    modifier = Modifier.padding(buttonPadding)
                 )
             }
         },
@@ -58,8 +58,8 @@ fun ConfirmDialog(
                 Text(
                     text = cancelText,
                     fontSize = 16.sp,
-                    color = MaterialTheme.colors.primary,
-                    modifier = Modifier.padding(end = 8.dp, bottom = 8.dp)
+                    color = CustomTheme.colors.primary,
+                    modifier = Modifier.padding(buttonPadding)
                 )
             }
         }

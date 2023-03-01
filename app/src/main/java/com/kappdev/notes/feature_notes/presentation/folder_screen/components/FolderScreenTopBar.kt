@@ -5,11 +5,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.More
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -22,6 +20,7 @@ import com.kappdev.notes.R
 import com.kappdev.notes.core.presentation.components.CustomDropDownMenu
 import com.kappdev.notes.core.presentation.navigation.Screen
 import com.kappdev.notes.feature_notes.presentation.folder_screen.FolderViewModel
+import com.kappdev.notes.ui.custom_theme.CustomTheme
 
 @Composable
 fun FolderScreenTopBar(
@@ -37,19 +36,19 @@ fun FolderScreenTopBar(
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
-                color = MaterialTheme.colors.onSurface,
+                color = CustomTheme.colors.onSurface,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.fillMaxWidth()
             )
         },
         elevation = 0.dp,
-        backgroundColor = MaterialTheme.colors.surface.copy(alpha = 0.12f),
+        backgroundColor = CustomTheme.colors.surface.copy(alpha = 0.12f),
         navigationIcon = {
             IconButton(onClick = { viewModel.navigate(Screen.Notes.route) }) {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
                     contentDescription = "back button",
-                    tint = MaterialTheme.colors.onSurface
+                    tint = CustomTheme.colors.onSurface
                 )
             }
         },
@@ -58,7 +57,7 @@ fun FolderScreenTopBar(
                 Icon(
                     imageVector = Icons.Default.MoreVert,
                     contentDescription = "folder screen more btn",
-                    tint = MaterialTheme.colors.onSurface
+                    tint = CustomTheme.colors.onSurface
                 )
             }
 

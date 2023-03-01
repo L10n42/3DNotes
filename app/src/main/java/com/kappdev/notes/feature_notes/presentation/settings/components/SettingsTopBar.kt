@@ -17,14 +17,14 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kappdev.notes.R
+import com.kappdev.notes.ui.custom_theme.CustomTheme
 
 @Composable
 fun SettingsTopBar(
     onBackClick: () -> Unit
 ) {
-
     Surface(
-        color = MaterialTheme.colors.surface.copy(alpha = 0.12f),
+        color = CustomTheme.colors.surface.copy(alpha = 0.12f),
         shape = RoundedCornerShape(16.dp),
         modifier = Modifier.padding(start = 8.dp, end = 8.dp, top = 8.dp)
     ) {
@@ -33,12 +33,12 @@ fun SettingsTopBar(
         ) {
             IconButton(
                 onClick = onBackClick,
-                modifier = Modifier.align(Alignment.CenterStart).padding(start = 4.dp)
+                modifier = Modifier.align(Alignment.CenterStart).padding(start = CustomTheme.spaces.small)
             ) {
                 Icon(
                     imageVector = Icons.Default.ArrowBackIos,
                     contentDescription = "back button",
-                    tint = MaterialTheme.colors.onSurface
+                    tint = CustomTheme.colors.onSurface
                 )
             }
 
@@ -46,41 +46,10 @@ fun SettingsTopBar(
                 text = stringResource(R.string.settings_label),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colors.onSurface,
+                color = CustomTheme.colors.onSurface,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.align(Alignment.Center)
             )
         }
     }
-
-//    TopAppBar(
-//        modifier = Modifier
-//            .padding(start = 8.dp, end = 8.dp, top = 8.dp)
-//            .background(
-//                color = MaterialTheme.colors.surface.copy(alpha = 0.12f),
-//                shape = RoundedCornerShape(16.dp)
-//            ),
-//        title = {
-//            Text(
-//                text = stringResource(R.string.settings_label),
-//                fontSize = 18.sp,
-//                fontWeight = FontWeight.Bold,
-//                textAlign = TextAlign.Center,
-//                color = MaterialTheme.colors.onSurface,
-//                overflow = TextOverflow.Ellipsis,
-//                modifier = Modifier.fillMaxWidth()
-//            )
-//        },
-//        elevation = 0.dp,
-//        backgroundColor = Color.Transparent,
-//        navigationIcon = {
-//            IconButton(onClick = onBackClick) {
-//                Icon(
-//                    imageVector = Icons.Default.ArrowBackIos,
-//                    contentDescription = "back button",
-//                    tint = MaterialTheme.colors.onSurface
-//                )
-//            }
-//        }
-//    )
 }

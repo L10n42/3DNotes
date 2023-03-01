@@ -2,9 +2,8 @@ package com.kappdev.notes.feature_notes.presentation.settings.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -16,6 +15,7 @@ import androidx.navigation.NavHostController
 import com.kappdev.notes.R
 import com.kappdev.notes.core.presentation.navigation.Screen
 import com.kappdev.notes.feature_notes.presentation.settings.SettingsViewModel
+import com.kappdev.notes.ui.custom_theme.CustomTheme
 
 @Composable
 fun SettingsScreen(
@@ -80,7 +80,7 @@ private fun SliderCard(
             Text(
                 text = stringResource(titleResId) + " - ${valueInPercentages}%",
                 fontSize = 18.sp,
-                color = MaterialTheme.colors.onSurface
+                color = CustomTheme.colors.onSurface
             )
 
             Slider(
@@ -90,8 +90,8 @@ private fun SliderCard(
                 onValueChangeFinished = onValueChangeFinish,
                 steps = 0,
                 colors = SliderDefaults.colors(
-                    thumbColor = MaterialTheme.colors.primary,
-                    activeTrackColor = MaterialTheme.colors.primary
+                    thumbColor = CustomTheme.colors.primary,
+                    activeTrackColor = CustomTheme.colors.primary
                 )
             )
         }
@@ -116,7 +116,7 @@ private fun SwitchCard(
             Text(
                 text = stringResource(titleResId),
                 fontSize = 18.sp,
-                color = MaterialTheme.colors.onSurface
+                color = CustomTheme.colors.onSurface
             )
 
             Switch(
@@ -125,9 +125,9 @@ private fun SwitchCard(
                     onCheckedChange(newValue)
                 },
                 colors = SwitchDefaults.colors(
-                    uncheckedThumbColor = MaterialTheme.colors.background,
-                    checkedThumbColor = MaterialTheme.colors.primary,
-                    checkedTrackColor = MaterialTheme.colors.primary,
+                    uncheckedThumbColor = CustomTheme.colors.background,
+                    checkedThumbColor = CustomTheme.colors.primary,
+                    checkedTrackColor = CustomTheme.colors.primary,
                     checkedTrackAlpha = 0.3f
                 )
             )
@@ -141,8 +141,8 @@ private fun Card(
     content: @Composable () -> Unit
 ) {
     Surface(
-        color = MaterialTheme.colors.surface.copy(alpha = viewModel.getBackgroundOpacity()),
-        shape = RoundedCornerShape(16.dp),
+        color = CustomTheme.colors.surface.copy(alpha = viewModel.getBackgroundOpacity()),
+        shape = CustomTheme.shapes.large,
         modifier = Modifier.fillMaxWidth(),
         content = content
     )

@@ -11,6 +11,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.kappdev.notes.core.presentation.components.CustomDropDownMenu
+import com.kappdev.notes.ui.custom_theme.CustomTheme
 
 @Composable
 fun MorePopupBtn(
@@ -25,7 +26,7 @@ fun MorePopupBtn(
         Icon(
             imageVector = Icons.Default.MoreVert,
             contentDescription = "more btn",
-            tint = MaterialTheme.colors.onSurface
+            tint = CustomTheme.colors.onSurface
         )
     }
 

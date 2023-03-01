@@ -3,7 +3,6 @@ package com.kappdev.notes.feature_notes.presentation.notes.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -16,6 +15,7 @@ import com.kappdev.notes.R
 import com.kappdev.notes.core.presentation.components.ButtonsCouple
 import com.kappdev.notes.core.presentation.components.CustomTextField
 import com.kappdev.notes.feature_notes.presentation.notes.NotesViewModel
+import com.kappdev.notes.ui.custom_theme.CustomTheme
 
 @Composable
 fun NewFolderBS(
@@ -29,7 +29,7 @@ fun NewFolderBS(
         modifier = Modifier
             .fillMaxWidth()
             .background(
-                color = MaterialTheme.colors.surface,
+                color = CustomTheme.colors.surface,
                 shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
             )
             .padding(all = 16.dp)

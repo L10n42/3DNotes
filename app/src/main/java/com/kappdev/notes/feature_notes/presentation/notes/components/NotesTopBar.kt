@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.kappdev.notes.R
 import com.kappdev.notes.core.presentation.components.CustomDropDownMenu
+import com.kappdev.notes.ui.custom_theme.CustomTheme
 
 @Composable
 fun NotesTopBar(
@@ -25,7 +26,7 @@ fun NotesTopBar(
         title = {
             Text(
                 text = "3DNotes",
-                color = MaterialTheme.colors.surface,
+                color = CustomTheme.colors.surface,
                 fontWeight = FontWeight.Bold
             )
         },
@@ -38,7 +39,7 @@ fun NotesTopBar(
                 Icon(
                     imageVector = Icons.Default.MoreVert,
                     contentDescription = "notes screen more btn",
-                    tint = MaterialTheme.colors.surface
+                    tint = CustomTheme.colors.surface
                 )
             }
 

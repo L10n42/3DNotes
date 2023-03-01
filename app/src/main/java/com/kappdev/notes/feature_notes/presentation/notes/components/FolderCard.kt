@@ -17,6 +17,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kappdev.notes.feature_notes.domain.model.Folder
+import com.kappdev.notes.ui.custom_theme.CustomTheme
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -28,7 +29,7 @@ fun FolderCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
         elevation = 0.dp,
-        backgroundColor = MaterialTheme.colors.surface.copy(alpha = 0.16f),
+        backgroundColor = CustomTheme.colors.surface.copy(alpha = 0.16f),
         onClick = { onClick(folder.id) }
     ) {
         Row(
@@ -59,7 +60,7 @@ private fun Items(items: Int, modifier: Modifier = Modifier) {
     Text(
         text = text,
         fontSize = 16.sp,
-        color = MaterialTheme.colors.onSurface,
+        color = CustomTheme.colors.onSurface,
         maxLines = 1,
         modifier = modifier
     )
@@ -71,7 +72,7 @@ private fun FolderName(text: String, modifier: Modifier = Modifier) {
         text = text,
         fontSize = 18.sp,
         fontWeight = FontWeight.Bold,
-        color = MaterialTheme.colors.onSurface,
+        color = CustomTheme.colors.onSurface,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
         modifier = modifier

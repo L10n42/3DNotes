@@ -2,11 +2,7 @@ package com.kappdev.notes.feature_notes.presentation.add_edit_note.components
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
@@ -22,6 +18,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import com.kappdev.notes.R
 import com.kappdev.notes.core.presentation.components.TransparentTextField
 import com.kappdev.notes.feature_notes.presentation.add_edit_note.AddEditNoteViewModel
+import com.kappdev.notes.ui.custom_theme.CustomTheme
 
 @Composable
 fun AddEditNoteContent(viewModel: AddEditNoteViewModel) {
@@ -46,11 +43,10 @@ fun AddEditNoteContent(viewModel: AddEditNoteViewModel) {
     Card(
         modifier = Modifier
             .fillMaxSize()
-            .padding(all = 16.dp)
-        ,
+            .padding(all = CustomTheme.spaces.large),
         elevation = 0.dp,
-        shape = RoundedCornerShape(8.dp),
-        backgroundColor = MaterialTheme.colors.surface.copy(alpha = 0.12f)
+        shape = CustomTheme.shapes.medium,
+        backgroundColor = CustomTheme.colors.transparentSurface
     ) {
         Column(
             modifier = Modifier
@@ -65,7 +61,7 @@ fun AddEditNoteContent(viewModel: AddEditNoteViewModel) {
                 textStyle = TextStyle(
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colors.onSurface
+                    color = CustomTheme.colors.onSurface
                 ),
                 onValueChange = {
                     viewModel.setTitle(it)
@@ -77,7 +73,7 @@ fun AddEditNoteContent(viewModel: AddEditNoteViewModel) {
                 textFieldModifier = Modifier.fillMaxSize(),
                 textStyle = TextStyle(
                     fontSize = 18.sp,
-                    color = MaterialTheme.colors.onSurface
+                    color = CustomTheme.colors.onSurface
                 ),
                 onValueChange = {
                     viewModel.setContent(it)

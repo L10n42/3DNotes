@@ -18,6 +18,7 @@ import com.kappdev.notes.R
 import com.kappdev.notes.core.presentation.components.ConfirmDialog
 import com.kappdev.notes.core.presentation.components.CustomDropDownMenu
 import com.kappdev.notes.feature_notes.presentation.add_edit_note.AddEditNoteViewModel
+import com.kappdev.notes.ui.custom_theme.CustomTheme
 
 @Composable
 fun AddEditNoteTopBar(
@@ -55,7 +56,7 @@ fun AddEditNoteTopBar(
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
                     contentDescription = "back button",
-                    tint = MaterialTheme.colors.surface
+                    tint = CustomTheme.colors.surface
                 )
             }
         },
@@ -100,7 +101,7 @@ private fun TopBarBtn(item: TopBarItem, onClick: () -> Unit) {
         Icon(
             imageVector = item.icon,
             contentDescription = item.id,
-            tint = if (item.enable) MaterialTheme.colors.surface else MaterialTheme.colors.surface.copy(alpha = 0.5f)
+            tint = if (item.enable) CustomTheme.colors.surface else CustomTheme.colors.surface.copy(alpha = 0.5f)
         )
     }
 }

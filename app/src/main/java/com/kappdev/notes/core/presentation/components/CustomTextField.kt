@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.kappdev.notes.ui.custom_theme.CustomTheme
 
 @Composable
 fun CustomTextField(
@@ -49,12 +50,12 @@ fun CustomTextField(
         enabled = enabled,
         shape = dynamicShape,
         colors = TextFieldDefaults.textFieldColors(
-            textColor = MaterialTheme.colors.onSurface,
-            unfocusedLabelColor = MaterialTheme.colors.onBackground,
-            focusedLabelColor = MaterialTheme.colors.onBackground,
-            backgroundColor = MaterialTheme.colors.background,
-            cursorColor = MaterialTheme.colors.primary,
-            focusedIndicatorColor = MaterialTheme.colors.primary,
+            textColor = CustomTheme.colors.onSurface,
+            unfocusedLabelColor = CustomTheme.colors.onBackground,
+            focusedLabelColor = CustomTheme.colors.onBackground,
+            backgroundColor = CustomTheme.colors.background,
+            cursorColor = CustomTheme.colors.primary,
+            focusedIndicatorColor = CustomTheme.colors.primary,
             unfocusedIndicatorColor = Color.Transparent
         ),
         trailingIcon = {
@@ -65,7 +66,7 @@ fun CustomTextField(
                     Icon(
                         imageVector = Icons.Default.Cancel,
                         contentDescription = "cancel_icon",
-                        tint = MaterialTheme.colors.onBackground,
+                        tint = CustomTheme.colors.onBackground,
                         modifier = Modifier.size(22.dp)
                     )
                 }
@@ -75,7 +76,7 @@ fun CustomTextField(
             onTextChanged(newText)
         },
         placeholder = {
-            Text(text = hint, color = MaterialTheme.colors.onBackground)
+            Text(text = hint, color = CustomTheme.colors.onBackground)
         },
         textStyle = TextStyle(fontSize = 18.sp),
         modifier = modifier

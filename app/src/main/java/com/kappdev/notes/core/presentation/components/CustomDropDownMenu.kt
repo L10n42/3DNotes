@@ -6,7 +6,6 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -20,6 +19,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
+import com.kappdev.notes.ui.custom_theme.CustomTheme
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -30,7 +30,7 @@ fun CustomDropDownMenu(
     offset: IntOffset = IntOffset(0, 0),
     border: BorderStroke? = null,
     alignment: Alignment = Alignment.TopEnd,
-    backgroundColor: Color = MaterialTheme.colors.surface,
+    backgroundColor: Color = CustomTheme.colors.surface,
     shape: Shape = RoundedCornerShape(16.dp),
     dismiss: () -> Unit,
     content: @Composable ColumnScope.() -> Unit

@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -15,10 +14,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.kappdev.notes.core.presentation.navigation.Screen
 import com.kappdev.notes.feature_notes.domain.model.Note
 import com.kappdev.notes.feature_notes.domain.util.DateConvertor
-import com.kappdev.notes.feature_notes.presentation.notes.NotesViewModel
+import com.kappdev.notes.ui.custom_theme.CustomTheme
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -30,7 +28,7 @@ fun NoteCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
         elevation = 0.dp,
-        backgroundColor = MaterialTheme.colors.surface.copy(alpha = 0.12f),
+        backgroundColor = CustomTheme.colors.transparentSurface,
         onClick = { onClick(note.id) }
     ) {
         Column(
@@ -53,7 +51,7 @@ private fun Time(timestamp: Long) {
     Text(
         text = time,
         fontSize = 14.sp,
-        color = MaterialTheme.colors.onSurface,
+        color = CustomTheme.colors.onSurface,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
         modifier = Modifier.fillMaxWidth()
@@ -65,7 +63,7 @@ private fun Content(text: String) {
     Text(
         text = text,
         fontSize = 16.sp,
-        color = MaterialTheme.colors.onSurface,
+        color = CustomTheme.colors.onSurface,
         maxLines = 2,
         overflow = TextOverflow.Ellipsis,
         modifier = Modifier.fillMaxWidth()
@@ -78,7 +76,7 @@ private fun Title(text: String) {
         text = text,
         fontSize = 18.sp,
         fontWeight = FontWeight.Bold,
-        color = MaterialTheme.colors.onSurface,
+        color = CustomTheme.colors.onSurface,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
         modifier = Modifier.fillMaxWidth()

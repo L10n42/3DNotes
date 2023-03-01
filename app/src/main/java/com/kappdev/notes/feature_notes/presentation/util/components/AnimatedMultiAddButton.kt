@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kappdev.notes.feature_notes.presentation.util.SubButton
+import com.kappdev.notes.ui.custom_theme.CustomTheme
 import com.kappdev.notes.ui.theme.Purple500
 import com.kappdev.notes.ui.theme.Teal200
 import kotlinx.coroutines.delay
@@ -46,14 +47,14 @@ fun AnimatedMultiAddButton(
     buttons: List<SubButton>,
     buttonsShape: Shape = DefaultButtonShape,
     colors: AnimatedMultiAddButtonColors = AnimatedMultiAddButtonColors(
-        activeMainBtnBackgroundColor = MaterialTheme.colors.primary,
-        activeMainBtnContentColor = MaterialTheme.colors.onSurface,
-        subButtonsBackgroundColor = MaterialTheme.colors.surface,
-        subButtonsContentColor = MaterialTheme.colors.primary,
-        inactiveMainBtnContentColor = MaterialTheme.colors.onSecondary,
-        inactiveMainBtnBackgroundColor = MaterialTheme.colors.secondary,
-        backgroundColor = MaterialTheme.colors.surface.copy(alpha = 0.64f),
-        labelsColor = MaterialTheme.colors.onSurface
+        activeMainBtnBackgroundColor = CustomTheme.colors.primary,
+        activeMainBtnContentColor = CustomTheme.colors.onSurface,
+        subButtonsBackgroundColor = CustomTheme.colors.surface,
+        subButtonsContentColor = CustomTheme.colors.primary,
+        inactiveMainBtnContentColor = CustomTheme.colors.onSecondary,
+        inactiveMainBtnBackgroundColor = CustomTheme.colors.secondary,
+        backgroundColor = CustomTheme.colors.surface.copy(alpha = 0.64f),
+        labelsColor = CustomTheme.colors.onSurface
     ),
     buttonsElevation: FloatingActionButtonElevation = FloatingActionButtonDefaults.elevation(
         defaultElevation = DefaultButtonElevation,

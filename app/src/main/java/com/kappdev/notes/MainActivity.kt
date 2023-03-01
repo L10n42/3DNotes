@@ -3,11 +3,11 @@ package com.kappdev.notes
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
@@ -19,7 +19,8 @@ import com.kappdev.notes.core.data.repository.SettingRepositoryImpl
 import com.kappdev.notes.core.domain.repository.SettingRepository
 import com.kappdev.notes.core.presentation.components.BackgroundImage
 import com.kappdev.notes.core.presentation.navigation.componets.SetupNavGraph
-import com.kappdev.notes.ui.theme.NotesTheme
+import com.kappdev.notes.ui.custom_theme.CustomNotesTheme
+import com.kappdev.notes.ui.custom_theme.CustomTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -40,10 +41,10 @@ class MainActivity : ComponentActivity(), SharedPreferences.OnSharedPreferenceCh
         getSettings()
 
         setContent {
-            NotesTheme(isThemeDark.value) {
+            CustomNotesTheme(darkTheme = isThemeDark.value) {
                 val systemUiController = rememberSystemUiController()
-                val surfaceColor = MaterialTheme.colors.primary
-                val backgroundColor = MaterialTheme.colors.background
+                val surfaceColor = CustomTheme.colors.primary
+                val backgroundColor = CustomTheme.colors.background
                 SideEffect {
                     systemUiController.setStatusBarColor(surfaceColor)
                     systemUiController.setNavigationBarColor(backgroundColor)
@@ -61,9 +62,7 @@ class MainActivity : ComponentActivity(), SharedPreferences.OnSharedPreferenceCh
         }
     }
 
-    private fun getSettings() {
-        isThemeDark.value = settingsRepository.getTheme()
-    }
+    private fun getSettings() { isThemeDark.value = settingsRepository.getTheme() }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         when (key) {

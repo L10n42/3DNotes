@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.sp
 import com.kappdev.notes.R
 import com.kappdev.notes.core.presentation.navigation.Screen
 import com.kappdev.notes.feature_notes.presentation.notes.NotesViewModel
+import com.kappdev.notes.ui.custom_theme.CustomTheme
 
 @Composable
 fun SearchBar(
@@ -31,7 +32,7 @@ fun SearchBar(
             Icon(
                 imageVector = Icons.Default.Search,
                 contentDescription = "search_icon",
-                tint = MaterialTheme.colors.onSurface
+                tint = CustomTheme.colors.onSurface
             )
         },
         trailingIcon = {
@@ -47,7 +48,7 @@ fun SearchBar(
         placeholder = {
             Text(
                 text = stringResource(R.string.hint_search),
-                color = MaterialTheme.colors.onSurface,
+                color = CustomTheme.colors.onSurface,
                 fontSize = 18.sp
             )
         },
@@ -56,13 +57,13 @@ fun SearchBar(
             search(newValue)
         },
         colors = TextFieldDefaults.textFieldColors(
-            backgroundColor = MaterialTheme.colors.surface.copy(alpha = 0.12f),
-            cursorColor = MaterialTheme.colors.primary,
+            backgroundColor = CustomTheme.colors.transparentSurface,
+            cursorColor = CustomTheme.colors.primary,
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
         ),
         textStyle = TextStyle(
-            color = MaterialTheme.colors.onSurface,
+            color = CustomTheme.colors.onSurface,
             fontSize = 18.sp
         ),
         modifier = Modifier.fillMaxWidth()

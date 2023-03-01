@@ -16,6 +16,7 @@ import com.kappdev.notes.feature_notes.presentation.notes.NotesBottomSheet
 import com.kappdev.notes.feature_notes.presentation.notes.NotesViewModel
 import com.kappdev.notes.feature_notes.presentation.util.SubButton
 import com.kappdev.notes.feature_notes.presentation.util.components.AnimatedMultiAddButton
+import com.kappdev.notes.ui.custom_theme.CustomTheme
 import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
@@ -52,7 +53,7 @@ fun NotesScreen(
     if(!sheetState.isVisible) currentBottomSheet = null
     ModalBottomSheetLayout(
         sheetState = sheetState,
-        scrimColor = MaterialTheme.colors.onSurface.copy(alpha = 0.16f),
+        scrimColor = CustomTheme.colors.onSurface.copy(alpha = 0.16f),
         sheetBackgroundColor = Color.Transparent,
         sheetElevation = 0.dp,
         sheetContent = {
