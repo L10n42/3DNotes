@@ -1,6 +1,5 @@
 package com.kappdev.notes.ui.custom_theme
 
-import android.util.Log
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.ProvideTextStyle
 import androidx.compose.runtime.*
@@ -12,18 +11,23 @@ fun CustomNotesTheme(
     spaces: CustomSpaces = CustomTheme.spaces,
     typography: CustomTypography = CustomTheme.typography,
     shapes: CustomShapes = CustomTheme.shapes,
+    opacity: CustomOpacity = CustomOpacity(),
     lightColors: CustomColors = lightColors(),
     darkColors: CustomColors = darkColors(),
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-    val currentColor = if (darkTheme) darkColors else lightColors
-    val rememberedColors = remember { currentColor.copy() }.apply { updateColorsFrom(currentColor) }
+    val currentColor = (if (darkTheme) darkColors else lightColors)
+    val finalColor = currentColor.copy(
+        transparentSurface = currentColor.surface.copy(alpha = opacity.backgroundOpacity)
+    )
+    val rememberedColors = remember { finalColor.copy() }.apply { updateColorsFrom(finalColor) }
     CompositionLocalProvider(
         LocalColors provides rememberedColors,
         LocalSpaces provides spaces,
         LocalShapes provides shapes,
-        LocalTypography provides typography
+        LocalTypography provides typography,
+        LocalOpacity provides opacity
     ) {
         ProvideTextStyle(value = typography.body, content = content)
     }
@@ -49,8 +53,14 @@ object CustomTheme {
         @Composable
         @ReadOnlyComposable
         get() = LocalShapes.current
+
+    val opacity: CustomOpacity
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalOpacity.current
 }
 
+val LocalOpacity = staticCompositionLocalOf { CustomOpacity() }
 val LocalColors = staticCompositionLocalOf { lightColors() }
 val LocalShapes = staticCompositionLocalOf { CustomShapes() }
 val LocalSpaces = staticCompositionLocalOf { CustomSpaces() }

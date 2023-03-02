@@ -10,8 +10,11 @@ class GetAllData(
 
     operator fun invoke(): List<Any> {
         val notes = repository.getNotesList()
+        val notesWithoutFolder = notes.mapNotNull { note ->
+            if (note.folderId == null) note else null
+        }
         val folders = repository.getFoldersList()
-        val finalList = notes + folders
+        val finalList = notesWithoutFolder + folders
         return finalList.sortedByDescending { item ->
             when (item) {
                 is Note -> item.timestamp

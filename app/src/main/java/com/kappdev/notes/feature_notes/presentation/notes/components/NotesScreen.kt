@@ -16,6 +16,7 @@ import com.kappdev.notes.feature_notes.presentation.notes.NotesBottomSheet
 import com.kappdev.notes.feature_notes.presentation.notes.NotesViewModel
 import com.kappdev.notes.feature_notes.presentation.util.SubButton
 import com.kappdev.notes.feature_notes.presentation.util.components.AnimatedMultiAddButton
+import com.kappdev.notes.ui.custom_theme.CustomOpacity
 import com.kappdev.notes.ui.custom_theme.CustomTheme
 import kotlinx.coroutines.launch
 
@@ -30,9 +31,7 @@ fun NotesScreen(
     val scaffoldState = rememberScaffoldState()
     val navigate = viewModel.navigate.value
 
-    LaunchedEffect(key1 = true) {
-        viewModel.getAllData()
-    }
+    LaunchedEffect(key1 = true) { viewModel.getAllData() }
 
     LaunchedEffect(key1 = navigate) {
         navigate?.let { route ->
@@ -53,7 +52,7 @@ fun NotesScreen(
     if(!sheetState.isVisible) currentBottomSheet = null
     ModalBottomSheetLayout(
         sheetState = sheetState,
-        scrimColor = CustomTheme.colors.onSurface.copy(alpha = 0.16f),
+        scrimColor = CustomTheme.colors.onSurface.copy(alpha = CustomTheme.opacity.scrimOpacity),
         sheetBackgroundColor = Color.Transparent,
         sheetElevation = 0.dp,
         sheetContent = {
@@ -68,12 +67,7 @@ fun NotesScreen(
     ) {
         Scaffold(
             scaffoldState = scaffoldState,
-            backgroundColor = Color.Transparent,
-            topBar = {
-//                NotesTopBar(
-//                    goToSettings = { navController.navigate(Screen.Settings.route) }
-//                )
-            }
+            backgroundColor = Color.Transparent
         ) {
             Box(modifier = Modifier.fillMaxSize()) {
                 NotesContent(viewModel)

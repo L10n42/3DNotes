@@ -1,13 +1,16 @@
 package com.kappdev.notes.feature_notes.presentation.folder_screen.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBackIos
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -42,11 +45,12 @@ fun FolderScreenTopBar(
             )
         },
         elevation = 0.dp,
-        backgroundColor = CustomTheme.colors.surface.copy(alpha = 0.12f),
+        backgroundColor = CustomTheme.colors.transparentSurface,
+        modifier = Modifier.padding(all = CustomTheme.spaces.small).clip(CustomTheme.shapes.large),
         navigationIcon = {
             IconButton(onClick = { viewModel.navigate(Screen.Notes.route) }) {
                 Icon(
-                    imageVector = Icons.Default.ArrowBack,
+                    imageVector = Icons.Default.ArrowBackIos,
                     contentDescription = "back button",
                     tint = CustomTheme.colors.onSurface
                 )
@@ -72,7 +76,12 @@ fun FolderScreenTopBar(
                     onClick = {
                         expanded = false
                     }
-                ) { Text(stringResource(R.string.title_remove)) }
+                ) {
+                    Text(
+                        text = stringResource(R.string.title_remove),
+                        color = CustomTheme.colors.onSurface
+                    )
+                }
             }
         }
     )

@@ -20,6 +20,7 @@ import com.kappdev.notes.core.domain.repository.SettingRepository
 import com.kappdev.notes.core.presentation.components.BackgroundImage
 import com.kappdev.notes.core.presentation.navigation.componets.SetupNavGraph
 import com.kappdev.notes.ui.custom_theme.CustomNotesTheme
+import com.kappdev.notes.ui.custom_theme.CustomOpacity
 import com.kappdev.notes.ui.custom_theme.CustomTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -31,6 +32,7 @@ class MainActivity : ComponentActivity(), SharedPreferences.OnSharedPreferenceCh
     private lateinit var settingsRepository: SettingRepository
 
     private val isThemeDark = mutableStateOf(false)
+    private val backgroundOpacity = mutableStateOf(0f)
 
     @OptIn(ExperimentalMaterialApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,7 +43,10 @@ class MainActivity : ComponentActivity(), SharedPreferences.OnSharedPreferenceCh
         getSettings()
 
         setContent {
-            CustomNotesTheme(darkTheme = isThemeDark.value) {
+            CustomNotesTheme(
+                darkTheme = isThemeDark.value,
+                opacity = CustomOpacity(backgroundOpacity = backgroundOpacity.value)
+            ) {
                 val systemUiController = rememberSystemUiController()
                 val surfaceColor = CustomTheme.colors.primary
                 val backgroundColor = CustomTheme.colors.background
@@ -62,11 +67,15 @@ class MainActivity : ComponentActivity(), SharedPreferences.OnSharedPreferenceCh
         }
     }
 
-    private fun getSettings() { isThemeDark.value = settingsRepository.getTheme() }
+    private fun getSettings() {
+        isThemeDark.value = settingsRepository.getTheme()
+        backgroundOpacity.value = settingsRepository.getBackgroundOpacity()
+    }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         when (key) {
             SettingRepositoryImpl.KEY_THEME -> isThemeDark.value = settingsRepository.getTheme()
+            SettingRepositoryImpl.KEY_BACKGROUND_OPACITY -> backgroundOpacity.value = settingsRepository.getBackgroundOpacity()
         }
     }
 

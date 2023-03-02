@@ -1,13 +1,14 @@
 package com.kappdev.notes.feature_notes.presentation.add_edit_note.components
 
 import android.widget.Toast
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -50,13 +51,14 @@ fun AddEditNoteTopBar(
     TopAppBar(
         title = {},
         elevation = 0.dp,
-        backgroundColor = Color.Transparent,
+        backgroundColor = CustomTheme.colors.transparentSurface,
+        modifier = Modifier.padding(all = CustomTheme.spaces.small).clip(CustomTheme.shapes.large),
         navigationIcon = {
             IconButton(onClick = goToNotes) {
                 Icon(
-                    imageVector = Icons.Default.ArrowBack,
+                    imageVector = Icons.Default.ArrowBackIos,
                     contentDescription = "back button",
-                    tint = CustomTheme.colors.surface
+                    tint = CustomTheme.colors.onSurface
                 )
             }
         },
@@ -85,7 +87,12 @@ fun AddEditNoteTopBar(
                             expanded = false
                             showRemoveDialog = true
                         }
-                    ) { Text(stringResource(R.string.title_remove)) }
+                    ) {
+                        Text(
+                            text = stringResource(R.string.title_remove),
+                            color = CustomTheme.colors.onSurface
+                        )
+                    }
                 }
             }
         }
@@ -101,7 +108,7 @@ private fun TopBarBtn(item: TopBarItem, onClick: () -> Unit) {
         Icon(
             imageVector = item.icon,
             contentDescription = item.id,
-            tint = if (item.enable) CustomTheme.colors.surface else CustomTheme.colors.surface.copy(alpha = 0.5f)
+            tint = if (item.enable) CustomTheme.colors.onSurface else CustomTheme.colors.onSurface.copy(alpha = 0.5f)
         )
     }
 }

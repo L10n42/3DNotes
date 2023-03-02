@@ -137,11 +137,10 @@ private fun SwitchCard(
 
 @Composable
 private fun Card(
-    viewModel: SettingsViewModel = hiltViewModel(),
     content: @Composable () -> Unit
 ) {
     Surface(
-        color = CustomTheme.colors.surface.copy(alpha = viewModel.getBackgroundOpacity()),
+        color = CustomTheme.colors.transparentSurface,
         shape = CustomTheme.shapes.large,
         modifier = Modifier.fillMaxWidth(),
         content = content

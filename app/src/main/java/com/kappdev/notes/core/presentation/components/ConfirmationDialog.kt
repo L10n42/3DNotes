@@ -1,6 +1,5 @@
 package com.kappdev.notes.core.presentation.components
 
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Text
@@ -23,7 +22,6 @@ fun ConfirmDialog(
     onCancel: () -> Unit = closeDialog,
     onConfirm: () -> Unit,
 ) {
-    val buttonPadding = PaddingValues(end = CustomTheme.spaces.medium, bottom = CustomTheme.spaces.medium)
     AlertDialog(
         onDismissRequest = closeDialog,
         shape = CustomTheme.shapes.medium,
@@ -44,24 +42,24 @@ fun ConfirmDialog(
             )
         },
         confirmButton = {
-            TextButton(onClick = onConfirm) {
-                Text(
-                    text = confirmText,
-                    fontSize = 16.sp,
-                    color = CustomTheme.colors.primary,
-                    modifier = Modifier.padding(buttonPadding)
-                )
-            }
+            Button(text = confirmText, onClick = onConfirm)
         },
         dismissButton = {
-            TextButton(onClick = onCancel) {
-                Text(
-                    text = cancelText,
-                    fontSize = 16.sp,
-                    color = CustomTheme.colors.primary,
-                    modifier = Modifier.padding(buttonPadding)
-                )
-            }
+            Button(text = cancelText, onClick = onCancel)
         }
     )
+}
+
+@Composable
+private fun Button(text: String, onClick: () -> Unit) {
+    TextButton(
+        onClick = onClick,
+        modifier = Modifier.padding(end = CustomTheme.spaces.medium, bottom = CustomTheme.spaces.medium)
+    ) {
+        Text(
+            text = text,
+            fontSize = 16.sp,
+            color = CustomTheme.colors.primary
+        )
+    }
 }

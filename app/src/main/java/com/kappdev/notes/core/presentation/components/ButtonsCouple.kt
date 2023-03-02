@@ -37,7 +37,7 @@ fun ButtonsCouple(
             shape = shape,
             modifier = Modifier.width(width),
             colors = ButtonDefaults.buttonColors(
-                backgroundColor = CustomTheme.colors.background,
+                backgroundColor = CustomTheme.colors.surface,
                 contentColor = CustomTheme.colors.primary
             ),
             elevation = ButtonDefaults.elevation(
@@ -53,7 +53,9 @@ fun ButtonsCouple(
             shape = shape,
             modifier = Modifier.width(width),
             colors = ButtonDefaults.buttonColors(
-                disabledBackgroundColor = CustomTheme.colors.background,
+                backgroundColor = CustomTheme.colors.primary,
+                contentColor = CustomTheme.colors.onPrimary,
+                disabledBackgroundColor = CustomTheme.colors.surface,
                 disabledContentColor = CustomTheme.colors.onBackground
             ),
             elevation = ButtonDefaults.elevation(

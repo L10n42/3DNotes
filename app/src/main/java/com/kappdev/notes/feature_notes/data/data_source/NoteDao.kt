@@ -16,6 +16,9 @@ interface NoteDao {
     @Query("SELECT * FROM notes_table")
     fun getNotesList(): List<Note>
 
+    @Query("SELECT * FROM notes_table WHERE folderId = :id")
+    fun getNotesByFolderId(id: Long): List<Note>
+
     @Query("SELECT * FROM notes_table WHERE id = :id LIMIT 1")
     fun getNoteById(id: Long): Note
 

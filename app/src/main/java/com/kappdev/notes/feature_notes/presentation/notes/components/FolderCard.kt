@@ -27,15 +27,15 @@ fun FolderCard(
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = CustomTheme.shapes.large,
         elevation = 0.dp,
-        backgroundColor = CustomTheme.colors.surface.copy(alpha = 0.16f),
+        backgroundColor = CustomTheme.colors.transparentSurface,
         onClick = { onClick(folder.id) }
     ) {
         Row(
-            modifier = Modifier.padding(all = 16.dp),
+            modifier = Modifier.padding(all = CustomTheme.spaces.medium),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+            horizontalArrangement = Arrangement.spacedBy(CustomTheme.spaces.medium)
         ) {
             LeadingIcon()
 

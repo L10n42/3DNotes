@@ -15,6 +15,7 @@ import com.kappdev.notes.feature_notes.domain.model.Folder
 import com.kappdev.notes.feature_notes.domain.model.Note
 import com.kappdev.notes.feature_notes.presentation.notes.NotesViewModel
 import com.kappdev.notes.feature_notes.presentation.util.components.SearchBar
+import com.kappdev.notes.ui.custom_theme.CustomTheme
 
 @Composable
 fun NotesContent(
@@ -26,8 +27,8 @@ fun NotesContent(
 
     LazyColumnWithScrollIndicator(
         state = listState,
-        verticalArrangement = Arrangement.spacedBy(ListItemsPadding),
-        contentPadding = PaddingValues(all = ListItemsPadding),
+        verticalArrangement = Arrangement.spacedBy(CustomTheme.spaces.small),
+        contentPadding = PaddingValues(all = CustomTheme.spaces.small),
         modifier = Modifier.fillMaxSize(),
         onScroll = { direction ->
             scrollingToTop = when (direction) {
@@ -56,5 +57,3 @@ fun NotesContent(
         }
     }
 }
-
-private val ListItemsPadding = 8.dp

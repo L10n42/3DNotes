@@ -17,6 +17,7 @@ import javax.inject.Inject
 class AddEditNoteViewModel @Inject constructor(
     private val notesUseCases: NotesUseCases
 ) : ViewModel() {
+    private var folderId: Long? = null
 
     var currentStack = 0
         private set
@@ -57,7 +58,13 @@ class AddEditNoteViewModel @Inject constructor(
             viewModelScope.launch(Dispatchers.IO) {
                 try {
                     val noteId = notesUseCases.insertNote(
-                        Note(currentNoteId.value, noteTitle.value, noteContent.value, System.currentTimeMillis())
+                        Note(
+                            id = currentNoteId.value,
+                            title = noteTitle.value,
+                            content = noteContent.value,
+                            folderId = folderId,
+                            timestamp = System.currentTimeMillis()
+                        )
                     )
                     _currentNoteId.value = noteId
                     getNoteById()
@@ -94,6 +101,8 @@ class AddEditNoteViewModel @Inject constructor(
         _noteContent.value = value
         updateBackStack(value)
     }
+
+    fun setFolderId(id: Long) { folderId = id }
 
     fun noteIsNotBlank() = noteContent.value.trim().isNotBlank() || noteTitle.value.trim().isNotBlank()
     fun noteChanged() = originalTitle != noteTitle.value || originalContent != noteContent.value

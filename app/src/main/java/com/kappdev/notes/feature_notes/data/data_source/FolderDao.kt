@@ -20,6 +20,9 @@ interface FolderDao {
     @Query("SELECT * FROM folders_table WHERE id = :id LIMIT 1")
     fun getFolderById(id: Long): Folder
 
+    @Update
+    suspend fun updateFolder(folder: Folder): Int
+
     @Delete
     suspend fun removeFolder(folder: Folder): Int
 }

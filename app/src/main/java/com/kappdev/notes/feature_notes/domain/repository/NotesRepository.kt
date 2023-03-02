@@ -14,6 +14,12 @@ interface NotesRepository {
 
     fun getFolderById(id: Long): Folder
 
+    suspend fun incrementFolderItems(folderId: Long)
+
+    suspend fun decrementFolderItems(folderId: Long)
+
+    suspend fun updateFolder(folder: Folder): Int
+
     suspend fun removeFolder(folder: Folder): Int
 
 
@@ -24,6 +30,8 @@ interface NotesRepository {
     fun getNotesList(): List<Note>
 
     fun getNoteById(id: Long): Note
+
+    fun getNotesByFolderId(id: Long): List<Note>
 
     fun removeNoteById(id: Long)
 

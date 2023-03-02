@@ -6,6 +6,8 @@ data class NotesUseCases(
     val insertFolder: InsertFolder,
     val getNotes: GetNotes,
     val getNoteById: GetNoteById,
+    val getNotesByFolderId: GetNotesByFolderId,
+    val getFolderById: GetFolderById,
     val removeNote: RemoveNote,
     val removeNoteById: RemoveNoteById
 )

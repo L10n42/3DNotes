@@ -44,7 +44,10 @@ fun MorePopupBtn(
                     onItemClick(titleResId)
                 }
             ) {
-                Text(text = stringResource(titleResId))
+                Text(
+                    text = stringResource(titleResId),
+                    color = CustomTheme.colors.onSurface
+                )
             }
         }
     }

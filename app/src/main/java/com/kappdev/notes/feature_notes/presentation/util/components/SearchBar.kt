@@ -27,7 +27,8 @@ fun SearchBar(
     TextField(
         value = value,
         singleLine = true,
-        shape = RoundedCornerShape(16.dp),
+        shape = CustomTheme.shapes.large,
+        readOnly = true,
         leadingIcon = {
             Icon(
                 imageVector = Icons.Default.Search,

@@ -28,6 +28,22 @@ class NotesRepositoryImpl(
         return folderDao.getFolderById(id)
     }
 
+    override suspend fun incrementFolderItems(folderId: Long) {
+        val folder = folderDao.getFolderById(folderId)
+        val newItemsCount = folder.items + 1
+        folderDao.updateFolder(folder.copy(items = newItemsCount))
+    }
+
+    override suspend fun decrementFolderItems(folderId: Long) {
+        val folder = folderDao.getFolderById(folderId)
+        val newItemsCount = folder.items - 1
+        folderDao.updateFolder(folder.copy(items = newItemsCount))
+    }
+
+    override suspend fun updateFolder(folder: Folder): Int {
+        return folderDao.updateFolder(folder)
+    }
+
     override suspend fun removeFolder(folder: Folder): Int {
         return folderDao.removeFolder(folder)
     }
@@ -46,6 +62,10 @@ class NotesRepositoryImpl(
 
     override fun getNoteById(id: Long): Note {
         return noteDao.getNoteById(id)
+    }
+
+    override fun getNotesByFolderId(id: Long): List<Note> {
+        return noteDao.getNotesByFolderId(id)
     }
 
     override fun removeNoteById(id: Long) {

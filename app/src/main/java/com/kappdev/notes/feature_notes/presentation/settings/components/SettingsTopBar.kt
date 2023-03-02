@@ -17,6 +17,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kappdev.notes.R
+import com.kappdev.notes.ui.custom_theme.CustomOpacity
 import com.kappdev.notes.ui.custom_theme.CustomTheme
 
 @Composable
@@ -24,8 +25,8 @@ fun SettingsTopBar(
     onBackClick: () -> Unit
 ) {
     Surface(
-        color = CustomTheme.colors.surface.copy(alpha = 0.12f),
-        shape = RoundedCornerShape(16.dp),
+        color = CustomTheme.colors.transparentSurface,
+        shape = CustomTheme.shapes.large,
         modifier = Modifier.padding(start = 8.dp, end = 8.dp, top = 8.dp)
     ) {
         Box(
@@ -33,7 +34,7 @@ fun SettingsTopBar(
         ) {
             IconButton(
                 onClick = onBackClick,
-                modifier = Modifier.align(Alignment.CenterStart).padding(start = CustomTheme.spaces.small)
+                modifier = Modifier.align(Alignment.CenterStart).padding(start = CustomTheme.spaces.extraSmall)
             ) {
                 Icon(
                     imageVector = Icons.Default.ArrowBackIos,

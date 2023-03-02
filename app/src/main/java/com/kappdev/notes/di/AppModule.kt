@@ -54,6 +54,8 @@ object AppModule {
             insertFolder = InsertFolder(repository),
             getNotes = GetNotes(repository),
             getNoteById = GetNoteById(repository),
+            getFolderById = GetFolderById(repository),
+            getNotesByFolderId = GetNotesByFolderId(repository),
             removeNote = RemoveNote(repository, appContext),
             removeNoteById = RemoveNoteById(repository)
         )

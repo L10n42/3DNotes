@@ -1,5 +1,6 @@
 package com.kappdev.notes.core.presentation.navigation.componets
 
+import android.util.Log
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
@@ -40,16 +41,22 @@ fun SetupNavGraph(
         }
 
         composable(
-            route = Screen.AddEditNote.route.plus("?noteId={noteId}"),
+            route = Screen.AddEditNote.route.plus("?noteId={noteId}&folderId={folderId}"),
             arguments = listOf(
                 navArgument(name = "noteId") {
+                    type = NavType.LongType
+                    defaultValue = 0
+                },
+                navArgument(name = "folderId") {
                     type = NavType.LongType
                     defaultValue = 0
                 }
             )
         ) {
             val id = it.arguments?.getLong("noteId") ?: 0
-            AddEditNoteScreen(navController = navController, noteId = id)
+            val folderId = it.arguments?.getLong("folderId")
+            Log.e("Navigate", "folderId: $folderId")
+            AddEditNoteScreen(navController = navController, noteId = id, folderId = folderId)
         }
 
         composable(route = Screen.Notes.route) {

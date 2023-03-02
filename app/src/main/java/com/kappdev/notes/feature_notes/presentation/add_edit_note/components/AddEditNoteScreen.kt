@@ -18,6 +18,7 @@ import com.kappdev.notes.ui.custom_theme.CustomTheme
 @Composable
 fun AddEditNoteScreen(
     noteId: Long,
+    folderId: Long?,
     navController: NavHostController,
     viewModel: AddEditNoteViewModel = hiltViewModel()
 ) {
@@ -26,12 +27,13 @@ fun AddEditNoteScreen(
 
     LaunchedEffect(key1 = true) {
         viewModel.setEditNoteId(noteId)
+        if (folderId != null && folderId > 0) viewModel.setFolderId(folderId)
         if (noteId > 0) viewModel.getNoteById()
     }
 
     ModalBottomSheetLayout(
         sheetState = sheetState,
-        scrimColor = CustomTheme.colors.onSurface.copy(alpha = 0.16f),
+        scrimColor = CustomTheme.colors.onSurface.copy(alpha = CustomTheme.opacity.scrimOpacity),
         sheetElevation = 0.dp,
         sheetContent = { Box(Modifier.height(1.dp)) }
     ) {

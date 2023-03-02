@@ -25,11 +25,11 @@ fun NewFolderBS(
     var folderName by remember { mutableStateOf("") }
 
     Column(
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(CustomTheme.spaces.large),
         modifier = Modifier
             .fillMaxWidth()
             .background(
-                color = CustomTheme.colors.surface,
+                color = CustomTheme.colors.background,
                 shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
             )
             .padding(all = 16.dp)
@@ -67,7 +67,8 @@ private fun NewFolderTitle() {
         Text(
             text = stringResource(R.string.title_new_folder),
             fontWeight = FontWeight.Bold,
-            fontSize = 20.sp
+            fontSize = 20.sp,
+            color = CustomTheme.colors.onSurface
         )
     }
 }

@@ -53,7 +53,7 @@ fun CustomTextField(
             textColor = CustomTheme.colors.onSurface,
             unfocusedLabelColor = CustomTheme.colors.onBackground,
             focusedLabelColor = CustomTheme.colors.onBackground,
-            backgroundColor = CustomTheme.colors.background,
+            backgroundColor = CustomTheme.colors.surface,
             cursorColor = CustomTheme.colors.primary,
             focusedIndicatorColor = CustomTheme.colors.primary,
             unfocusedIndicatorColor = Color.Transparent

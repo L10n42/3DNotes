@@ -43,7 +43,7 @@ fun AddEditNoteContent(viewModel: AddEditNoteViewModel) {
     Card(
         modifier = Modifier
             .fillMaxSize()
-            .padding(all = CustomTheme.spaces.large),
+            .padding(all = CustomTheme.spaces.medium),
         elevation = 0.dp,
         shape = CustomTheme.shapes.medium,
         backgroundColor = CustomTheme.colors.transparentSurface
