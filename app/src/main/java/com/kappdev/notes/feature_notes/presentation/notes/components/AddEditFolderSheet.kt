@@ -7,6 +7,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -14,15 +15,29 @@ import androidx.compose.ui.unit.sp
 import com.kappdev.notes.R
 import com.kappdev.notes.core.presentation.components.ButtonsCouple
 import com.kappdev.notes.core.presentation.components.CustomTextField
-import com.kappdev.notes.feature_notes.presentation.notes.NotesViewModel
 import com.kappdev.notes.ui.custom_theme.CustomTheme
 
 @Composable
-fun NewFolderBS(
-    viewModel: NotesViewModel,
-    closeBS: () -> Unit
+fun AddEditFolderSheet(
+    initValue: String = "",
+    close: () -> Unit,
+    onDone: (name: String) -> Unit
 ) {
-    var folderName by remember { mutableStateOf("") }
+    var folderName by remember { mutableStateOf(initValue) }
+    val focusManager = LocalFocusManager.current
+
+    val cancelWork = {
+        focusManager.clearFocus()
+        close()
+    }
+
+    val finishWork = {
+        onDone(folderName)
+        focusManager.clearFocus()
+        close()
+    }
+
+    LaunchedEffect(key1 = initValue) { folderName = initValue }
 
     Column(
         verticalArrangement = Arrangement.spacedBy(CustomTheme.spaces.large),
@@ -34,7 +49,9 @@ fun NewFolderBS(
             )
             .padding(all = 16.dp)
     ) {
-        NewFolderTitle()
+        NewFolderTitle(
+            if (initValue.isBlank()) R.string.title_new_folder else R.string.title_edit_folder
+        )
 
         CustomTextField(
             text = folderName,
@@ -48,24 +65,21 @@ fun NewFolderBS(
             positiveBtnEnable = folderName.trim().isNotBlank(),
             positiveTitleResId = R.string.btn_ok,
             negativeTitleResId = R.string.btn_cancel,
-            onNegativeClick = closeBS,
-            onPositiveClick = {
-                viewModel.createFolder(folderName)
-                closeBS()
-            }
+            onNegativeClick = cancelWork,
+            onPositiveClick = finishWork
         )
     }
 }
 
 @Composable
-private fun NewFolderTitle() {
+private fun NewFolderTitle(titleRes: Int) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = stringResource(R.string.title_new_folder),
+            text = stringResource(titleRes),
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp,
             color = CustomTheme.colors.onSurface

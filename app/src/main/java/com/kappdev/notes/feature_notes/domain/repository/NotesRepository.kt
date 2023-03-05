@@ -35,5 +35,7 @@ interface NotesRepository {
 
     fun removeNoteById(id: Long)
 
+    fun removeNotesByFolderId(id: Long)
+
     suspend fun removeNote(note: Note): Int
 }

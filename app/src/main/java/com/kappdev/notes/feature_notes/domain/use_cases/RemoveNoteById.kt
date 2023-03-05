@@ -6,7 +6,9 @@ class RemoveNoteById(
     private val repository: NotesRepository
 ) {
 
-    operator fun invoke(id: Long) {
+    suspend operator fun invoke(id: Long) {
+        val note = repository.getNoteById(id)
         repository.removeNoteById(id)
+        if (note.folderId != null && note.folderId > 0.toLong()) repository.decrementFolderItems(note.folderId)
     }
 }

@@ -2,27 +2,23 @@ package com.kappdev.notes.feature_notes.presentation.folder_screen.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBackIos
-import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kappdev.notes.R
-import com.kappdev.notes.core.presentation.components.CustomDropDownMenu
+import com.kappdev.notes.core.presentation.components.BackButton
+import com.kappdev.notes.core.presentation.components.ConfirmDialog
 import com.kappdev.notes.core.presentation.navigation.Screen
 import com.kappdev.notes.feature_notes.presentation.folder_screen.FolderViewModel
+import com.kappdev.notes.feature_notes.presentation.util.components.MorePopupBtn
 import com.kappdev.notes.ui.custom_theme.CustomTheme
 
 @Composable
@@ -30,13 +26,31 @@ fun FolderScreenTopBar(
     title: String,
     viewModel: FolderViewModel
 ) {
-    var expanded by remember { mutableStateOf(false) }
+    var showRemoveDialog by remember { mutableStateOf(false) }
+    if (showRemoveDialog) {
+        ConfirmDialog(
+            title = stringResource(R.string.title_remove),
+            message = stringResource(R.string.confirm_remove_folder_msg),
+            confirmText = stringResource(R.string.btn_remove),
+            closeDialog = { showRemoveDialog = false },
+            onConfirm = {
+                viewModel.removeFolder()
+                viewModel.navigate(Screen.Notes.route)
+            }
+        )
+    }
 
     TopAppBar(
+        modifier = Modifier
+            .padding(CustomTheme.spaces.small)
+            .clip(CustomTheme.shapes.large),
+        elevation = 0.dp,
+        backgroundColor = CustomTheme.colors.transparentSurface,
         title = {
             Text(
                 text = title,
                 fontSize = 18.sp,
+                maxLines = 1,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
                 color = CustomTheme.colors.onSurface,
@@ -44,45 +58,19 @@ fun FolderScreenTopBar(
                 modifier = Modifier.fillMaxWidth()
             )
         },
-        elevation = 0.dp,
-        backgroundColor = CustomTheme.colors.transparentSurface,
-        modifier = Modifier.padding(all = CustomTheme.spaces.small).clip(CustomTheme.shapes.large),
         navigationIcon = {
-            IconButton(onClick = { viewModel.navigate(Screen.Notes.route) }) {
-                Icon(
-                    imageVector = Icons.Default.ArrowBackIos,
-                    contentDescription = "back button",
-                    tint = CustomTheme.colors.onSurface
-                )
-            }
+            BackButton { viewModel.navigate(Screen.Notes.route) }
         },
         actions = {
-            IconButton(onClick = { expanded = true }) {
-                Icon(
-                    imageVector = Icons.Default.MoreVert,
-                    contentDescription = "folder screen more btn",
-                    tint = CustomTheme.colors.onSurface
-                )
-            }
-
-            val menuPadding = with(LocalDensity.current) { 16.dp.roundToPx() }
-            CustomDropDownMenu(
-                expanded = expanded,
-                dismiss = { expanded = false },
-                modifier = Modifier.width(140.dp),
-                offset = IntOffset(-menuPadding, menuPadding)
-            ) {
-                DropdownMenuItem(
-                    onClick = {
-                        expanded = false
+            MorePopupBtn(
+                titlesResIds = listOf(R.string.title_edit, R.string.title_remove),
+                onItemClick = { id ->
+                    when(id) {
+                        R.string.title_remove -> showRemoveDialog = true
+                        R.string.title_edit -> viewModel.openBottomSheet()
                     }
-                ) {
-                    Text(
-                        text = stringResource(R.string.title_remove),
-                        color = CustomTheme.colors.onSurface
-                    )
                 }
-            }
+            )
         }
     )
 }

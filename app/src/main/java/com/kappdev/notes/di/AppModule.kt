@@ -9,6 +9,7 @@ import com.kappdev.notes.feature_notes.data.data_source.NotesDatabase
 import com.kappdev.notes.feature_notes.data.repository.NotesRepositoryImpl
 import com.kappdev.notes.feature_notes.domain.repository.NotesRepository
 import com.kappdev.notes.feature_notes.domain.use_cases.*
+import com.kappdev.notes.feature_notes.domain.util.Toaster
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -50,15 +51,23 @@ object AppModule {
     ): NotesUseCases {
         return NotesUseCases(
             getAllData = GetAllData(repository),
+            moveNoteTo = MoveNoteTo(repository),
             insertNote = InsertNote(repository, appContext),
             insertFolder = InsertFolder(repository),
             getNotes = GetNotes(repository),
             getNoteById = GetNoteById(repository),
             getFolderById = GetFolderById(repository),
             getNotesByFolderId = GetNotesByFolderId(repository),
+            getFolders = GetFolders(repository),
+            removeFolder = RemoveFolder(repository),
             removeNote = RemoveNote(repository, appContext),
             removeNoteById = RemoveNoteById(repository)
         )
     }
 
+    @Provides
+    @ViewModelScoped
+    fun provideToaster(@ApplicationContext appContext: Context): Toaster {
+        return Toaster(appContext)
+    }
 }

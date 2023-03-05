@@ -23,8 +23,6 @@ class SettingsViewModel @Inject constructor(
         _backgroundOpacity.value = repository.getBackgroundOpacity()
     }
 
-    fun getBackgroundOpacity() = repository.getBackgroundOpacity()
-
     fun changeBackgroundOpacity(value: Float) {
         _backgroundOpacity.value = value
     }

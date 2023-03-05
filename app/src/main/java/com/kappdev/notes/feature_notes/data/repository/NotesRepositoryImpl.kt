@@ -72,6 +72,10 @@ class NotesRepositoryImpl(
         noteDao.removeNoteById(id)
     }
 
+    override fun removeNotesByFolderId(id: Long) {
+        noteDao.removeNotesByFolderId(id)
+    }
+
     override suspend fun removeNote(note: Note): Int {
         return noteDao.removeNote(note)
     }

@@ -14,8 +14,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.kappdev.notes.core.presentation.navigation.Screen
 import com.kappdev.notes.feature_notes.presentation.folder_screen.FolderViewModel
-import com.kappdev.notes.feature_notes.presentation.notes.NotesBottomSheet
-import com.kappdev.notes.feature_notes.presentation.notes.components.NoteCard
+import com.kappdev.notes.feature_notes.presentation.notes.components.AddEditFolderSheet
+import com.kappdev.notes.feature_notes.presentation.util.components.NoteCard
 import com.kappdev.notes.feature_notes.presentation.util.SubButton
 import com.kappdev.notes.feature_notes.presentation.util.components.AnimatedMultiAddButton
 import com.kappdev.notes.ui.custom_theme.CustomTheme
@@ -33,6 +33,17 @@ fun FolderScreen(
     val scaffoldState = rememberScaffoldState()
     val navigate = viewModel.navigate.value
     val currentFolder = viewModel.currentFolder.value
+    val openBottomSheet = viewModel.openBottomSheet.value
+
+    val closeSheet: () -> Unit = { scope.launch { sheetState.hide() } }
+    val openSheet: () -> Unit = { scope.launch { sheetState.show() } }
+
+    LaunchedEffect(key1 = openBottomSheet) {
+        if (openBottomSheet) {
+            openSheet()
+            viewModel.closeBottomSheet()
+        }
+    }
 
     LaunchedEffect(key1 = true) {
         if (folderId > 0) viewModel.getContent(folderId) else navController.popBackStack()
@@ -40,30 +51,20 @@ fun FolderScreen(
 
     LaunchedEffect(key1 = navigate) {
         navigate?.let { route ->
-            navController.navigate(route)
+            navController.navigate(route) { popUpTo(0) }
             viewModel.clearNavigateRoute()
         }
     }
 
-    var currentBottomSheet by remember { mutableStateOf<NotesBottomSheet?>(null) }
-    val closeSheet: () -> Unit = {
-        scope.launch { sheetState.hide() }
-    }
-    val openSheet = { bottomSheet: NotesBottomSheet ->
-        currentBottomSheet = bottomSheet
-        scope.launch { sheetState.show() }
-    }
-
-    if(!sheetState.isVisible) currentBottomSheet = null
     ModalBottomSheetLayout(
         sheetState = sheetState,
         scrimColor = CustomTheme.colors.onSurface.copy(alpha = 0.16f),
         sheetBackgroundColor = Color.Transparent,
         sheetElevation = 0.dp,
         sheetContent = {
-            if (currentBottomSheet != null) {
-
-            } else Box(Modifier.height(1.dp))
+            AddEditFolderSheet(initValue = currentFolder.name, close = closeSheet) { newName ->
+                viewModel.updateFolder(newName)
+            }
         }
     ) {
         Scaffold(

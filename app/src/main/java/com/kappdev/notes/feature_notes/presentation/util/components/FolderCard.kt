@@ -1,8 +1,7 @@
-package com.kappdev.notes.feature_notes.presentation.notes.components
+package com.kappdev.notes.feature_notes.presentation.util.components
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Folder

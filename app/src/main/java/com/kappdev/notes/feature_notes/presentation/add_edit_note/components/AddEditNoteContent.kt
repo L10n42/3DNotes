@@ -1,12 +1,10 @@
 package com.kappdev.notes.feature_notes.presentation.add_edit_note.components
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -22,7 +20,6 @@ import com.kappdev.notes.ui.custom_theme.CustomTheme
 
 @Composable
 fun AddEditNoteContent(viewModel: AddEditNoteViewModel) {
-    val context = LocalContext.current
     val noteTitle = viewModel.noteTitle.value
     val noteContent = viewModel.noteContent.value
 
@@ -30,10 +27,7 @@ fun AddEditNoteContent(viewModel: AddEditNoteViewModel) {
     DisposableEffect(key1 = lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_STOP && viewModel.noteIsNotBlank() && viewModel.noteChanged()) {
-                viewModel.save(
-                    onSuccess = { Toast.makeText(context, R.string.msg_saved, Toast.LENGTH_SHORT).show() },
-                    onFailure = { Toast.makeText(context, R.string.msg_could_not_save, Toast.LENGTH_SHORT).show() }
-                )
+                viewModel.save()
             }
         }
         lifecycleOwner.lifecycle.addObserver(observer)
@@ -55,7 +49,7 @@ fun AddEditNoteContent(viewModel: AddEditNoteViewModel) {
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             TransparentTextField(
-                text = noteTitle,
+                value = noteTitle,
                 hint = stringResource(R.string.hint_note_title),
                 textFieldModifier = Modifier.fillMaxWidth(),
                 textStyle = TextStyle(
@@ -69,7 +63,7 @@ fun AddEditNoteContent(viewModel: AddEditNoteViewModel) {
             )
 
             TransparentTextField(
-                text = noteContent,
+                value = noteContent,
                 textFieldModifier = Modifier.fillMaxSize(),
                 textStyle = TextStyle(
                     fontSize = 18.sp,

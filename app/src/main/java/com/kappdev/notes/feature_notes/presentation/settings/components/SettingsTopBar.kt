@@ -17,6 +17,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kappdev.notes.R
+import com.kappdev.notes.core.presentation.components.BackButton
 import com.kappdev.notes.ui.custom_theme.CustomOpacity
 import com.kappdev.notes.ui.custom_theme.CustomTheme
 
@@ -30,18 +31,16 @@ fun SettingsTopBar(
         modifier = Modifier.padding(start = 8.dp, end = 8.dp, top = 8.dp)
     ) {
         Box(
-            modifier = Modifier.fillMaxWidth().height(56.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(56.dp)
         ) {
-            IconButton(
-                onClick = onBackClick,
-                modifier = Modifier.align(Alignment.CenterStart).padding(start = CustomTheme.spaces.extraSmall)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.ArrowBackIos,
-                    contentDescription = "back button",
-                    tint = CustomTheme.colors.onSurface
-                )
-            }
+            BackButton(
+                modifier = Modifier
+                    .align(Alignment.CenterStart)
+                    .padding(start = CustomTheme.spaces.extraSmall),
+                onClick = onBackClick
+            )
 
             Text(
                 text = stringResource(R.string.settings_label),

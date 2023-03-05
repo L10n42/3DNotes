@@ -24,11 +24,29 @@ class FolderViewModel @Inject constructor(
 
     val notes = mutableStateListOf<Note>()
 
+    private val _openBottomSheet = mutableStateOf(false)
+    val openBottomSheet: State<Boolean> = _openBottomSheet
+
     private val _currentFolder = mutableStateOf(Folder.EmptyFolder)
     val currentFolder: State<Folder> = _currentFolder
 
     private val _navigate = mutableStateOf<String?>(null)
     val navigate: State<String?> = _navigate
+
+    fun removeFolder() {
+        viewModelScope.launch(Dispatchers.IO) {
+            notesUseCases.removeFolder(currentFolder.value)
+        }
+    }
+
+    fun updateFolder(newName: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val resultId = notesUseCases.insertFolder(
+                currentFolder.value.copy(name = newName, timestamp = System.currentTimeMillis())
+            )
+            if (resultId > 0) getFolderById()
+        }
+    }
 
     fun getContent(id: Long) {
         folderId = id
@@ -38,6 +56,7 @@ class FolderViewModel @Inject constructor(
 
     private fun getNotes() {
         viewModelScope.launch(Dispatchers.IO) {
+            notes.clear()
             notes.addAll(notesUseCases.getNotesByFolderId(folderId))
         }
     }
@@ -50,4 +69,7 @@ class FolderViewModel @Inject constructor(
 
     fun navigate(route: String) { _navigate.value = route }
     fun clearNavigateRoute() { _navigate.value = null }
+
+    fun openBottomSheet() { _openBottomSheet.value = true }
+    fun closeBottomSheet() { _openBottomSheet.value = false }
 }

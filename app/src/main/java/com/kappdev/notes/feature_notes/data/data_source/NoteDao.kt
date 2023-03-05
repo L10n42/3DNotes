@@ -22,6 +22,9 @@ interface NoteDao {
     @Query("SELECT * FROM notes_table WHERE id = :id LIMIT 1")
     fun getNoteById(id: Long): Note
 
+    @Query("DELETE FROM notes_table WHERE folderId = :id")
+    fun removeNotesByFolderId(id: Long)
+
     @Query("DELETE FROM notes_table WHERE id = :id")
     fun removeNoteById(id: Long)
 

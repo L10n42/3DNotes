@@ -12,7 +12,9 @@ fun NotesBottomSheetController(
 ) {
     when(currentSheet) {
         is NotesBottomSheet.NewFolder -> {
-            NewFolderBS(viewModel, closeBS = closeBS)
+            AddEditFolderSheet(close = closeBS) { name ->
+                viewModel.createFolder(name)
+            }
         }
     }
 }

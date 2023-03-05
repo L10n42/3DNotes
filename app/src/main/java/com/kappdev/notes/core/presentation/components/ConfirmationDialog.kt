@@ -54,7 +54,7 @@ fun ConfirmDialog(
 private fun Button(text: String, onClick: () -> Unit) {
     TextButton(
         onClick = onClick,
-        modifier = Modifier.padding(end = CustomTheme.spaces.medium, bottom = CustomTheme.spaces.medium)
+        modifier = Modifier.padding(end = CustomTheme.spaces.small, bottom = CustomTheme.spaces.small)
     ) {
         Text(
             text = text,

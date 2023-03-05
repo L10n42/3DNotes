@@ -48,7 +48,7 @@ class MainActivity : ComponentActivity(), SharedPreferences.OnSharedPreferenceCh
                 opacity = CustomOpacity(backgroundOpacity = backgroundOpacity.value)
             ) {
                 val systemUiController = rememberSystemUiController()
-                val surfaceColor = CustomTheme.colors.primary
+                val surfaceColor = CustomTheme.colors.surface
                 val backgroundColor = CustomTheme.colors.background
                 SideEffect {
                     systemUiController.setStatusBarColor(surfaceColor)

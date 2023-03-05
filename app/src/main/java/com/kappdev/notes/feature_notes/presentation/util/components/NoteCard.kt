@@ -1,4 +1,4 @@
-package com.kappdev.notes.feature_notes.presentation.notes.components
+package com.kappdev.notes.feature_notes.presentation.util.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

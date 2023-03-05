@@ -10,22 +10,23 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.boundsInParent
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.TextFieldValue
 import com.kappdev.notes.ui.theme.*
 
 @Composable
 fun TransparentTextField(
     modifier: Modifier = Modifier,
     textFieldModifier: Modifier = Modifier,
-    text: String,
+    value: TextFieldValue,
     hint: String = "",
-    onValueChange: (String) -> Unit,
+    onValueChange: (TextFieldValue) -> Unit,
     textStyle: TextStyle = TextStyle(),
 ) {
     var textFieldMaxX by remember { mutableStateOf(0f) }
 
     Box(modifier = modifier) {
         BasicTextField(
-            value = text,
+            value = value,
             onValueChange = onValueChange,
             textStyle = textStyle,
             modifier = textFieldModifier.onGloballyPositioned { coordinates ->
@@ -39,7 +40,7 @@ fun TransparentTextField(
             )
         )
 
-        if (text.isBlank()) {
+        if (value.text.isBlank()) {
             Text(
                 text = hint,
                 style = textStyle,
