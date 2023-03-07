@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.SnackbarDefaults.backgroundColor
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -22,10 +23,11 @@ import com.kappdev.notes.ui.custom_theme.CustomTheme
 @Composable
 fun NoteCard(
     note: Note,
+    modifier: Modifier = Modifier,
     onClick: (id: Long) -> Unit
 ) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
         elevation = 0.dp,
         backgroundColor = CustomTheme.colors.transparentSurface,

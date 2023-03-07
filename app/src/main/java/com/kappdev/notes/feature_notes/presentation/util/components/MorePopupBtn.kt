@@ -16,11 +16,13 @@ import com.kappdev.notes.ui.custom_theme.CustomTheme
 @Composable
 fun MorePopupBtn(
     titlesResIds: List<Int>,
+    modifier: Modifier = Modifier,
     onItemClick: (titleResId: Int) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
 
     IconButton(
+        modifier = modifier,
         onClick = { expanded = true }
     ) {
         Icon(

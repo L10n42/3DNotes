@@ -1,7 +1,7 @@
 package com.kappdev.notes.feature_notes.presentation.util.components
 
 import android.content.res.Configuration
-import androidx.compose.animation.animateColor
+import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -19,6 +19,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
@@ -42,26 +43,37 @@ data class AnimatedMultiAddButtonColors(
     val activeMainBtnContentColor: Color = Color.White,
 )
 
+@OptIn(ExperimentalAnimationApi::class)
+@Composable
+fun AnimatedMultiAddButton(
+    buttons: List<SubButton>,
+    isVisible: Boolean = true,
+    buttonsShape: Shape = DefaultButtonShape,
+    colors: AnimatedMultiAddButtonColors = defaultThemeColors(),
+    buttonsElevation: FloatingActionButtonElevation = defaultElevations(),
+    onClick: (buttonId: String) -> Unit
+) {
+    AnimatedVisibility(
+        visible = isVisible,
+        enter = scaleIn(initialScale = 0.5f, transformOrigin = TransformOrigin(0.9f, 0.95f)) + fadeIn(),
+        exit = scaleOut(targetScale = 0.5f, transformOrigin = TransformOrigin(0.9f, 0.95f)) + fadeOut()
+    ) {
+        AnimatedMultiAddButton(
+            buttons = buttons,
+            buttonsShape = buttonsShape,
+            colors = colors,
+            buttonsElevation = buttonsElevation,
+            onClick = onClick
+        )
+    }
+}
+
 @Composable
 fun AnimatedMultiAddButton(
     buttons: List<SubButton>,
     buttonsShape: Shape = DefaultButtonShape,
-    colors: AnimatedMultiAddButtonColors = AnimatedMultiAddButtonColors(
-        activeMainBtnBackgroundColor = CustomTheme.colors.primary,
-        activeMainBtnContentColor = CustomTheme.colors.onSurface,
-        subButtonsBackgroundColor = CustomTheme.colors.surface,
-        subButtonsContentColor = CustomTheme.colors.primary,
-        inactiveMainBtnContentColor = CustomTheme.colors.onSecondary,
-        inactiveMainBtnBackgroundColor = CustomTheme.colors.secondary,
-        backgroundColor = CustomTheme.colors.surface.copy(alpha = 0.64f),
-        labelsColor = CustomTheme.colors.onSurface
-    ),
-    buttonsElevation: FloatingActionButtonElevation = FloatingActionButtonDefaults.elevation(
-        defaultElevation = DefaultButtonElevation,
-        pressedElevation = DefaultButtonPressedElevation,
-        hoveredElevation = DefaultButtonElevation,
-        focusedElevation = DefaultButtonElevation,
-    ),
+    colors: AnimatedMultiAddButtonColors = defaultThemeColors(),
+    buttonsElevation: FloatingActionButtonElevation = defaultElevations(),
     onClick: (buttonId: String) -> Unit
 ) {
     val scope = rememberCoroutineScope()
@@ -320,3 +332,23 @@ private val MainButtonSize = 56.dp
 private val SubButtonSize = 42.dp
 
 private const val ANIM_DURATION = 300
+
+@Composable
+private fun defaultElevations() = FloatingActionButtonDefaults.elevation(
+    defaultElevation = DefaultButtonElevation,
+    pressedElevation = DefaultButtonPressedElevation,
+    hoveredElevation = DefaultButtonElevation,
+    focusedElevation = DefaultButtonElevation,
+)
+
+@Composable
+private fun defaultThemeColors() = AnimatedMultiAddButtonColors(
+    activeMainBtnBackgroundColor = CustomTheme.colors.primary,
+    activeMainBtnContentColor = CustomTheme.colors.onSurface,
+    subButtonsBackgroundColor = CustomTheme.colors.surface,
+    subButtonsContentColor = CustomTheme.colors.primary,
+    inactiveMainBtnContentColor = CustomTheme.colors.onSecondary,
+    inactiveMainBtnBackgroundColor = CustomTheme.colors.secondary,
+    backgroundColor = CustomTheme.colors.surface.copy(alpha = 0.64f),
+    labelsColor = CustomTheme.colors.onSurface
+)

@@ -16,7 +16,7 @@ import com.kappdev.notes.feature_notes.presentation.notes.NotesBottomSheet
 import com.kappdev.notes.feature_notes.presentation.notes.NotesViewModel
 import com.kappdev.notes.feature_notes.presentation.util.SubButton
 import com.kappdev.notes.feature_notes.presentation.util.components.AnimatedMultiAddButton
-import com.kappdev.notes.ui.custom_theme.CustomOpacity
+import com.kappdev.notes.feature_notes.presentation.util.components.SearchDialog
 import com.kappdev.notes.ui.custom_theme.CustomTheme
 import kotlinx.coroutines.launch
 
@@ -30,6 +30,7 @@ fun NotesScreen(
     val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
     val scaffoldState = rememberScaffoldState()
     val navigate = viewModel.navigate.value
+    val searchMode = viewModel.searchMode.value
 
     LaunchedEffect(key1 = true) { viewModel.getAllData() }
 
@@ -72,7 +73,10 @@ fun NotesScreen(
             Box(modifier = Modifier.fillMaxSize()) {
                 NotesContent(viewModel)
 
+                if (searchMode) SearchDialog(viewModel)
+
                 AnimatedMultiAddButton(
+                    isVisible = !searchMode,
                     buttons = listOf(SubButton.NotesFolder, SubButton.ToDoList, SubButton.NoteText)
                 ) { buttonId ->
                     when(buttonId) {
