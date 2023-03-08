@@ -55,7 +55,6 @@ fun SetupNavGraph(
         ) {
             val id = it.arguments?.getLong("noteId") ?: 0
             val folderId = it.arguments?.getLong("folderId")
-            Log.e("Navigate", "folderId: $folderId")
             AddEditNoteScreen(navController = navController, noteId = id, folderId = folderId)
         }
 

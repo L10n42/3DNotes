@@ -19,18 +19,11 @@ class NotesViewModel @Inject constructor(
     
     val data = mutableStateListOf<Any>()
 
-    private val _searchValue = mutableStateOf("")
-    val searchValue: State<String> = _searchValue
-
     private val _searchMode = mutableStateOf(false)
     val searchMode: State<Boolean> = _searchMode
     
     private val _navigate = mutableStateOf<String?>(null)
     val navigate: State<String?> = _navigate
-
-    fun search(value: String) {
-        _searchValue.value = value
-    }
 
     fun createFolder(name: String) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -54,5 +47,4 @@ class NotesViewModel @Inject constructor(
 
     fun switchSearchModeON() { _searchMode.value = true }
     fun switchSearchModeOFF() { _searchMode.value = false }
-    fun switchSearchMode() { _searchMode.value = !searchMode.value }
 }

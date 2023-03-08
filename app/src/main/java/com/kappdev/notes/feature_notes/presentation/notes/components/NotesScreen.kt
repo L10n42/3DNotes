@@ -14,6 +14,7 @@ import androidx.navigation.NavHostController
 import com.kappdev.notes.core.presentation.navigation.Screen
 import com.kappdev.notes.feature_notes.presentation.notes.NotesBottomSheet
 import com.kappdev.notes.feature_notes.presentation.notes.NotesViewModel
+import com.kappdev.notes.feature_notes.presentation.notes.SearchViewModel
 import com.kappdev.notes.feature_notes.presentation.util.SubButton
 import com.kappdev.notes.feature_notes.presentation.util.components.AnimatedMultiAddButton
 import com.kappdev.notes.feature_notes.presentation.util.components.SearchDialog
@@ -24,7 +25,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun NotesScreen(
     navController: NavHostController,
-    viewModel: NotesViewModel = hiltViewModel()
+    viewModel: NotesViewModel = hiltViewModel(),
+    searchViewModel: SearchViewModel = hiltViewModel()
 ) {
     val scope = rememberCoroutineScope()
     val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
@@ -71,9 +73,9 @@ fun NotesScreen(
             backgroundColor = Color.Transparent
         ) {
             Box(modifier = Modifier.fillMaxSize()) {
-                NotesContent(viewModel)
+                NotesContent(viewModel, searchViewModel)
 
-                if (searchMode) SearchDialog(viewModel)
+                if (searchMode) SearchDialog(viewModel, searchViewModel)
 
                 AnimatedMultiAddButton(
                     isVisible = !searchMode,

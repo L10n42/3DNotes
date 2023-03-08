@@ -15,15 +15,19 @@ import com.kappdev.notes.core.presentation.navigation.Screen
 import com.kappdev.notes.feature_notes.domain.model.Folder
 import com.kappdev.notes.feature_notes.domain.model.Note
 import com.kappdev.notes.feature_notes.presentation.notes.NotesViewModel
+import com.kappdev.notes.feature_notes.presentation.notes.SearchViewModel
 import com.kappdev.notes.feature_notes.presentation.util.components.FolderCard
 import com.kappdev.notes.feature_notes.presentation.util.components.NoteCard
 import com.kappdev.notes.ui.custom_theme.CustomTheme
 
 @Composable
-fun NotesContent(viewModel: NotesViewModel) {
+fun NotesContent(
+    viewModel: NotesViewModel,
+    searchViewModel: SearchViewModel
+) {
     val listState = rememberLazyListState()
     val dataList = viewModel.data
-    val searchValue = viewModel.searchValue.value
+    val searchValue = searchViewModel.lastSearchArg.value
 
     AnimatedVisibility(
         visible = searchValue.isBlank(),
@@ -38,7 +42,7 @@ fun NotesContent(viewModel: NotesViewModel) {
         ) {
             item {
                 NoteTopBar(viewModel) {
-                    viewModel.switchSearchMode()
+                    viewModel.switchSearchModeON()
                 }
             }
 
