@@ -24,6 +24,7 @@
     <string name="msg_saved">saved</string>
     <string name="msg_copied">copied</string>
     <string name="msg_note_moved">The note has been moved.</string>
+    <string name="msg_unable_to_find">Unable to find anything.</string>
     <string name="msg_could_not_save">couldn\'t save.</string>
     <string name="title_new_folder">New folder</string>
     <string name="title_edit_folder">Edit folder</string>

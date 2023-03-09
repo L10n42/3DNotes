@@ -1,6 +1,7 @@
 package com.kappdev.notes.feature_notes.presentation.util.components
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Row
@@ -25,6 +26,7 @@ import com.kappdev.notes.ui.custom_theme.CustomTheme
 @Composable
 fun SearchBar(
     modifier: Modifier = Modifier,
+    isSearching: Boolean = false,
     background: Color = CustomTheme.colors.surface,
     shape: Shape = CustomTheme.shapes.large,
     onCancel: () -> Unit,
@@ -37,11 +39,23 @@ fun SearchBar(
         singleLine = true,
         shape = shape,
         leadingIcon = {
-            Icon(
-                imageVector = Icons.Default.Search,
-                contentDescription = "search_icon",
-                tint = CustomTheme.colors.onSurface
-            )
+            if (isSearching) {
+                AnimatedFade(isVisible = isSearching) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(24.dp),
+                        color = CustomTheme.colors.primary,
+                        strokeWidth = 3.dp
+                    )
+                }
+            } else {
+                AnimatedFade(isVisible = !isSearching) {
+                    Icon(
+                        imageVector = Icons.Default.Search,
+                        contentDescription = "search_icon",
+                        tint = CustomTheme.colors.onSurface
+                    )
+                }
+            }
         },
         trailingIcon = {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -77,6 +91,19 @@ fun SearchBar(
             fontSize = 18.sp
         ),
         modifier = modifier
+    )
+}
+
+@Composable
+private fun AnimatedFade(
+    isVisible: Boolean,
+    content: @Composable AnimatedVisibilityScope.() -> Unit
+) {
+    AnimatedVisibility(
+        visible = isVisible,
+        enter = fadeIn(),
+        exit = fadeOut(),
+        content = content
     )
 }
 
