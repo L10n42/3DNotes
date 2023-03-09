@@ -14,47 +14,89 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.kappdev.notes.R
 import com.kappdev.notes.core.presentation.navigation.Screen
+import com.kappdev.notes.feature_notes.presentation.notes.components.NotesBottomSheetController
 import com.kappdev.notes.feature_notes.presentation.settings.SettingsViewModel
 import com.kappdev.notes.ui.custom_theme.CustomTheme
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SettingsScreen(
     navController: NavHostController,
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
+    val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
     val isThemeDark = viewModel.theme.value
     val backgroundOpacity = viewModel.backgroundOpacity.value
 
-    Scaffold(
-        backgroundColor = Color.Transparent,
-        topBar = {
-            SettingsTopBar(
-                onBackClick = { navController.navigate(Screen.Notes.route) }
-            )
+    ModalBottomSheetLayout(
+        sheetState = sheetState,
+        scrimColor = CustomTheme.colors.onSurface.copy(alpha = CustomTheme.opacity.scrimOpacity),
+        sheetBackgroundColor = Color.Transparent,
+        sheetElevation = 0.dp,
+        sheetContent = {
+            Box(modifier = Modifier.height(1.dp))
         }
     ) {
-        LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            contentPadding = PaddingValues(all = 16.dp),
-            modifier = Modifier.fillMaxSize()
-        ) {
-
-            item {
-                SwitchCard(
-                    titleResId = R.string.switch_theme_title,
-                    isChecked = isThemeDark,
-                    onCheckedChange = {
-                        viewModel.changeTheme(it)
-                    }
+        Scaffold(
+            backgroundColor = Color.Transparent,
+            topBar = {
+                SettingsTopBar(
+                    onBackClick = { navController.navigate(Screen.Notes.route) }
                 )
             }
+        ) {
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                contentPadding = PaddingValues(all = 16.dp),
+                modifier = Modifier.fillMaxSize()
+            ) {
 
-            item {
-                SliderCard(
-                    titleResId = R.string.setting_title_opacity,
-                    value = backgroundOpacity,
-                    onValueChange = { viewModel.changeBackgroundOpacity(it) },
-                    onValueChangeFinish = { viewModel.saveBackgroundOpacity() }
+                item {
+                    SwitchCard(
+                        titleResId = R.string.switch_theme_title,
+                        isChecked = isThemeDark,
+                        onCheckedChange = {
+                            viewModel.changeTheme(it)
+                        }
+                    )
+                }
+
+                item {
+                    SliderCard(
+                        titleResId = R.string.setting_title_opacity,
+                        value = backgroundOpacity,
+                        onValueChange = { viewModel.changeBackgroundOpacity(it) },
+                        onValueChangeFinish = { viewModel.saveBackgroundOpacity() }
+                    )
+                }
+
+                item {
+                    TextCard(titleResId = R.string.select_background_title) {
+
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun TextCard(
+    titleResId: Int,
+    onClick: () -> Unit
+) {
+    Card {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            contentAlignment = Alignment.CenterStart
+        ) {
+            TextButton(onClick = onClick) {
+                Text(
+                    text = stringResource(titleResId),
+                    fontSize = 18.sp,
+                    color = CustomTheme.colors.onSurface
                 )
             }
         }

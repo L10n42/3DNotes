@@ -7,7 +7,9 @@ import com.kappdev.notes.core.data.repository.SettingRepositoryImpl
 import com.kappdev.notes.core.domain.repository.SettingRepository
 import com.kappdev.notes.feature_notes.data.data_source.NotesDatabase
 import com.kappdev.notes.feature_notes.data.repository.NotesRepositoryImpl
+import com.kappdev.notes.feature_notes.data.repository.StorageRepositoryImpl
 import com.kappdev.notes.feature_notes.domain.repository.NotesRepository
+import com.kappdev.notes.feature_notes.domain.repository.StorageRepository
 import com.kappdev.notes.feature_notes.domain.use_cases.*
 import com.kappdev.notes.feature_notes.domain.util.Toaster
 import dagger.Module
@@ -69,5 +71,11 @@ object AppModule {
     @ViewModelScoped
     fun provideToaster(@ApplicationContext appContext: Context): Toaster {
         return Toaster(appContext)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideStorageRepository(): StorageRepository {
+        return StorageRepositoryImpl()
     }
 }
