@@ -1,8 +1,8 @@
 package com.kappdev.notes.feature_notes.domain.repository
 
-import android.graphics.Bitmap
+import android.net.Uri
 
 interface StorageRepository {
 
-    fun getImages(): List<Bitmap>
+    suspend fun getImages(onSuccess: (List<Uri>) -> Unit, onFailure: () -> Unit)
 }

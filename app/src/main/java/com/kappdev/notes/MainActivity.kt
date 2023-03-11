@@ -2,8 +2,13 @@ package com.kappdev.notes
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.os.Build
 import android.os.Bundle
-import android.util.Log
+import android.view.WindowInsets
+import android.view.WindowInsetsController
+import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,7 +16,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.core.view.WindowCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -33,6 +38,7 @@ class MainActivity : ComponentActivity(), SharedPreferences.OnSharedPreferenceCh
 
     private val isThemeDark = mutableStateOf(false)
     private val backgroundOpacity = mutableStateOf(0f)
+    private val backgroundImage = mutableStateOf<Bitmap?>(null)
 
     @OptIn(ExperimentalMaterialApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,9 +62,9 @@ class MainActivity : ComponentActivity(), SharedPreferences.OnSharedPreferenceCh
                 }
 
                 navController = rememberNavController()
-                val backgroundImage = painterResource(R.drawable.background_image_1)
+                val image = backgroundImage.value ?: BitmapFactory.decodeResource(this.resources, R.drawable.background_image_1)
                 BackgroundImage(
-                    image = backgroundImage ,
+                    image = image,
                     modifier = Modifier.fillMaxSize()
                 ) {
                     SetupNavGraph(navController)
@@ -70,12 +76,14 @@ class MainActivity : ComponentActivity(), SharedPreferences.OnSharedPreferenceCh
     private fun getSettings() {
         isThemeDark.value = settingsRepository.getTheme()
         backgroundOpacity.value = settingsRepository.getBackgroundOpacity()
+        backgroundImage.value = settingsRepository.getBackgroundImage()
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         when (key) {
             SettingRepositoryImpl.KEY_THEME -> isThemeDark.value = settingsRepository.getTheme()
             SettingRepositoryImpl.KEY_BACKGROUND_OPACITY -> backgroundOpacity.value = settingsRepository.getBackgroundOpacity()
+            SettingRepositoryImpl.KEY_BACKGROUND_IMAGE -> backgroundImage.value = settingsRepository.getBackgroundImage()
         }
     }
 

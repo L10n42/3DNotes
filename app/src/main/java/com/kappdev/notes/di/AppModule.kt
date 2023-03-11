@@ -78,4 +78,10 @@ object AppModule {
     fun provideStorageRepository(): StorageRepository {
         return StorageRepositoryImpl()
     }
+
+    @Provides
+    @ViewModelScoped
+    fun provideImageLoader(@ApplicationContext appContext: Context): DownloadImage {
+        return DownloadImage(appContext)
+    }
 }
