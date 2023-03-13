@@ -18,9 +18,14 @@
     <string name="confirm_remove_note_msg">Are you sure you want to remove this note?</string>
     <string name="confirm_remove_folder_msg">Are you sure you want to remove this folder and all content inside that?</string>
 
+    <string name="selected_items">Selected %1$d items</string>
+    <string name="selected_item">Selected %1$d item</string>
+    <string name="select_items">Select items</string>
+
     <string name="btn_remove">Remove</string>
     <string name="btn_cancel">Cancel</string>
     <string name="btn_ok">OK</string>
+
     <string name="msg_saved">saved</string>
     <string name="msg_copied">copied</string>
     <string name="msg_note_moved">The note has been moved.</string>
@@ -28,12 +33,15 @@
     <string name="msg_capture_image_error">Couldn\'t load images</string>
     <string name="msg_unable_to_find">Unable to find anything.</string>
     <string name="msg_could_not_save">couldn\'t save.</string>
+
     <string name="title_new_folder">New folder</string>
     <string name="title_edit_folder">Edit folder</string>
     <string name="title_select_folder">Select folder</string>
+
     <string name="hint_name">Name</string>
-    <string name="settings_label">Settings</string>
     <string name="hint_search">Search</string>
+
+    <string name="settings_label">Settings</string>
     <string name="switch_theme_title">Dark theme</string>
     <string name="select_background_title">Select background</string>
     <string name="setting_title_opacity">Background Opacity</string>

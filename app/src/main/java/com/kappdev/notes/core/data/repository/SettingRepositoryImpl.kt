@@ -39,7 +39,7 @@ class SettingRepositoryImpl(val context: Context): SettingRepository {
         return image ?: getDefaultImage()
     }
 
-    private fun getDefaultImage() = BitmapFactory.decodeResource(context.resources, R.drawable.background_image_1)
+    private fun getDefaultImage() = BitmapFactory.decodeResource(context.resources, R.drawable.default_background_image)
 
     companion object {
         const val NAME = "settings"

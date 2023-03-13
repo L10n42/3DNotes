@@ -4,11 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.os.Build
 import android.os.Bundle
-import android.view.WindowInsets
-import android.view.WindowInsetsController
-import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,7 +12,6 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
-import androidx.core.view.WindowCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -62,7 +57,7 @@ class MainActivity : ComponentActivity(), SharedPreferences.OnSharedPreferenceCh
                 }
 
                 navController = rememberNavController()
-                val image = backgroundImage.value ?: BitmapFactory.decodeResource(this.resources, R.drawable.background_image_1)
+                val image = backgroundImage.value ?: BitmapFactory.decodeResource(this.resources, R.drawable.default_background_image)
                 BackgroundImage(
                     image = image,
                     modifier = Modifier.fillMaxSize()

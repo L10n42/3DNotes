@@ -1,55 +1,81 @@
 package com.kappdev.notes.feature_notes.presentation.util.components
 
 import android.content.res.Configuration
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material.Card
+import androidx.compose.material.Icon
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Folder
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.toSize
 import com.kappdev.notes.feature_notes.domain.model.Folder
 import com.kappdev.notes.ui.custom_theme.CustomTheme
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun FolderCard(
     folder: Folder,
+    selected: Boolean = false,
+    onLongClick: () -> Unit = {},
     onClick: (id: Long) -> Unit
 ) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = CustomTheme.shapes.large,
-        elevation = 0.dp,
-        backgroundColor = CustomTheme.colors.transparentSurface,
-        onClick = { onClick(folder.id) }
-    ) {
-        Row(
-            modifier = Modifier.padding(all = CustomTheme.spaces.medium),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(CustomTheme.spaces.medium)
+    var cardSize by remember { mutableStateOf(Size.Zero) }
+    val cardWidth = with(LocalDensity.current) { cardSize.width.toDp() }
+    val cardHeight = with(LocalDensity.current) { cardSize.height.toDp() }
+
+    Box {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(CustomTheme.shapes.large)
+                .combinedClickable(
+                    onClick = { onClick(folder.id) },
+                    onLongClick = { onLongClick() }
+                )
+                .onGloballyPositioned { coordinates ->
+                    cardSize = coordinates.size.toSize()
+                },
+            elevation = 0.dp,
+            backgroundColor = CustomTheme.colors.transparentSurface
         ) {
-            LeadingIcon()
-
             Row(
+                modifier = Modifier.padding(all = CustomTheme.spaces.medium),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth()
+                horizontalArrangement = Arrangement.spacedBy(CustomTheme.spaces.medium)
             ) {
-                val configuration = LocalConfiguration.current
-                val nameFraction = if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 0.95f else 0.9f
-                FolderName(folder.name, Modifier.fillMaxWidth(nameFraction))
+                LeadingIcon()
 
-                Items(folder.items)
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    val configuration = LocalConfiguration.current
+                    val nameFraction = if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 0.95f else 0.9f
+                    FolderName(folder.name, Modifier.fillMaxWidth(nameFraction))
+
+                    Items(folder.items)
+                }
             }
         }
+
+        SelectionEffect(isSelected = selected, height = cardHeight, width = cardWidth, cardType = SelectionCardType.FOLDER)
     }
 }
 
@@ -84,6 +110,8 @@ private fun LeadingIcon() {
         imageVector = Icons.Default.Folder,
         contentDescription = "folder icon",
         tint = Color.Yellow,
-        modifier = Modifier.size(42.dp).alpha(0.9f)
+        modifier = Modifier
+            .size(42.dp)
+            .alpha(0.9f)
     )
 }

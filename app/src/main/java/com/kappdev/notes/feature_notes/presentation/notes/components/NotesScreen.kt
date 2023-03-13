@@ -32,7 +32,8 @@ fun NotesScreen(
     val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
     val scaffoldState = rememberScaffoldState()
     val navigate = viewModel.navigate.value
-    val searchMode = viewModel.searchMode.value
+    val selectionModeON = viewModel.selectionMode.value
+    val searchModeON = viewModel.searchMode.value
 
     LaunchedEffect(key1 = true) { viewModel.getAllData() }
 
@@ -44,9 +45,6 @@ fun NotesScreen(
     }
 
     var currentBottomSheet by remember { mutableStateOf<NotesBottomSheet?>(null) }
-    val closeSheet: () -> Unit = {
-        scope.launch { sheetState.hide() }
-    }
     val openSheet = { bottomSheet: NotesBottomSheet ->
         currentBottomSheet = bottomSheet
         scope.launch { sheetState.show() }
@@ -63,22 +61,36 @@ fun NotesScreen(
                 NotesBottomSheetController(
                     viewModel = viewModel,
                     currentSheet = currentBottomSheet!!,
-                    closeBS = closeSheet
+                    closeBS = {
+                        scope.launch { sheetState.hide() }
+                    }
                 )
             } else Box(Modifier.height(1.dp))
         }
     ) {
         Scaffold(
             scaffoldState = scaffoldState,
-            backgroundColor = Color.Transparent
+            backgroundColor = Color.Transparent,
+            topBar = {
+                NoteSelectionTopBar(
+                    isVisible = selectionModeON && !searchModeON,
+                    viewModel = viewModel
+                )
+            },
+            bottomBar = {
+                NoteSelectionBottomBar(
+                    isVisible = selectionModeON && !searchModeON,
+                    viewModel = viewModel
+                )
+            }
         ) {
             Box(modifier = Modifier.fillMaxSize()) {
                 NotesContent(viewModel, searchViewModel)
 
-                if (searchMode) SearchDialog(viewModel, searchViewModel)
+                if (searchModeON) SearchDialog(viewModel, searchViewModel)
 
                 AnimatedMultiAddButton(
-                    isVisible = !searchMode,
+                    isVisible = !searchModeON && !selectionModeON,
                     buttons = listOf(SubButton.NotesFolder, SubButton.ToDoList, SubButton.NoteText)
                 ) { buttonId ->
                     when(buttonId) {

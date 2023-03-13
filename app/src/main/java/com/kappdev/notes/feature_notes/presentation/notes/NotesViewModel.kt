@@ -18,9 +18,13 @@ class NotesViewModel @Inject constructor(
 ) : ViewModel() {
     
     val data = mutableStateListOf<Any>()
+    val selectionList = mutableStateListOf<Any>()
 
     private val _searchMode = mutableStateOf(false)
     val searchMode: State<Boolean> = _searchMode
+
+    private val _selectionMode = mutableStateOf(false)
+    val selectionMode: State<Boolean> = _selectionMode
     
     private val _navigate = mutableStateOf<String?>(null)
     val navigate: State<String?> = _navigate
@@ -42,9 +46,32 @@ class NotesViewModel @Inject constructor(
         }
     }
 
+    fun switchSelectionModeOnAndSelect(item: Any) {
+        switchSelectionModeON()
+        select(item)
+    }
+
+    fun selectedAll() = selectionList.containsAll(data)
+
+    fun selectAllItems() {
+        selectionList.clear()
+        selectionList.addAll(data)
+    }
+
+    fun switchItemSelection(item: Any) {
+        if (selectionList.contains(item)) deselect(item) else select(item)
+    }
+
+    private fun select(item: Any) { selectionList.add(item) }
+    private fun deselect(item: Any) { selectionList.remove(item) }
+    fun clearSelection() { selectionList.clear() }
+
     fun navigate(route: String) { _navigate.value = route }
     fun clearNavigateRoute() { _navigate.value = null }
 
     fun switchSearchModeON() { _searchMode.value = true }
     fun switchSearchModeOFF() { _searchMode.value = false }
+
+    fun switchSelectionModeON() { _selectionMode.value = true }
+    fun switchSelectionModeOFF() { _selectionMode.value = false }
 }

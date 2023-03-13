@@ -27,6 +27,8 @@ fun NotesContent(
 ) {
     val listState = rememberLazyListState()
     val dataList = viewModel.data
+    val selectionList = viewModel.selectionList
+    val isSelectionModeOn = viewModel.selectionMode.value
     val searchValue = searchViewModel.lastSearchArg.value
 
     AnimatedVisibility(
@@ -49,14 +51,36 @@ fun NotesContent(
             items(dataList) { content ->
                 when (content) {
                     is Note -> {
-                        NoteCard(content) { id ->
-                            viewModel.navigate(Screen.AddEditNote.route.plus("?noteId=$id"))
-                        }
+                        NoteCard(
+                            note = content,
+                            selected = selectionList.contains(content) && isSelectionModeOn,
+                            onLongClick = {
+                                if (!isSelectionModeOn) viewModel.switchSelectionModeOnAndSelect(content)
+                            },
+                            onClick = { id ->
+                                if (isSelectionModeOn) {
+                                    viewModel.switchItemSelection(content)
+                                } else {
+                                    viewModel.navigate(Screen.AddEditNote.route.plus("?noteId=$id"))
+                                }
+                            }
+                        )
                     }
                     is Folder -> {
-                        FolderCard(content) { id ->
-                            viewModel.navigate(Screen.FolderScreen.route.plus("folderId=$id"))
-                        }
+                        FolderCard(
+                            folder = content,
+                            selected = selectionList.contains(content) && isSelectionModeOn,
+                            onLongClick = {
+                                if (!isSelectionModeOn) viewModel.switchSelectionModeOnAndSelect(content)
+                            },
+                            onClick = { id ->
+                                if (isSelectionModeOn) {
+                                    viewModel.switchItemSelection(content)
+                                } else {
+                                    viewModel.navigate(Screen.FolderScreen.route.plus("folderId=$id"))
+                                }
+                            }
+                        )
                     }
                 }
             }
