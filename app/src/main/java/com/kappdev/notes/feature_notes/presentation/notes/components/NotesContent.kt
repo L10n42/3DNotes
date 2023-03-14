@@ -1,16 +1,21 @@
 package com.kappdev.notes.feature_notes.presentation.notes.components
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.kappdev.notes.core.presentation.navigation.Screen
 import com.kappdev.notes.feature_notes.domain.model.Folder
 import com.kappdev.notes.feature_notes.domain.model.Note
@@ -31,6 +36,11 @@ fun NotesContent(
     val isSelectionModeOn = viewModel.selectionMode.value
     val searchValue = searchViewModel.lastSearchArg.value
 
+    val listAnimatedPadding by animateDpAsState(
+        targetValue = if (isSelectionModeOn) CustomTheme.spaces.extraLarge else 0.dp,
+        animationSpec = tween(durationMillis = 300)
+    )
+
     AnimatedVisibility(
         visible = searchValue.isBlank(),
         enter = fadeIn(),
@@ -40,10 +50,10 @@ fun NotesContent(
             state = listState,
             verticalArrangement = Arrangement.spacedBy(CustomTheme.spaces.small),
             contentPadding = PaddingValues(all = CustomTheme.spaces.small),
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize().padding(bottom = listAnimatedPadding)
         ) {
             item {
-                NoteTopBar(viewModel) {
+                NoteTopBar(isVisible = !isSelectionModeOn, viewModel) {
                     viewModel.switchSearchModeON()
                 }
             }

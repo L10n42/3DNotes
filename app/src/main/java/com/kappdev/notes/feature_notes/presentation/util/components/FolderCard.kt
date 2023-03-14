@@ -67,10 +67,21 @@ fun FolderCard(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     val configuration = LocalConfiguration.current
-                    val nameFraction = if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 0.95f else 0.9f
+                    val isLandscapeMode = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+                    val nameFraction = when {
+                        isLandscapeMode && !selected -> 0.95f
+                        !isLandscapeMode && selected -> 0.8f
+                        else -> 0.9f
+                    }
+
                     FolderName(folder.name, Modifier.fillMaxWidth(nameFraction))
 
-                    Items(folder.items)
+                    Items(
+                        items = folder.items,
+                        modifier = Modifier.padding(
+                            end = if (selected) CustomTheme.spaces.large else 0.dp
+                        )
+                    )
                 }
             }
         }

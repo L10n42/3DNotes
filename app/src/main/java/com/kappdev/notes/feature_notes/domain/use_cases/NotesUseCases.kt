@@ -12,5 +12,6 @@ data class NotesUseCases(
     val getFolders: GetFolders,
     val removeFolder: RemoveFolder,
     val removeNote: RemoveNote,
-    val removeNoteById: RemoveNoteById
+    val removeNoteById: RemoveNoteById,
+    val multipleRemove: MultipleRemove
 )

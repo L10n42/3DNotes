@@ -119,7 +119,6 @@ fun AnimatedMultiAddButton(
             colors = colors,
             onClick = switchState
         )
-
     }
 }
 

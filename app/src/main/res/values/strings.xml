@@ -16,6 +16,7 @@
 
     <string name="title_remove">Remove</string>
     <string name="confirm_remove_note_msg">Are you sure you want to remove this note?</string>
+    <string name="confirm_remove_all_items_msg">Are you sure you want to remove all of these items permanently?</string>
     <string name="confirm_remove_folder_msg">Are you sure you want to remove this folder and all content inside that?</string>
 
     <string name="selected_items">Selected %1$d items</string>

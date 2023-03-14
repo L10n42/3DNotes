@@ -63,7 +63,8 @@ object AppModule {
             getFolders = GetFolders(repository),
             removeFolder = RemoveFolder(repository),
             removeNote = RemoveNote(repository, appContext),
-            removeNoteById = RemoveNoteById(repository)
+            removeNoteById = RemoveNoteById(repository),
+            multipleRemove = MultipleRemove(repository)
         )
     }
 

@@ -10,6 +10,7 @@ import com.kappdev.notes.feature_notes.domain.use_cases.NotesUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.internal.userAgent
 import javax.inject.Inject
 
 @HiltViewModel
@@ -38,6 +39,14 @@ class NotesViewModel @Inject constructor(
         }
     }
 
+    fun removeSelectedAndReset() {
+        viewModelScope.launch(Dispatchers.IO) {
+            notesUseCases.multipleRemove.removeAll(selectionList)
+            switchSelectionModeOffAndClear()
+            getAllData()
+        }
+    }
+
     fun getAllData() {
         viewModelScope.launch(Dispatchers.IO) {
             val newData = notesUseCases.getAllData()
@@ -49,6 +58,11 @@ class NotesViewModel @Inject constructor(
     fun switchSelectionModeOnAndSelect(item: Any) {
         switchSelectionModeON()
         select(item)
+    }
+
+    fun switchSelectionModeOffAndClear() {
+        clearSelection()
+        switchSelectionModeOFF()
     }
 
     fun selectedAll() = selectionList.containsAll(data)

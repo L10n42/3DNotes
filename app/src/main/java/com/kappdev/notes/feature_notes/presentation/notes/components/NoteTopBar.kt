@@ -1,5 +1,8 @@
 package com.kappdev.notes.feature_notes.presentation.notes.components
 
+import androidx.compose.animation.*
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.Surface
@@ -21,49 +24,61 @@ import com.kappdev.notes.ui.custom_theme.CustomTheme
 
 @Composable
 fun NoteTopBar(
+    isVisible: Boolean,
     viewModel: NotesViewModel,
     onClick: () -> Unit
 ) {
-    Surface(
-        color = CustomTheme.colors.transparentSurface,
-        shape = CustomTheme.shapes.large
+    AnimatedVisibility(
+        visible = isVisible,
+        enter = fadeIn(
+            animationSpec = tween(delayMillis = 300)
+        ) + slideInVertically(
+            animationSpec = tween(delayMillis = 300)
+        ) { size -> -size },
+
+        exit = fadeOut() + slideOutVertically() { size -> -size }
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+        Surface(
+            color = CustomTheme.colors.transparentSurface,
+            shape = CustomTheme.shapes.large
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    imageVector = Icons.Default.Search,
-                    contentDescription = "search_icon",
-                    tint = CustomTheme.colors.onSurface,
-                    modifier = Modifier.padding(start = CustomTheme.spaces.medium)
-                )
-
-                TextButton(onClick = onClick) {
-                    Text(
-                        text = stringResource(R.string.hint_search),
-                        fontSize = 18.sp,
-                        maxLines = 1,
-                        color = CustomTheme.colors.onSurface,
-                        modifier = Modifier
-                            .padding(start = CustomTheme.spaces.small)
-                            .fillMaxWidth(0.85f)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        imageVector = Icons.Default.Search,
+                        contentDescription = "search_icon",
+                        tint = CustomTheme.colors.onSurface,
+                        modifier = Modifier.padding(start = CustomTheme.spaces.medium)
                     )
-                }
-            }
 
-            MorePopupBtn(
-                titlesResIds = listOf(R.string.settings_label),
-                onItemClick = { id ->
-                    when(id) {
-                        R.string.settings_label -> viewModel.navigate(Screen.Settings.route)
+                    TextButton(onClick = onClick) {
+                        Text(
+                            text = stringResource(R.string.hint_search),
+                            fontSize = 18.sp,
+                            maxLines = 1,
+                            color = CustomTheme.colors.onSurface,
+                            modifier = Modifier
+                                .padding(start = CustomTheme.spaces.small)
+                                .fillMaxWidth(0.85f)
+                        )
                     }
                 }
-            )
+
+                MorePopupBtn(
+                    titlesResIds = listOf(R.string.settings_label),
+                    onItemClick = { id ->
+                        when (id) {
+                            R.string.settings_label -> viewModel.navigate(Screen.Settings.route)
+                        }
+                    }
+                )
+            }
         }
     }
 }

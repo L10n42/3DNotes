@@ -42,7 +42,10 @@ fun ConfirmDialog(
             )
         },
         confirmButton = {
-            Button(text = confirmText, onClick = onConfirm)
+            Button(text = confirmText) {
+                closeDialog()
+                onConfirm()
+            }
         },
         dismissButton = {
             Button(text = cancelText, onClick = onCancel)

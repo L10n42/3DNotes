@@ -40,8 +40,7 @@ fun NoteSelectionTopBar(
         ) {
             IconButton(
                 onClick = {
-                    viewModel.switchSelectionModeOFF()
-                    viewModel.clearSelection()
+                    viewModel.switchSelectionModeOffAndClear()
                 }
             ) {
                 Icon(
