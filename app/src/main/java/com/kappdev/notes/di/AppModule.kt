@@ -53,7 +53,7 @@ object AppModule {
     ): NotesUseCases {
         return NotesUseCases(
             getAllData = GetAllData(repository),
-            moveNoteTo = MoveNoteTo(repository),
+            moveNotesTo = MoveNotesTo(repository),
             insertNote = InsertNote(repository, appContext),
             insertFolder = InsertFolder(repository),
             getNotes = GetNotes(repository),

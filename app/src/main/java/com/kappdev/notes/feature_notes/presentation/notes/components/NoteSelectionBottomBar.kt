@@ -3,10 +3,13 @@ package com.kappdev.notes.feature_notes.presentation.notes.components
 import androidx.compose.animation.*
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -17,6 +20,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kappdev.notes.R
 import com.kappdev.notes.core.presentation.components.ConfirmDialog
+import com.kappdev.notes.feature_notes.domain.model.Note
+import com.kappdev.notes.feature_notes.presentation.notes.NotesBottomSheet
 import com.kappdev.notes.feature_notes.presentation.notes.NotesViewModel
 import com.kappdev.notes.feature_notes.presentation.util.components.CustomBar
 import com.kappdev.notes.feature_notes.presentation.util.components.DividerPosition
@@ -48,10 +53,21 @@ fun NoteSelectionBottomBar(
         CustomBar(
             height = 64.dp,
             background = CustomTheme.colors.background,
-            dividerPosition = DividerPosition.TOP
+            dividerPosition = DividerPosition.TOP,
         ) {
-            Button(icon = Icons.Outlined.Delete, titleResId = R.string.btn_remove) {
-                showRemoveDialog = true
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(CustomTheme.spaces.medium)
+            ) {
+                Button(icon = Icons.Outlined.Delete, titleResId = R.string.btn_remove) {
+                    showRemoveDialog = true
+                }
+
+                if (viewModel.onlyNotesSelected()) {
+                    Button(icon = Icons.Filled.Logout, titleResId = R.string.btn_move_to) {
+                        viewModel.openSheet(NotesBottomSheet.SelectFolder)
+                    }
+                }
             }
         }
     }

@@ -6,20 +6,25 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kappdev.notes.feature_notes.domain.model.Folder
+import com.kappdev.notes.feature_notes.domain.model.Note
 import com.kappdev.notes.feature_notes.domain.use_cases.NotesUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okhttp3.internal.userAgent
 import javax.inject.Inject
 
 @HiltViewModel
 class NotesViewModel @Inject constructor(
     private val notesUseCases: NotesUseCases
 ) : ViewModel() {
+    var allFolders: List<Folder> = emptyList()
+        private set
     
     val data = mutableStateListOf<Any>()
     val selectionList = mutableStateListOf<Any>()
+
+    private val _currentBottomSheet = mutableStateOf<NotesBottomSheet?>(null)
+    val currentBottomSheet: State<NotesBottomSheet?> = _currentBottomSheet
 
     private val _searchMode = mutableStateOf(false)
     val searchMode: State<Boolean> = _searchMode
@@ -30,12 +35,23 @@ class NotesViewModel @Inject constructor(
     private val _navigate = mutableStateOf<String?>(null)
     val navigate: State<String?> = _navigate
 
+    init { getAllFolders() }
+
     fun createFolder(name: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val resultId = notesUseCases.insertFolder(
                 Folder(id = 0, name = name, items = 0, timestamp = System.currentTimeMillis())
             )
-            if (resultId > 0) getAllData()
+            if (resultId > 0) updateData()
+        }
+    }
+
+    fun moveSelectedTo(folderId: Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val notes = selectionList.mapNotNull { if (it is Note) it else null }
+            notesUseCases.moveNotesTo(notes, folderId)
+            switchSelectionModeOffAndClear()
+            updateData()
         }
     }
 
@@ -43,7 +59,18 @@ class NotesViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             notesUseCases.multipleRemove.removeAll(selectionList)
             switchSelectionModeOffAndClear()
-            getAllData()
+            updateData()
+        }
+    }
+
+    private fun updateData() {
+        getAllData()
+        getAllFolders()
+    }
+
+    private fun getAllFolders() {
+        viewModelScope.launch(Dispatchers.IO) {
+            allFolders = notesUseCases.getFolders.list()
         }
     }
 
@@ -75,6 +102,16 @@ class NotesViewModel @Inject constructor(
     fun switchItemSelection(item: Any) {
         if (selectionList.contains(item)) deselect(item) else select(item)
     }
+
+    fun onlyNotesSelected(): Boolean {
+        selectionList.forEach {
+            if (it !is Note) return false
+        }
+        return true
+    }
+
+    fun openSheet(sheet: NotesBottomSheet) { _currentBottomSheet.value = sheet }
+    fun closeSheet() { _currentBottomSheet.value = null }
 
     private fun select(item: Any) { selectionList.add(item) }
     private fun deselect(item: Any) { selectionList.remove(item) }

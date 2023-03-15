@@ -9,6 +9,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.kappdev.notes.feature_notes.presentation.add_edit_note.AddEditNoteViewModel
+import com.kappdev.notes.feature_notes.presentation.util.components.SelectFolderBottomSheet
 import com.kappdev.notes.ui.custom_theme.CustomTheme
 import kotlinx.coroutines.launch
 

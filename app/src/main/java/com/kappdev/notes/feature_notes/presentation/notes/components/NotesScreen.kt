@@ -5,7 +5,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -19,7 +20,6 @@ import com.kappdev.notes.feature_notes.presentation.util.SubButton
 import com.kappdev.notes.feature_notes.presentation.util.components.AnimatedMultiAddButton
 import com.kappdev.notes.feature_notes.presentation.util.components.SearchDialog
 import com.kappdev.notes.ui.custom_theme.CustomTheme
-import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
 @Composable
@@ -28,14 +28,18 @@ fun NotesScreen(
     viewModel: NotesViewModel = hiltViewModel(),
     searchViewModel: SearchViewModel = hiltViewModel()
 ) {
-    val scope = rememberCoroutineScope()
     val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
     val scaffoldState = rememberScaffoldState()
     val navigate = viewModel.navigate.value
     val selectionModeON = viewModel.selectionMode.value
     val searchModeON = viewModel.searchMode.value
+    val currentBottomSheet = viewModel.currentBottomSheet.value
 
     LaunchedEffect(key1 = true) { viewModel.getAllData() }
+
+    LaunchedEffect(key1 = currentBottomSheet) {
+        if (currentBottomSheet != null) sheetState.show() else sheetState.hide()
+    }
 
     LaunchedEffect(key1 = navigate) {
         navigate?.let { route ->
@@ -44,13 +48,6 @@ fun NotesScreen(
         }
     }
 
-    var currentBottomSheet by remember { mutableStateOf<NotesBottomSheet?>(null) }
-    val openSheet = { bottomSheet: NotesBottomSheet ->
-        currentBottomSheet = bottomSheet
-        scope.launch { sheetState.show() }
-    }
-
-    if(!sheetState.isVisible) currentBottomSheet = null
     ModalBottomSheetLayout(
         sheetState = sheetState,
         scrimColor = CustomTheme.colors.onSurface.copy(alpha = CustomTheme.opacity.scrimOpacity),
@@ -58,12 +55,11 @@ fun NotesScreen(
         sheetElevation = 0.dp,
         sheetContent = {
             if (currentBottomSheet != null) {
+                Log.d("NotesScreen", "hello launch2")
                 NotesBottomSheetController(
                     viewModel = viewModel,
-                    currentSheet = currentBottomSheet!!,
-                    closeBS = {
-                        scope.launch { sheetState.hide() }
-                    }
+                    currentSheet = currentBottomSheet,
+                    sheetState = sheetState
                 )
             } else Box(Modifier.height(1.dp))
         }
@@ -96,7 +92,7 @@ fun NotesScreen(
                     when(buttonId) {
                         SubButton.NoteText.id -> viewModel.navigate(Screen.AddEditNote.route)
                         SubButton.ToDoList.id -> Log.d("onClick", "new todo list btn was clicked!")
-                        SubButton.NotesFolder.id -> openSheet(NotesBottomSheet.NewFolder)
+                        SubButton.NotesFolder.id -> viewModel.openSheet(NotesBottomSheet.NewFolder)
                     }
                 }
             }

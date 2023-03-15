@@ -1,7 +1,7 @@
 package com.kappdev.notes.feature_notes.domain.use_cases
 
 data class NotesUseCases(
-    val moveNoteTo: MoveNoteTo,
+    val moveNotesTo: MoveNotesTo,
     val getAllData: GetAllData,
     val insertNote: InsertNote,
     val insertFolder: InsertFolder,

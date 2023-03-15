@@ -115,7 +115,7 @@ class AddEditNoteViewModel @Inject constructor(
     fun moveTo(folderId: Long) {
         viewModelScope.launch(Dispatchers.IO){
             if (currentNoteId.value > 0) {
-                notesUseCases.moveNoteTo(currentNoteId.value, folderId)
+                notesUseCases.moveNotesTo(currentNoteId.value, folderId)
                 makeToast(R.string.msg_note_moved)
             }
         }

@@ -24,6 +24,7 @@
     <string name="select_items">Select items</string>
 
     <string name="btn_remove">Remove</string>
+    <string name="btn_move_to">Move to</string>
     <string name="btn_cancel">Cancel</string>
     <string name="btn_ok">OK</string>
 

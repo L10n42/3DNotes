@@ -1,4 +1,4 @@
-package com.kappdev.notes.feature_notes.presentation.add_edit_note.components
+package com.kappdev.notes.feature_notes.presentation.util.components
 
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
@@ -16,8 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.kappdev.notes.R
 import com.kappdev.notes.feature_notes.domain.model.Folder
-import com.kappdev.notes.feature_notes.presentation.util.components.BottomSheetTitleHat
-import com.kappdev.notes.feature_notes.presentation.util.components.FolderCard
 import com.kappdev.notes.ui.custom_theme.CustomTheme
 
 @OptIn(ExperimentalMaterialApi::class)
