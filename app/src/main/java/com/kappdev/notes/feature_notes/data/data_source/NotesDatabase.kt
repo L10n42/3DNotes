@@ -4,10 +4,11 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.kappdev.notes.feature_notes.domain.model.Folder
 import com.kappdev.notes.feature_notes.domain.model.Note
+import com.kappdev.notes.feature_notes.domain.model.TodoList
 
 @Database(
-    entities = [Note::class, Folder::class],
-    version = 3,
+    entities = [Note::class, Folder::class, TodoList::class],
+    version = 4,
     exportSchema = false
 )
 abstract class NotesDatabase : RoomDatabase() {
@@ -18,4 +19,5 @@ abstract class NotesDatabase : RoomDatabase() {
 
     abstract val noteDao: NoteDao
     abstract val folderDao: FolderDao
+    abstract val todoListDao: TodoListDao
 }

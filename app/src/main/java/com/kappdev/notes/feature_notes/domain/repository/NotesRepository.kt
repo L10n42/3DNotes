@@ -1,7 +1,9 @@
 package com.kappdev.notes.feature_notes.domain.repository
 
+import com.kappdev.notes.feature_notes.data.data_source.TodoListDao
 import com.kappdev.notes.feature_notes.domain.model.Folder
 import com.kappdev.notes.feature_notes.domain.model.Note
+import com.kappdev.notes.feature_notes.domain.model.TodoList
 import kotlinx.coroutines.flow.Flow
 
 interface NotesRepository {
@@ -38,4 +40,21 @@ interface NotesRepository {
     fun removeNotesByFolderId(id: Long)
 
     suspend fun removeNote(note: Note): Int
+
+
+    suspend fun insertTodoList(todoList: TodoList): Long
+
+    fun getTodoListFlow(): Flow<List<TodoList>>
+
+    fun getTodoLists(): List<TodoList>
+
+    fun getTodoListById(id: Long): TodoList
+
+    fun getTodoListsByFolderId(id: Long): List<TodoList>
+
+    fun removeTodoListById(id: Long)
+
+    fun removeTodoListsByFolderId(id: Long)
+
+    suspend fun removeTodoList(todoList: TodoList): Int
 }

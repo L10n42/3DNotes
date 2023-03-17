@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kappdev.notes.R
 import com.kappdev.notes.core.presentation.components.ConfirmDialog
-import com.kappdev.notes.feature_notes.domain.model.Note
 import com.kappdev.notes.feature_notes.presentation.notes.NotesBottomSheet
 import com.kappdev.notes.feature_notes.presentation.notes.NotesViewModel
 import com.kappdev.notes.feature_notes.presentation.util.components.CustomBar
@@ -63,7 +62,7 @@ fun NoteSelectionBottomBar(
                     showRemoveDialog = true
                 }
 
-                if (viewModel.onlyNotesSelected()) {
+                if (viewModel.foldersNotSelected()) {
                     Button(icon = Icons.Filled.Logout, titleResId = R.string.btn_move_to) {
                         viewModel.openSheet(NotesBottomSheet.SelectFolder)
                     }

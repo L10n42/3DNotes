@@ -13,7 +13,7 @@ class SettingRepositoryImpl(val context: Context): SettingRepository {
     private val editor = sharedPreferences.edit()
 
     override fun getBackgroundOpacity(): Float {
-        return sharedPreferences.getFloat(KEY_BACKGROUND_OPACITY, 0f)
+        return sharedPreferences.getFloat(KEY_BACKGROUND_OPACITY, 0.16f)
     }
 
     override fun setBackgroundOpacity(value: Float) {

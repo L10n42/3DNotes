@@ -93,7 +93,7 @@ fun SearchDialog(
             items(searchResultList) { note ->
                 AnnotatedNoteCard(
                     modifier = Modifier.padding(horizontal = CustomTheme.spaces.small),
-                    noteWithAnnotation = note
+                    annotatedNote = note
                 ){ id ->
                     notesViewModel.navigate(Screen.AddEditNote.route.plus("?noteId=$id"))
                 }

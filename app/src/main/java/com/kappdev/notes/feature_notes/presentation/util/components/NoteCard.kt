@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
 import com.kappdev.notes.feature_notes.domain.model.Note
-import com.kappdev.notes.feature_notes.domain.model.NoteWithAnnotation
+import com.kappdev.notes.feature_notes.domain.model.AnnotatedNote
 import com.kappdev.notes.feature_notes.domain.util.DateConvertor
 import com.kappdev.notes.ui.custom_theme.CustomTheme
 
@@ -28,7 +28,7 @@ import com.kappdev.notes.ui.custom_theme.CustomTheme
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun AnnotatedNoteCard(
-    noteWithAnnotation: NoteWithAnnotation,
+    annotatedNote: AnnotatedNote,
     modifier: Modifier = Modifier,
     onClick: (id: Long) -> Unit
 ) {
@@ -37,17 +37,17 @@ fun AnnotatedNoteCard(
         shape = RoundedCornerShape(16.dp),
         elevation = 0.dp,
         backgroundColor = CustomTheme.colors.transparentSurface,
-        onClick = { onClick(noteWithAnnotation.id) }
+        onClick = { onClick(annotatedNote.id) }
     ) {
         Column(
             modifier = Modifier.padding(all = 16.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            Title(noteWithAnnotation.title)
+            Title(annotatedNote.title)
 
-            if (noteWithAnnotation.content.isNotEmpty()) Content(noteWithAnnotation.content)
+            if (annotatedNote.content.isNotEmpty()) Content(annotatedNote.content)
 
-            Time(noteWithAnnotation.timestamp)
+            Time(annotatedNote.timestamp)
         }
     }
 }

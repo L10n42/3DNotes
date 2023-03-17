@@ -55,7 +55,6 @@ fun NotesScreen(
         sheetElevation = 0.dp,
         sheetContent = {
             if (currentBottomSheet != null) {
-                Log.d("NotesScreen", "hello launch2")
                 NotesBottomSheetController(
                     viewModel = viewModel,
                     currentSheet = currentBottomSheet,
@@ -91,7 +90,7 @@ fun NotesScreen(
                 ) { buttonId ->
                     when(buttonId) {
                         SubButton.NoteText.id -> viewModel.navigate(Screen.AddEditNote.route)
-                        SubButton.ToDoList.id -> Log.d("onClick", "new todo list btn was clicked!")
+                        SubButton.ToDoList.id -> viewModel.navigate(Screen.TodoList.route)
                         SubButton.NotesFolder.id -> viewModel.openSheet(NotesBottomSheet.NewFolder)
                     }
                 }

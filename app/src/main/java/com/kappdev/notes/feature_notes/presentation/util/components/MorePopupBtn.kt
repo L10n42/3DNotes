@@ -6,6 +6,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
@@ -17,6 +18,7 @@ import com.kappdev.notes.ui.custom_theme.CustomTheme
 fun MorePopupBtn(
     titlesResIds: List<Int>,
     modifier: Modifier = Modifier,
+    icon: ImageVector = Icons.Default.MoreVert,
     onItemClick: (titleResId: Int) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -26,7 +28,7 @@ fun MorePopupBtn(
         onClick = { expanded = true }
     ) {
         Icon(
-            imageVector = Icons.Default.MoreVert,
+            imageVector = icon,
             contentDescription = "more btn",
             tint = CustomTheme.colors.onSurface
         )

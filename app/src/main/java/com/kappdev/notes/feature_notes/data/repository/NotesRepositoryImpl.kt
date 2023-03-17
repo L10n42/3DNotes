@@ -2,14 +2,17 @@ package com.kappdev.notes.feature_notes.data.repository
 
 import com.kappdev.notes.feature_notes.data.data_source.FolderDao
 import com.kappdev.notes.feature_notes.data.data_source.NoteDao
+import com.kappdev.notes.feature_notes.data.data_source.TodoListDao
 import com.kappdev.notes.feature_notes.domain.model.Folder
 import com.kappdev.notes.feature_notes.domain.model.Note
+import com.kappdev.notes.feature_notes.domain.model.TodoList
 import com.kappdev.notes.feature_notes.domain.repository.NotesRepository
 import kotlinx.coroutines.flow.Flow
 
 class NotesRepositoryImpl(
     private val noteDao: NoteDao,
     private val folderDao: FolderDao,
+    private val todoListDao: TodoListDao
 ): NotesRepository {
 
     override suspend fun insertFolder(folder: Folder): Long {
@@ -78,5 +81,37 @@ class NotesRepositoryImpl(
 
     override suspend fun removeNote(note: Note): Int {
         return noteDao.removeNote(note)
+    }
+
+    override suspend fun insertTodoList(todoList: TodoList): Long {
+        return todoListDao.insertTodoList(todoList)
+    }
+
+    override fun getTodoListFlow(): Flow<List<TodoList>> {
+        return todoListDao.getTodoListsFlow()
+    }
+
+    override fun getTodoLists(): List<TodoList> {
+        return todoListDao.getTodoLists()
+    }
+
+    override fun getTodoListById(id: Long): TodoList {
+        return todoListDao.getTodoListById(id)
+    }
+
+    override fun getTodoListsByFolderId(id: Long): List<TodoList> {
+        return todoListDao.getTodoListsByFolderId(id)
+    }
+
+    override fun removeTodoListById(id: Long) {
+        todoListDao.removeTodoListById(id)
+    }
+
+    override fun removeTodoListsByFolderId(id: Long) {
+        todoListDao.removeTodoListsByFolderId(id)
+    }
+
+    override suspend fun removeTodoList(todoList: TodoList): Int {
+        return todoListDao.removeTodoList(todoList)
     }
 }

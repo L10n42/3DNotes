@@ -1,6 +1,5 @@
 package com.kappdev.notes.core.presentation.navigation.componets
 
-import android.util.Log
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
@@ -13,6 +12,7 @@ import com.kappdev.notes.feature_notes.presentation.add_edit_note.components.Add
 import com.kappdev.notes.feature_notes.presentation.folder_screen.components.FolderScreen
 import com.kappdev.notes.feature_notes.presentation.notes.components.NotesScreen
 import com.kappdev.notes.feature_notes.presentation.settings.components.SettingsScreen
+import com.kappdev.notes.feature_notes.presentation.todo_list.components.TodoListScreen
 
 @ExperimentalMaterialApi
 @Composable
@@ -25,6 +25,24 @@ fun SetupNavGraph(
     ) {
         composable(Screen.Settings.route) {
             SettingsScreen(navController)
+        }
+
+        composable(
+            route = Screen.TodoList.route.plus("?todoListId={todoListId}&folderId={folderId}"),
+            arguments = listOf(
+                navArgument(name = "todoListId") {
+                    type = NavType.LongType
+                    defaultValue = 0
+                },
+                navArgument(name = "folderId") {
+                    type = NavType.LongType
+                    defaultValue = 0
+                }
+            )
+        ) {
+            val id = it.arguments?.getLong("todoListId") ?: 0
+            val folderId = it.arguments?.getLong("folderId")
+            TodoListScreen(todoListId = id, folderId = folderId, navController = navController)
         }
 
         composable(

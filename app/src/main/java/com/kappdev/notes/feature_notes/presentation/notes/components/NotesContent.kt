@@ -30,7 +30,6 @@ fun NotesContent(
     viewModel: NotesViewModel,
     searchViewModel: SearchViewModel
 ) {
-    val listState = rememberLazyListState()
     val dataList = viewModel.data
     val selectionList = viewModel.selectionList
     val isSelectionModeOn = viewModel.selectionMode.value
@@ -47,7 +46,6 @@ fun NotesContent(
         exit = fadeOut()
     ) {
         LazyColumn(
-            state = listState,
             verticalArrangement = Arrangement.spacedBy(CustomTheme.spaces.small),
             contentPadding = PaddingValues(all = CustomTheme.spaces.small),
             modifier = Modifier.fillMaxSize().padding(bottom = listAnimatedPadding)

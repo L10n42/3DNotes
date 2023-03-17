@@ -10,13 +10,12 @@ import androidx.compose.ui.text.withStyle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kappdev.notes.feature_notes.domain.model.Note
-import com.kappdev.notes.feature_notes.domain.model.NoteWithAnnotation
+import com.kappdev.notes.feature_notes.domain.model.AnnotatedNote
 import com.kappdev.notes.feature_notes.domain.use_cases.NotesUseCases
 import com.kappdev.notes.ui.theme.ErrorRed
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -28,7 +27,7 @@ class SearchViewModel @Inject constructor(
 ) : ViewModel() {
     private var notes: List<Note> = emptyList()
 
-    val searchList = mutableStateListOf<NoteWithAnnotation>()
+    val searchList = mutableStateListOf<AnnotatedNote>()
 
     private val _isSearching = mutableStateOf(false)
     val isSearching: State<Boolean> = _isSearching
@@ -75,7 +74,7 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    private fun annotate(note: Note): NoteWithAnnotation {
+    private fun annotate(note: Note): AnnotatedNote {
         return note.toAnnotated(
             title = highlightIn(
                 text = note.title,

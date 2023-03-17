@@ -2,6 +2,7 @@ package com.kappdev.notes.feature_notes.domain.use_cases
 
 data class NotesUseCases(
     val moveNotesTo: MoveNotesTo,
+    val moveTodoListsTo: MoveTodoListsTo,
     val getAllData: GetAllData,
     val insertNote: InsertNote,
     val insertFolder: InsertFolder,
@@ -13,5 +14,7 @@ data class NotesUseCases(
     val removeFolder: RemoveFolder,
     val removeNote: RemoveNote,
     val removeNoteById: RemoveNoteById,
-    val multipleRemove: MultipleRemove
+    val multipleRemove: MultipleRemove,
+    val insertTodoList: InsertTodoList,
+    val getTodoListById: GetTodoListById,
 )

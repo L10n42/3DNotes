@@ -11,8 +11,10 @@
     <string name="notes_folder">Folder</string>
 
     <string name="hint_note_title">Title</string>
+    <string name="hint_text">Text..</string>
 
     <string name="untitled">Untitled</string>
+    <string name="unnamed">Unnamed</string>
 
     <string name="title_remove">Remove</string>
     <string name="confirm_remove_note_msg">Are you sure you want to remove this note?</string>

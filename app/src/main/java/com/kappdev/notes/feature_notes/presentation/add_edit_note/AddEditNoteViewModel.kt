@@ -15,7 +15,6 @@ import androidx.lifecycle.viewModelScope
 import com.kappdev.notes.R
 import com.kappdev.notes.core.presentation.navigation.Screen
 import com.kappdev.notes.feature_notes.domain.model.Folder
-import com.kappdev.notes.feature_notes.domain.model.InsertNoteException
 import com.kappdev.notes.feature_notes.domain.model.Note
 import com.kappdev.notes.feature_notes.domain.use_cases.NotesUseCases
 import com.kappdev.notes.feature_notes.domain.util.Toaster
@@ -92,13 +91,11 @@ class AddEditNoteViewModel @Inject constructor(
     fun save() {
         if (currentNoteId.value >= 0) {
             viewModelScope.launch(Dispatchers.IO) {
-                try {
-                    val noteId = notesUseCases.insertNote(packNote())
+                val noteId = notesUseCases.insertNote(packNote())
+                if (noteId > 0) {
                     _currentNoteId.value = noteId
                     getNoteById()
                     makeToast(R.string.msg_saved)
-                } catch (e: InsertNoteException) {
-                    makeToast(R.string.msg_could_not_save)
                 }
             }
         }
@@ -115,7 +112,7 @@ class AddEditNoteViewModel @Inject constructor(
     fun moveTo(folderId: Long) {
         viewModelScope.launch(Dispatchers.IO){
             if (currentNoteId.value > 0) {
-                notesUseCases.moveNotesTo(currentNoteId.value, folderId)
+                notesUseCases.moveNotesTo(folderId, currentNoteId.value)
                 makeToast(R.string.msg_note_moved)
             }
         }

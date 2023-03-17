@@ -36,7 +36,7 @@ object AppModule {
     @Provides
     @ViewModelScoped
     fun provideNotesRepository(db: NotesDatabase): NotesRepository {
-        return NotesRepositoryImpl(db.noteDao, db.folderDao)
+        return NotesRepositoryImpl(db.noteDao, db.folderDao, db.todoListDao)
     }
 
     @Provides
@@ -54,6 +54,7 @@ object AppModule {
         return NotesUseCases(
             getAllData = GetAllData(repository),
             moveNotesTo = MoveNotesTo(repository),
+            moveTodoListsTo = MoveTodoListsTo(repository),
             insertNote = InsertNote(repository, appContext),
             insertFolder = InsertFolder(repository),
             getNotes = GetNotes(repository),
@@ -62,9 +63,11 @@ object AppModule {
             getNotesByFolderId = GetNotesByFolderId(repository),
             getFolders = GetFolders(repository),
             removeFolder = RemoveFolder(repository),
-            removeNote = RemoveNote(repository, appContext),
+            removeNote = RemoveNote(repository),
             removeNoteById = RemoveNoteById(repository),
-            multipleRemove = MultipleRemove(repository)
+            multipleRemove = MultipleRemove(repository),
+            insertTodoList = InsertTodoList(repository, appContext),
+            getTodoListById = GetTodoListById(repository)
         )
     }
 

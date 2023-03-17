@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kappdev.notes.feature_notes.domain.model.Folder
 import com.kappdev.notes.feature_notes.domain.model.Note
+import com.kappdev.notes.feature_notes.domain.model.TodoList
 import com.kappdev.notes.feature_notes.domain.use_cases.NotesUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -49,7 +50,9 @@ class NotesViewModel @Inject constructor(
     fun moveSelectedTo(folderId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             val notes = selectionList.mapNotNull { if (it is Note) it else null }
-            notesUseCases.moveNotesTo(notes, folderId)
+            val todoLists = selectionList.mapNotNull { if (it is TodoList) it else null }
+            notesUseCases.moveNotesTo(folderId, notes)
+            notesUseCases.moveTodoListsTo(folderId, todoLists)
             switchSelectionModeOffAndClear()
             updateData()
         }
@@ -103,9 +106,9 @@ class NotesViewModel @Inject constructor(
         if (selectionList.contains(item)) deselect(item) else select(item)
     }
 
-    fun onlyNotesSelected(): Boolean {
+    fun foldersNotSelected(): Boolean {
         selectionList.forEach {
-            if (it !is Note) return false
+            if (it !is Note && it !is TodoList) return false
         }
         return true
     }

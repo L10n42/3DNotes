@@ -13,8 +13,8 @@ data class Note(
     val folderId: Long? = null,
     val timestamp: Long
 ) {
-    fun toAnnotated(title: AnnotatedString, content: AnnotatedString): NoteWithAnnotation {
-        return NoteWithAnnotation(
+    fun toAnnotated(title: AnnotatedString, content: AnnotatedString): AnnotatedNote {
+        return AnnotatedNote(
             id = this.id,
             timestamp = this.timestamp,
             folderId = this.folderId,
@@ -23,14 +23,3 @@ data class Note(
         )
     }
 }
-
-data class NoteWithAnnotation(
-    val id: Long,
-    val title: AnnotatedString,
-    val content: AnnotatedString,
-    val folderId: Long? = null,
-    val timestamp: Long
-)
-
-class InsertNoteException(message: String) : Exception(message)
-class RemoveNoteException(message: String) : Exception(message)
