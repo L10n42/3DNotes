@@ -6,12 +6,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kappdev.notes.feature_notes.domain.model.Folder
-import com.kappdev.notes.feature_notes.domain.model.Note
-import com.kappdev.notes.feature_notes.domain.repository.NotesRepository
 import com.kappdev.notes.feature_notes.domain.use_cases.NotesUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,7 +19,7 @@ class FolderViewModel @Inject constructor(
     var folderId: Long = 0
         private set
 
-    val notes = mutableStateListOf<Note>()
+    val contentList = mutableStateListOf<Any>()
 
     private val _openBottomSheet = mutableStateOf(false)
     val openBottomSheet: State<Boolean> = _openBottomSheet
@@ -51,13 +48,13 @@ class FolderViewModel @Inject constructor(
     fun getContent(id: Long) {
         folderId = id
         getFolderById()
-        getNotes()
+        getData()
     }
 
-    private fun getNotes() {
+    private fun getData() {
         viewModelScope.launch(Dispatchers.IO) {
-            notes.clear()
-            notes.addAll(notesUseCases.getNotesByFolderId(folderId))
+            contentList.clear()
+            contentList.addAll(notesUseCases.getAllDataByFolder(folderId))
         }
     }
 

@@ -67,7 +67,7 @@ fun TodoListScreen(
             scaffoldState = scaffoldState,
             backgroundColor = Color.Transparent,
             topBar = {
-                //AddEditNoteTopBar(viewModel)
+                TodoListTopBar(viewModel)
             }
         ) {
             Box(

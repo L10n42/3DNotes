@@ -1,23 +1,30 @@
 package com.kappdev.notes.feature_notes.presentation.folder_screen.components
 
-import android.util.Log
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.kappdev.notes.core.presentation.navigation.Screen
+import com.kappdev.notes.feature_notes.domain.model.Note
+import com.kappdev.notes.feature_notes.domain.model.TodoList
 import com.kappdev.notes.feature_notes.presentation.folder_screen.FolderViewModel
 import com.kappdev.notes.feature_notes.presentation.notes.components.AddEditFolderSheet
-import com.kappdev.notes.feature_notes.presentation.util.components.NoteCard
 import com.kappdev.notes.feature_notes.presentation.util.SubButton
 import com.kappdev.notes.feature_notes.presentation.util.components.AnimatedMultiAddButton
+import com.kappdev.notes.feature_notes.presentation.util.components.NoteCard
+import com.kappdev.notes.feature_notes.presentation.util.components.TodoListCard
 import com.kappdev.notes.ui.custom_theme.CustomTheme
 import kotlinx.coroutines.launch
 
@@ -84,7 +91,9 @@ fun FolderScreen(
                         SubButton.NoteText.id -> navController.navigate(
                             Screen.AddEditNote.route.plus("?folderId=${viewModel.folderId}")
                         )
-                        SubButton.ToDoList.id -> Log.d("onClick", "new todo list btn was clicked!")
+                        SubButton.ToDoList.id -> navController.navigate(
+                            Screen.TodoList.route.plus("?folderId=${viewModel.folderId}")
+                        )
                     }
                 }
             }
@@ -95,7 +104,7 @@ fun FolderScreen(
 @Composable
 private fun Content(viewModel: FolderViewModel) {
     val listState = rememberLazyListState()
-    val notes = viewModel.notes
+    val content = viewModel.contentList
 
     LazyColumn(
         state = listState,
@@ -103,11 +112,18 @@ private fun Content(viewModel: FolderViewModel) {
         contentPadding = PaddingValues(all = CustomTheme.spaces.small),
         modifier = Modifier.fillMaxSize()
     ) {
-        items(notes) { note ->
-            NoteCard(note) { id ->
-                viewModel.navigate(
-                    Screen.AddEditNote.route.plus("?noteId=$id&folderId=${viewModel.folderId}")
-                )
+        items(content) { item ->
+            when (item) {
+                is Note -> NoteCard(item) { id ->
+                    viewModel.navigate(
+                        Screen.AddEditNote.route.plus("?noteId=$id&folderId=${viewModel.folderId}")
+                    )
+                }
+                is TodoList -> TodoListCard(todoList = item) { id ->
+                    viewModel.navigate(
+                        Screen.TodoList.route.plus("?todoListId=$id&folderId=${viewModel.folderId}")
+                    )
+                }
             }
         }
     }

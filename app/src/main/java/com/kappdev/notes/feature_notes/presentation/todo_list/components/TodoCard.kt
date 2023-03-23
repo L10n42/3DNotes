@@ -44,9 +44,10 @@ fun TodoCard(
         ) {
             Checkbox(
                 checked = todo.checked,
-                onCheckedChange = {
-                    val newTodo = todo.copy(checked = it)
+                onCheckedChange = { isChecked ->
+                    val newTodo = todo.copy(checked = isChecked)
                     viewModel.updateTodo(newTodo)
+                    if (isChecked) viewModel.moveItemToTheEnd(newTodo)
                 },
                 colors = CheckboxDefaults.colors(
                     checkedColor = CustomTheme.colors.onBackground,

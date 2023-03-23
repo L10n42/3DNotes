@@ -53,6 +53,7 @@ object AppModule {
     ): NotesUseCases {
         return NotesUseCases(
             getAllData = GetAllData(repository),
+            getAllDataByFolder = GetAllDataByFolder(repository),
             moveNotesTo = MoveNotesTo(repository),
             moveTodoListsTo = MoveTodoListsTo(repository),
             insertNote = InsertNote(repository, appContext),
@@ -67,7 +68,8 @@ object AppModule {
             removeNoteById = RemoveNoteById(repository),
             multipleRemove = MultipleRemove(repository),
             insertTodoList = InsertTodoList(repository, appContext),
-            getTodoListById = GetTodoListById(repository)
+            getTodoListById = GetTodoListById(repository),
+            getTodoLists = GetTodoLists(repository)
         )
     }
 

@@ -11,6 +11,7 @@ class RemoveFolder(
         val result = repository.removeFolder(folder)
         if (result > 0) {
             repository.removeNotesByFolderId(folder.id)
+            repository.removeTodoListsByFolderId(folder.id)
         }
     }
 }

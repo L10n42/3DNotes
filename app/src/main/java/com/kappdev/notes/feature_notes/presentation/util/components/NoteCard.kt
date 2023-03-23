@@ -6,24 +6,17 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
-import com.kappdev.notes.feature_notes.domain.model.Note
 import com.kappdev.notes.feature_notes.domain.model.AnnotatedNote
-import com.kappdev.notes.feature_notes.domain.util.DateConvertor
+import com.kappdev.notes.feature_notes.domain.model.Note
 import com.kappdev.notes.ui.custom_theme.CustomTheme
-
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -94,70 +87,4 @@ fun NoteCard(
 
         SelectionEffect(isSelected = selected, height = cardHeight, width = cardWidth, cardType = SelectionCardType.NOTE)
     }
-}
-
-@Composable
-private fun Time(timestamp: Long) {
-    val time = DateConvertor.getDateString(timestamp)
-
-    Text(
-        text = time,
-        fontSize = 14.sp,
-        color = CustomTheme.colors.onSurface,
-        maxLines = 1,
-        overflow = TextOverflow.Ellipsis,
-        modifier = Modifier.fillMaxWidth()
-    )
-}
-
-@Composable
-private fun Content(text: AnnotatedString) {
-    Text(
-        text = text,
-        fontSize = 16.sp,
-        color = CustomTheme.colors.onSurface,
-        maxLines = 2,
-        overflow = TextOverflow.Ellipsis,
-        modifier = Modifier.fillMaxWidth()
-    )
-}
-
-@Composable
-private fun Title(text: AnnotatedString) {
-    Text(
-        text = text,
-        fontSize = 18.sp,
-        fontWeight = FontWeight.Bold,
-        color = CustomTheme.colors.onSurface,
-        maxLines = 1,
-        overflow = TextOverflow.Ellipsis,
-        modifier = Modifier.fillMaxWidth()
-    )
-}
-
-@Composable
-private fun Content(text: String) {
-
-    Text(
-        text = text,
-        fontSize = 16.sp,
-        color = CustomTheme.colors.onSurface,
-        maxLines = 2,
-        overflow = TextOverflow.Ellipsis,
-        modifier = Modifier.fillMaxWidth()
-    )
-}
-
-@Composable
-private fun Title(text: String, selected: Boolean) {
-    val widthFraction = if (selected) 0.9f else 1f
-    Text(
-        text = text,
-        fontSize = 18.sp,
-        fontWeight = FontWeight.Bold,
-        color = CustomTheme.colors.onSurface,
-        maxLines = 1,
-        overflow = TextOverflow.Ellipsis,
-        modifier = Modifier.fillMaxWidth(widthFraction)
-    )
 }

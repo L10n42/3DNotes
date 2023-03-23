@@ -19,6 +19,7 @@ import com.kappdev.notes.feature_notes.domain.model.Note
 import com.kappdev.notes.feature_notes.domain.use_cases.NotesUseCases
 import com.kappdev.notes.feature_notes.domain.util.Toaster
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject

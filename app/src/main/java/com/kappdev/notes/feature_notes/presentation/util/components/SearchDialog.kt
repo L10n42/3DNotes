@@ -14,6 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.unit.dp
 import com.kappdev.notes.core.presentation.navigation.Screen
+import com.kappdev.notes.feature_notes.domain.model.AnnotatedNote
+import com.kappdev.notes.feature_notes.domain.model.AnnotatedTodoList
 import com.kappdev.notes.feature_notes.presentation.notes.NotesViewModel
 import com.kappdev.notes.feature_notes.presentation.notes.SearchViewModel
 import com.kappdev.notes.ui.custom_theme.CustomTheme
@@ -90,12 +92,21 @@ fun SearchDialog(
                 item { UnableToFind() }
             }
 
-            items(searchResultList) { note ->
-                AnnotatedNoteCard(
-                    modifier = Modifier.padding(horizontal = CustomTheme.spaces.small),
-                    annotatedNote = note
-                ){ id ->
-                    notesViewModel.navigate(Screen.AddEditNote.route.plus("?noteId=$id"))
+            items(searchResultList) { item ->
+                when (item) {
+                    is AnnotatedNote -> AnnotatedNoteCard(
+                        modifier = Modifier.padding(horizontal = CustomTheme.spaces.small),
+                        annotatedNote = item
+                    ){ id ->
+                        notesViewModel.navigate(Screen.AddEditNote.route.plus("?noteId=$id"))
+                    }
+
+                    is AnnotatedTodoList -> AnnotatedTodoListCard(
+                        modifier = Modifier.padding(horizontal = CustomTheme.spaces.small),
+                        annotatedTodoList = item,
+                    ) { id ->
+                        notesViewModel.navigate(Screen.TodoList.route.plus("?todoListId=$id"))
+                    }
                 }
             }
         }
