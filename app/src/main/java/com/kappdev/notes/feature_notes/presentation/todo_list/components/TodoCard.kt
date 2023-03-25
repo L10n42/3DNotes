@@ -1,15 +1,10 @@
 package com.kappdev.notes.feature_notes.presentation.todo_list.components
 
-import android.content.res.Configuration
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
@@ -31,23 +26,19 @@ fun TodoCard(
 ) {
     Card(
         elevation = 0.dp,
-        onClick = {
-            viewModel.editTodo(todo)
-        },
         shape = CustomTheme.shapes.large,
         modifier = Modifier.fillMaxWidth(),
-        backgroundColor = CustomTheme.colors.transparentSurface
+        backgroundColor = CustomTheme.colors.transparentSurface,
+        onClick = { viewModel.editTodo(todo) }
     ) {
         Row(
             modifier = Modifier.padding(vertical = CustomTheme.spaces.small),
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Checkbox(
                 checked = todo.checked,
                 onCheckedChange = { isChecked ->
-                    val newTodo = todo.copy(checked = isChecked)
-                    viewModel.updateTodo(newTodo)
-                    if (isChecked) viewModel.moveItemToTheEnd(newTodo)
+                    viewModel.checkedChange(todo, isChecked)
                 },
                 colors = CheckboxDefaults.colors(
                     checkedColor = CustomTheme.colors.onBackground,
@@ -56,26 +47,17 @@ fun TodoCard(
                 )
             )
 
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                val configuration = LocalConfiguration.current
-                val isLandscapeMode = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
-                val textFraction = if (isLandscapeMode) 0.95f else 0.8f
+            Text(todo.text, todo.checked, modifier = Modifier.weight(1f))
 
-                Text(todo.text, todo.checked, modifier = Modifier.fillMaxWidth(textFraction))
-
-                MorePopupBtn(
-                    titlesResIds = listOf(R.string.title_remove),
-                    onItemClick = { id ->
-                        when(id) {
-                            R.string.title_remove -> viewModel.removeTodo(todo)
-                        }
+            MorePopupBtn(
+                titlesResIds = listOf(R.string.title_remove),
+                topEndPaddingValue = 8.dp,
+                onItemClick = { id ->
+                    when(id) {
+                        R.string.title_remove -> viewModel.removeTodo(todo)
                     }
-                )
-            }
+                }
+            )
         }
     }
 }

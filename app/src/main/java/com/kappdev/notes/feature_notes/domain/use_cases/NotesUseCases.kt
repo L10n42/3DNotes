@@ -19,4 +19,5 @@ data class NotesUseCases(
     val multipleRemove: MultipleRemove,
     val insertTodoList: InsertTodoList,
     val getTodoListById: GetTodoListById,
+    val removeTodoListById: RemoveTodoListById,
 )

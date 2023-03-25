@@ -11,6 +11,7 @@ import androidx.compose.ui.layout.boundsInParent
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
+import com.kappdev.notes.ui.custom_theme.CustomTheme
 import com.kappdev.notes.ui.theme.*
 
 @Composable
@@ -19,6 +20,7 @@ fun TransparentTextField(
     textFieldModifier: Modifier = Modifier,
     value: TextFieldValue,
     hint: String = "",
+    singleLine: Boolean = false,
     onValueChange: (TextFieldValue) -> Unit,
     textStyle: TextStyle = TextStyle(),
 ) {
@@ -37,14 +39,15 @@ fun TransparentTextField(
                 colors = CursorGradient,
                 start = Offset.Zero,
                 end = Offset(textFieldMaxX, 0f)
-            )
+            ),
+            singleLine = singleLine
         )
 
         if (value.text.isBlank()) {
             Text(
                 text = hint,
                 style = textStyle,
-                color = Black_60A
+                color = CustomTheme.colors.onBackground
             )
         }
     }

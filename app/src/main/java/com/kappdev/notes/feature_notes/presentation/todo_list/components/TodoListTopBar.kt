@@ -1,5 +1,6 @@
 package com.kappdev.notes.feature_notes.presentation.todo_list.components
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -9,12 +10,15 @@ import androidx.compose.material.icons.filled.Done
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.kappdev.notes.R
 import com.kappdev.notes.core.presentation.components.BackButton
 import com.kappdev.notes.core.presentation.components.ConfirmDialog
+import com.kappdev.notes.core.presentation.components.TransparentTextField
 import com.kappdev.notes.feature_notes.presentation.todo_list.TodoListViewModel
 import com.kappdev.notes.feature_notes.presentation.util.components.MorePopupBtn
 import com.kappdev.notes.ui.custom_theme.CustomTheme
@@ -23,7 +27,8 @@ import com.kappdev.notes.ui.custom_theme.CustomTheme
 fun TodoListTopBar(
     viewModel: TodoListViewModel
 ) {
-    val noteId = viewModel.currentTodoListId.value
+    val todoListId = viewModel.currentTodoListId.value
+    val todoListName = viewModel.todoListName.value
 
     var showRemoveDialog by remember { mutableStateOf(false) }
     if (showRemoveDialog) {
@@ -37,7 +42,22 @@ fun TodoListTopBar(
     }
 
     TopAppBar(
-        title = {},
+        title = {
+            TransparentTextField(
+                value = todoListName,
+                singleLine = true,
+                hint = stringResource(R.string.hint_todo_list_name),
+                textFieldModifier = Modifier.fillMaxWidth(),
+                textStyle = TextStyle(
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = CustomTheme.colors.onSurface
+                ),
+                onValueChange = { newName ->
+                    viewModel.setName(newName)
+                }
+            )
+        },
         elevation = 0.dp,
         backgroundColor = CustomTheme.colors.transparentSurface,
         modifier = Modifier
@@ -47,9 +67,8 @@ fun TodoListTopBar(
             BackButton { viewModel.navigateBack() }
         },
         actions = {
-            val isDoneButtonEnable = viewModel.noteIsNotBlank()
             IconButton(
-                enabled = isDoneButtonEnable,
+                enabled = viewModel.canSave(),
                 onClick = {
                     viewModel.saveTodoList()
                 }
@@ -57,11 +76,11 @@ fun TodoListTopBar(
                 Icon(
                     imageVector = Icons.Default.Done,
                     contentDescription = "done_btn",
-                    tint = if (isDoneButtonEnable) CustomTheme.colors.onSurface else CustomTheme.colors.onSurface.copy(alpha = 0.5f)
+                    tint = if (viewModel.canSave()) CustomTheme.colors.onSurface else CustomTheme.colors.onSurface.copy(alpha = 0.5f)
                 )
             }
 
-            if (noteId > 0) {
+            if (todoListId > 0) {
                 MorePopupBtn(
                     titlesResIds = listOf(R.string.title_move_to, R.string.title_share, R.string.title_remove),
                     onItemClick = { id ->

@@ -22,7 +22,7 @@ fun TodoListContent(viewModel: TodoListViewModel) {
     val lifecycleOwner = LocalLifecycleOwner.current
     DisposableEffect(key1 = lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_STOP && viewModel.noteIsNotBlank()) {
+            if (event == Lifecycle.Event.ON_STOP && viewModel.canSave()) {
                 viewModel.saveTodoList()
             }
         }

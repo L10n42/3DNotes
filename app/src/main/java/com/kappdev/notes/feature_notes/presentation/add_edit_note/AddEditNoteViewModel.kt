@@ -17,9 +17,9 @@ import com.kappdev.notes.core.presentation.navigation.Screen
 import com.kappdev.notes.feature_notes.domain.model.Folder
 import com.kappdev.notes.feature_notes.domain.model.Note
 import com.kappdev.notes.feature_notes.domain.use_cases.NotesUseCases
+import com.kappdev.notes.feature_notes.domain.use_cases.ShareText
 import com.kappdev.notes.feature_notes.domain.util.Toaster
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -27,7 +27,8 @@ import javax.inject.Inject
 @HiltViewModel
 class AddEditNoteViewModel @Inject constructor(
     private val notesUseCases: NotesUseCases,
-    private val toaster: Toaster
+    private val toaster: Toaster,
+    private val shareText: ShareText
 ) : ViewModel() {
     private var updateBackStack = true
     private var folderId: Long? = null
@@ -62,6 +63,10 @@ class AddEditNoteViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             allFolders = notesUseCases.getFolders.list()
         }
+    }
+
+    fun shareNote() {
+        shareText(noteContent.value.text)
     }
 
     fun undo() {
@@ -114,6 +119,7 @@ class AddEditNoteViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO){
             if (currentNoteId.value > 0) {
                 notesUseCases.moveNotesTo(folderId, currentNoteId.value)
+                setFolderId(folderId)
                 makeToast(R.string.msg_note_moved)
             }
         }

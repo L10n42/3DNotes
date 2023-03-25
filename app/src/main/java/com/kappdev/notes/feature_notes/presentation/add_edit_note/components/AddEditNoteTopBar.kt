@@ -69,7 +69,7 @@ fun AddEditNoteTopBar(
                             R.string.title_remove -> showRemoveDialog = true
                             R.string.title_copy -> viewModel.copyNote(context)
                             R.string.title_move_to -> viewModel.openBottomSheet()
-                            R.string.title_share -> { /* TODO */ }
+                            R.string.title_share -> viewModel.shareNote()
                         }
                     }
                 )

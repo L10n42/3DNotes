@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.kappdev.notes.core.presentation.components.CustomDropDownMenu
@@ -19,6 +20,7 @@ fun MorePopupBtn(
     titlesResIds: List<Int>,
     modifier: Modifier = Modifier,
     icon: ImageVector = Icons.Default.MoreVert,
+    topEndPaddingValue: Dp = 16.dp,
     onItemClick: (titleResId: Int) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -34,7 +36,7 @@ fun MorePopupBtn(
         )
     }
 
-    val menuPadding = with(LocalDensity.current) { 16.dp.roundToPx() }
+    val menuPadding = with(LocalDensity.current) { topEndPaddingValue.roundToPx() }
     CustomDropDownMenu(
         expanded = expanded,
         dismiss = { expanded = false },

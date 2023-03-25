@@ -41,8 +41,11 @@ class TodoListViewModel @Inject constructor(
     private val _openBottomSheet = mutableStateOf(false)
     val openBottomSheet: State<Boolean> = _openBottomSheet
 
-    private val _todoListName = mutableStateOf("")
-    val todoListName: State<String> = _todoListName
+    private val _todoListEdited = mutableStateOf(false)
+    val todoListEdited: State<Boolean> = _todoListEdited
+
+    private val _todoListName = mutableStateOf(TextFieldValue(text = "", selection = TextRange.Zero))
+    val todoListName: State<TextFieldValue> = _todoListName
 
     private val _currentValue = mutableStateOf(TextFieldValue(text = "", selection = TextRange.Zero))
     val currentValue: State<TextFieldValue> = _currentValue
@@ -70,7 +73,7 @@ class TodoListViewModel @Inject constructor(
 
     private fun packTodoList() = TodoList(
         id = currentTodoListId.value,
-        name = todoListName.value,
+        name = todoListName.value.text,
         content = todoList,
         folderId = folderId,
         timestamp = System.currentTimeMillis()
@@ -79,20 +82,9 @@ class TodoListViewModel @Inject constructor(
     fun moveTo(folderId: Long) {
         viewModelScope.launch(Dispatchers.IO){
             if (currentTodoListId.value > 0) {
-                //notesUseCases.moveTo(currentNoteId.value, folderId)
-                //makeToast(R.string.msg_note_moved)
-            }
-        }
-    }
-
-    fun moveItemToTheEnd(item: Todo) {
-        var currentIndex = todoList.indexOf(item)
-        if (currentIndex >= 0) {
-
-            while (currentIndex > 0) {
-                val nextIndex = currentIndex - 1
-                todoList.swap(currentIndex, nextIndex)
-                currentIndex--
+                notesUseCases.moveTodoListsTo(folderId, currentTodoListId.value)
+                setFolderId(folderId)
+                toaster.makeToast(R.string.msg_todoList_moved)
             }
         }
     }
@@ -108,11 +100,20 @@ class TodoListViewModel @Inject constructor(
         setName(value.name)
         todoList.clear()
         todoList.addAll(value.content)
+        _todoListEdited.value = false
     }
 
     fun setCurrentValue(value: TextFieldValue) { _currentValue.value = value }
 
-    fun setName(name: String) { _todoListName.value = name }
+    fun setName(name: TextFieldValue) {
+        _todoListEdited.value = name.text.isNotBlank() && name.text != todoListName.value.text
+        _todoListName.value = name
+    }
+    private fun setName(name: String) {
+        _todoListName.value = todoListName.value.copy(
+            text = name, selection = TextRange.Zero
+        )
+    }
 
     fun saveEdit() {
         editingTodo?.let {
@@ -123,10 +124,37 @@ class TodoListViewModel @Inject constructor(
         }
     }
 
-    fun updateTodo(todo: Todo) {
+    fun checkedChange(todo: Todo, isChecked: Boolean) {
+        val newTodo = todo.copy(checked = isChecked)
+        updateTodo(newTodo)
+
+        moveItemTo(toTop = !isChecked, newTodo)
+    }
+
+    private fun updateTodo(todo: Todo) {
         val updatedList = todoList.map { if (it.id == todo.id) todo else it }
         todoList.clear()
         todoList.addAll(updatedList)
+        _todoListEdited.value = true
+    }
+
+    private fun moveItemTo(toTop: Boolean, item: Todo) {
+        var currentIndex = todoList.indexOf(item)
+
+        fun toTopCondition() = currentIndex < todoList.lastIndex && todoList[currentIndex + 1].checked
+        fun toBottomCondition() = currentIndex > 0
+
+        if (currentIndex >= 0) {
+            while (if (toTop) toTopCondition() else toBottomCondition()) {
+                val nextIndex = if (toTop) currentIndex + 1 else currentIndex - 1
+
+                if (nextIndex in 0..todoList.lastIndex) {
+                    todoList.swap(currentIndex, nextIndex)
+                    currentIndex = nextIndex
+                } else break
+            }
+        }
+        _todoListEdited.value = true
     }
 
     fun addTodo() {
@@ -137,13 +165,14 @@ class TodoListViewModel @Inject constructor(
                 id = IdGenerator.generateRandId()
             )
         )
+        _todoListEdited.value = true
         clearValue()
     }
 
     fun removeTodoListAndNavigateBack() {
         viewModelScope.launch(Dispatchers.IO) {
-            //notesUseCases.removeNoteById(currentNoteId.value)
-            //_currentNoteId.value = -1
+            notesUseCases.removeTodoListById(currentTodoListId.value)
+            _currentTodoListId.value = -1
             navigateBack()
         }
     }
@@ -155,7 +184,10 @@ class TodoListViewModel @Inject constructor(
         )
     }
 
-    fun removeTodo(todo: Todo) { todoList.remove(todo) }
+    fun removeTodo(todo: Todo) {
+        todoList.remove(todo)
+        _todoListEdited.value = true
+    }
 
     private fun clearValue() {
         _currentValue.value = currentValue.value.copy(text = "")
@@ -166,7 +198,8 @@ class TodoListViewModel @Inject constructor(
 
     fun setFolderId(id: Long) { folderId = id }
 
-    fun noteIsNotBlank() = todoList.isNotEmpty() || todoListName.value.trim().isNotBlank()
+    fun canSave() = noteIsNotBlank() && todoListEdited.value
+    private fun noteIsNotBlank() = todoList.isNotEmpty() || todoListName.value.text.trim().isNotBlank()
 
     fun openBottomSheet() { _openBottomSheet.value = true }
     fun closeBottomSheet() { _openBottomSheet.value = false }

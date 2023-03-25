@@ -69,7 +69,8 @@ object AppModule {
             multipleRemove = MultipleRemove(repository),
             insertTodoList = InsertTodoList(repository, appContext),
             getTodoListById = GetTodoListById(repository),
-            getTodoLists = GetTodoLists(repository)
+            getTodoLists = GetTodoLists(repository),
+            removeTodoListById = RemoveTodoListById(repository)
         )
     }
 
@@ -89,5 +90,11 @@ object AppModule {
     @ViewModelScoped
     fun provideImageLoader(@ApplicationContext appContext: Context): DownloadImage {
         return DownloadImage(appContext)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideTextShare(@ApplicationContext appContext: Context): ShareText {
+        return ShareText(appContext)
     }
 }

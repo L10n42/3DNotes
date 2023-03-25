@@ -11,6 +11,7 @@
     <string name="notes_folder">Folder</string>
 
     <string name="hint_note_title">Title</string>
+    <string name="hint_todo_list_name">Name</string>
     <string name="hint_text">Text..</string>
 
     <string name="untitled">Untitled</string>
@@ -34,6 +35,7 @@
     <string name="msg_saved">saved</string>
     <string name="msg_copied">copied</string>
     <string name="msg_note_moved">The note has been moved.</string>
+    <string name="msg_todoList_moved">The to-do list has been moved.</string>
     <string name="msg_download_image_error">Download image error.</string>
     <string name="msg_capture_image_error">Couldn\'t load images</string>
     <string name="msg_unable_to_find">Unable to find anything.</string>
@@ -54,5 +56,6 @@
     <string name="title_copy">Copy</string>
     <string name="title_edit">Edit</string>
     <string name="title_move_to">Move to</string>
+    <string name="title_share_via">Share via</string>
 
 </resources>

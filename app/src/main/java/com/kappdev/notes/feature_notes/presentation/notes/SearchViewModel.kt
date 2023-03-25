@@ -150,7 +150,7 @@ class SearchViewModel @Inject constructor(
     }
 
     private fun String.sliceBy(separator: String): List<String> {
-        var text = this
+        var text = this.trim()
         val list = mutableListOf<String>()
 
         while (text.isNotBlank()) {
