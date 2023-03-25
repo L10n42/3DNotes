@@ -74,7 +74,9 @@ class TodoListViewModel @Inject constructor(
     }
 
     fun shareCurrentTodoList() {
-        shareTodoList(packTodoList())
+        shareTodoList(
+            packTodoList().copy(content = todoList.reversed())
+        )
     }
 
     private fun packTodoList() = TodoList(

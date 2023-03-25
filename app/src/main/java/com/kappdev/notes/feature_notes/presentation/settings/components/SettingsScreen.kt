@@ -1,6 +1,5 @@
 package com.kappdev.notes.feature_notes.presentation.settings.components
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
@@ -10,7 +9,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -29,13 +27,13 @@ fun SettingsScreen(
     navController: NavHostController,
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
-    val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
     val storageImages = viewModel.imagesUris
     val isLoading = viewModel.isLoading.value
     val isThemeDark = viewModel.theme.value
     val backgroundOpacity = viewModel.backgroundOpacity.value
+    val imageShade = viewModel.imageShade.value
 
     LaunchedEffect(key1 = true) { viewModel.onScreenLoading() }
 
@@ -79,6 +77,10 @@ fun SettingsScreen(
                         onValueChange = { viewModel.changeBackgroundOpacity(it) },
                         onValueChangeFinish = { viewModel.saveBackgroundOpacity() }
                     )
+                }
+
+                item {
+                    ShadeSelectorCard(imageShade, viewModel)
                 }
 
                 item {
@@ -151,7 +153,6 @@ private fun SliderCard(
             )
         }
     }
-
 }
 
 @Composable
@@ -192,7 +193,7 @@ private fun SwitchCard(
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-private fun Card(
+fun Card(
     onClick: () -> Unit = {},
     content: @Composable () -> Unit
 ) {

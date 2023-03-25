@@ -1,6 +1,7 @@
 package com.kappdev.notes.core.domain.repository
 
 import android.graphics.Bitmap
+import com.kappdev.notes.feature_notes.domain.model.ImageShade
 
 interface SettingRepository {
 
@@ -15,4 +16,8 @@ interface SettingRepository {
     fun setBackgroundImage(image: Bitmap)
 
     fun getBackgroundImage(): Bitmap
+
+    fun setImageShade(imageShade: ImageShade)
+
+    fun getImageShade(): ImageShade
 }

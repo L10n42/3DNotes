@@ -19,6 +19,7 @@ import com.kappdev.notes.core.data.repository.SettingRepositoryImpl
 import com.kappdev.notes.core.domain.repository.SettingRepository
 import com.kappdev.notes.core.presentation.components.BackgroundImage
 import com.kappdev.notes.core.presentation.navigation.componets.SetupNavGraph
+import com.kappdev.notes.feature_notes.domain.model.ImageShade
 import com.kappdev.notes.ui.custom_theme.CustomNotesTheme
 import com.kappdev.notes.ui.custom_theme.CustomOpacity
 import com.kappdev.notes.ui.custom_theme.CustomTheme
@@ -34,6 +35,7 @@ class MainActivity : ComponentActivity(), SharedPreferences.OnSharedPreferenceCh
     private val isThemeDark = mutableStateOf(false)
     private val backgroundOpacity = mutableStateOf(0f)
     private val backgroundImage = mutableStateOf<Bitmap?>(null)
+    private val imageShade = mutableStateOf(ImageShade())
 
     @OptIn(ExperimentalMaterialApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,6 +62,7 @@ class MainActivity : ComponentActivity(), SharedPreferences.OnSharedPreferenceCh
                 val image = backgroundImage.value ?: BitmapFactory.decodeResource(this.resources, R.drawable.default_background_image)
                 BackgroundImage(
                     image = image,
+                    imageShade = imageShade.value,
                     modifier = Modifier.fillMaxSize()
                 ) {
                     SetupNavGraph(navController)
@@ -72,6 +75,7 @@ class MainActivity : ComponentActivity(), SharedPreferences.OnSharedPreferenceCh
         isThemeDark.value = settingsRepository.getTheme()
         backgroundOpacity.value = settingsRepository.getBackgroundOpacity()
         backgroundImage.value = settingsRepository.getBackgroundImage()
+        imageShade.value = settingsRepository.getImageShade()
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
@@ -79,6 +83,7 @@ class MainActivity : ComponentActivity(), SharedPreferences.OnSharedPreferenceCh
             SettingRepositoryImpl.KEY_THEME -> isThemeDark.value = settingsRepository.getTheme()
             SettingRepositoryImpl.KEY_BACKGROUND_OPACITY -> backgroundOpacity.value = settingsRepository.getBackgroundOpacity()
             SettingRepositoryImpl.KEY_BACKGROUND_IMAGE -> backgroundImage.value = settingsRepository.getBackgroundImage()
+            SettingRepositoryImpl.KEY_IMAGE_SHADE -> imageShade.value = settingsRepository.getImageShade()
         }
     }
 
