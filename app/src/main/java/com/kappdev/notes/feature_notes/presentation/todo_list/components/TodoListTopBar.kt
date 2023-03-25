@@ -87,7 +87,7 @@ fun TodoListTopBar(
                         when(id) {
                             R.string.title_remove -> showRemoveDialog = true
                             R.string.title_move_to -> viewModel.openBottomSheet()
-                            R.string.title_share -> { /* TODO */ }
+                            R.string.title_share -> viewModel.shareCurrentTodoList()
                         }
                     }
                 )

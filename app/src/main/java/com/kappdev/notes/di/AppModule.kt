@@ -97,4 +97,10 @@ object AppModule {
     fun provideTextShare(@ApplicationContext appContext: Context): ShareText {
         return ShareText(appContext)
     }
+
+    @Provides
+    @ViewModelScoped
+    fun provideTodoListShare(@ApplicationContext appContext: Context, shareText: ShareText): ShareTodoList {
+        return ShareTodoList(shareText, appContext)
+    }
 }

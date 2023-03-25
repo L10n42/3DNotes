@@ -13,6 +13,7 @@ import com.kappdev.notes.feature_notes.domain.model.Folder
 import com.kappdev.notes.feature_notes.domain.model.Todo
 import com.kappdev.notes.feature_notes.domain.model.TodoList
 import com.kappdev.notes.feature_notes.domain.use_cases.NotesUseCases
+import com.kappdev.notes.feature_notes.domain.use_cases.ShareTodoList
 import com.kappdev.notes.feature_notes.domain.util.IdGenerator
 import com.kappdev.notes.feature_notes.domain.util.Toaster
 import com.kappdev.notes.feature_notes.domain.util.swap
@@ -24,7 +25,8 @@ import javax.inject.Inject
 @HiltViewModel
 class TodoListViewModel @Inject constructor(
     private val notesUseCases: NotesUseCases,
-    private val toaster: Toaster
+    private val toaster: Toaster,
+    private val shareTodoList: ShareTodoList
 ) : ViewModel() {
     private var folderId: Long? = null
     var editingTodo: Todo? = null
@@ -69,6 +71,10 @@ class TodoListViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun shareCurrentTodoList() {
+        shareTodoList(packTodoList())
     }
 
     private fun packTodoList() = TodoList(

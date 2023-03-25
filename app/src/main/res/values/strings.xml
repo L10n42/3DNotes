@@ -57,5 +57,6 @@
     <string name="title_edit">Edit</string>
     <string name="title_move_to">Move to</string>
     <string name="title_share_via">Share via</string>
+    <string name="label_finished">(Finished)</string>
 
 </resources>
