@@ -12,6 +12,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -20,6 +21,8 @@ import com.kappdev.notes.core.domain.repository.SettingRepository
 import com.kappdev.notes.core.presentation.components.BackgroundImage
 import com.kappdev.notes.core.presentation.navigation.componets.SetupNavGraph
 import com.kappdev.notes.feature_notes.domain.model.ImageShade
+import com.kappdev.notes.feature_notes.domain.util.ShadeColor
+import com.kappdev.notes.feature_notes.domain.util.plus
 import com.kappdev.notes.ui.custom_theme.CustomNotesTheme
 import com.kappdev.notes.ui.custom_theme.CustomOpacity
 import com.kappdev.notes.ui.custom_theme.CustomTheme
@@ -51,11 +54,18 @@ class MainActivity : ComponentActivity(), SharedPreferences.OnSharedPreferenceCh
                 opacity = CustomOpacity(backgroundOpacity = backgroundOpacity.value)
             ) {
                 val systemUiController = rememberSystemUiController()
-                val surfaceColor = CustomTheme.colors.surface
-                val backgroundColor = CustomTheme.colors.background
+
+                val shadeColor = when (imageShade.value.color) {
+                    ShadeColor.White -> Color.White.copy(imageShade.value.opacity)
+                    ShadeColor.Black -> Color.Black.copy(imageShade.value.opacity)
+                }
+                val statusBarColor = CustomTheme.colors.surface.plus(shadeColor)
+                val navigationBarColor = CustomTheme.colors.background.plus(shadeColor)
+                val darkIcons = CustomTheme.colors.isLight
+
                 SideEffect {
-                    systemUiController.setStatusBarColor(surfaceColor)
-                    systemUiController.setNavigationBarColor(backgroundColor)
+                    systemUiController.setStatusBarColor(statusBarColor, darkIcons)
+                    systemUiController.setNavigationBarColor(navigationBarColor, darkIcons)
                 }
 
                 navController = rememberNavController()
