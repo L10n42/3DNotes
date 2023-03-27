@@ -26,12 +26,12 @@ fun Time(timestamp: Long) {
 }
 
 @Composable
-fun Content(text: AnnotatedString) {
+fun Content(text: AnnotatedString, maxLines: Int) {
     Text(
         text = text,
         fontSize = 16.sp,
         color = CustomTheme.colors.onSurface,
-        maxLines = 2,
+        maxLines = maxLines,
         overflow = TextOverflow.Ellipsis,
         modifier = Modifier.fillMaxWidth()
     )
@@ -51,13 +51,13 @@ fun Title(text: AnnotatedString) {
 }
 
 @Composable
-fun Content(text: String) {
+fun Content(text: String, maxLines: Int) {
 
     Text(
         text = text,
         fontSize = 16.sp,
         color = CustomTheme.colors.onSurface,
-        maxLines = 2,
+        maxLines = maxLines,
         overflow = TextOverflow.Ellipsis,
         modifier = Modifier.fillMaxWidth()
     )

@@ -84,6 +84,10 @@ fun SettingsScreen(
                 }
 
                 item {
+                    SelectVisibleLinesCard(viewModel)
+                }
+
+                item {
                     TextCard(titleResId = R.string.select_background_title) {
                         if (storageImages.isNotEmpty()) {
                             scope.launch { sheetState.show() }

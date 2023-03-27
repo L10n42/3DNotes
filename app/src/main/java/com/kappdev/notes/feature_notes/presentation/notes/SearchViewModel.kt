@@ -1,5 +1,6 @@
 package com.kappdev.notes.feature_notes.presentation.notes
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -95,9 +96,10 @@ class SearchViewModel @Inject constructor(
             }
 
             if (!alreadyAdded) {
-                todoList.content.forEach { todo ->
+                for (todo in todoList.content) {
                     if (todo.text.lowercase().contains(value)) {
                         searchList.add(annotate(todoList))
+                        break
                     }
                 }
             }

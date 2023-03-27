@@ -55,12 +55,21 @@ class SettingRepositoryImpl(val context: Context): SettingRepository {
         }
     }
 
+    override fun setVisibleLines(value: Int) {
+        editor.putInt(KEY_VISIBLE_LINES, value).apply()
+    }
+
+    override fun getVisibleLines(): Int {
+        return sharedPreferences.getInt(KEY_VISIBLE_LINES, 2)
+    }
+
     private fun getDefaultImage() = BitmapFactory.decodeResource(context.resources, R.drawable.default_background_image)
 
     companion object {
         const val NAME = "settings"
 
         const val KEY_THEME = "is_theme_dark"
+        const val KEY_VISIBLE_LINES = "visible_lines"
         const val KEY_BACKGROUND_OPACITY = "background_opacity"
         const val KEY_BACKGROUND_IMAGE = "background_image"
         const val KEY_IMAGE_SHADE = "image_shade"

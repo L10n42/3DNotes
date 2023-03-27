@@ -34,6 +34,7 @@ import com.kappdev.notes.ui.custom_theme.CustomTheme
 @Composable
 fun AnnotatedTodoListCard(
     annotatedTodoList: AnnotatedTodoList,
+    visibleLines: Int,
     modifier: Modifier = Modifier,
     onClick: (id: Long) -> Unit
 ) {
@@ -51,13 +52,11 @@ fun AnnotatedTodoListCard(
             Title(annotatedTodoList.name)
 
             val reversedList = annotatedTodoList.content.reversed()
-            if (annotatedTodoList.content.isNotEmpty()) {
-                val firstTodo = reversedList[0]
-                TodoContentLine(text = firstTodo.text, checked = firstTodo.checked)
-            }
-            if (annotatedTodoList.content.size > 1) {
-                val secondTodo = reversedList[1]
-                TodoContentLine(text = secondTodo.text, checked = secondTodo.checked)
+
+            reversedList.forEachIndexed { index, todo ->
+                if (index in 0..reversedList.lastIndex && index < visibleLines) {
+                    TodoContentLine(text = todo.text, checked = todo.checked)
+                } else return@forEachIndexed
             }
 
             Time(annotatedTodoList.timestamp)
@@ -70,6 +69,7 @@ fun AnnotatedTodoListCard(
 fun TodoListCard(
     todoList: TodoList,
     modifier: Modifier = Modifier,
+    visibleLines: Int,
     selected: Boolean = false,
     onLongClick: () -> Unit = {},
     onClick: (id: Long) -> Unit
@@ -100,13 +100,11 @@ fun TodoListCard(
                 Title(todoList.name, selected)
 
                 val reversedList = todoList.content.reversed()
-                if (todoList.content.isNotEmpty()) {
-                    val firstTodo = reversedList[0]
-                    TodoContentLine(text = firstTodo.text, checked = firstTodo.checked)
-                }
-                if (todoList.content.size > 1) {
-                    val secondTodo = reversedList[1]
-                    TodoContentLine(text = secondTodo.text, checked = secondTodo.checked)
+
+                reversedList.forEachIndexed { index, todo ->
+                    if (index in 0..reversedList.lastIndex && index < visibleLines) {
+                        TodoContentLine(text = todo.text, checked = todo.checked)
+                    } else return@forEachIndexed
                 }
 
                 Time(todoList.timestamp)

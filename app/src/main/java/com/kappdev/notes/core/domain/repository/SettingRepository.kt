@@ -20,4 +20,8 @@ interface SettingRepository {
     fun setImageShade(imageShade: ImageShade)
 
     fun getImageShade(): ImageShade
+
+    fun setVisibleLines(value: Int)
+
+    fun getVisibleLines(): Int
 }

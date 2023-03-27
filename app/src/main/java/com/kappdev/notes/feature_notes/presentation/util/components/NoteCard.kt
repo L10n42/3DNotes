@@ -22,6 +22,7 @@ import com.kappdev.notes.ui.custom_theme.CustomTheme
 @Composable
 fun AnnotatedNoteCard(
     annotatedNote: AnnotatedNote,
+    visibleLines: Int,
     modifier: Modifier = Modifier,
     onClick: (id: Long) -> Unit
 ) {
@@ -38,7 +39,7 @@ fun AnnotatedNoteCard(
         ) {
             Title(annotatedNote.title)
 
-            if (annotatedNote.content.isNotEmpty()) Content(annotatedNote.content)
+            if (annotatedNote.content.isNotEmpty()) Content(annotatedNote.content, visibleLines)
 
             Time(annotatedNote.timestamp)
         }
@@ -50,6 +51,7 @@ fun AnnotatedNoteCard(
 fun NoteCard(
     note: Note,
     modifier: Modifier = Modifier,
+    visibleLines: Int,
     selected: Boolean = false,
     onLongClick: () -> Unit = {},
     onClick: (id: Long) -> Unit
@@ -79,7 +81,7 @@ fun NoteCard(
             ) {
                 Title(note.title, selected)
 
-                if (note.content.isNotEmpty()) Content(note.content)
+                if (note.content.isNotEmpty()) Content(note.content, visibleLines)
 
                 Time(note.timestamp)
             }

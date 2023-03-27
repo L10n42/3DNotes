@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kappdev.notes.core.domain.repository.SettingRepository
 import com.kappdev.notes.feature_notes.domain.model.Folder
 import com.kappdev.notes.feature_notes.domain.model.Note
 import com.kappdev.notes.feature_notes.domain.model.TodoList
@@ -16,8 +17,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NotesViewModel @Inject constructor(
-    private val notesUseCases: NotesUseCases
+    private val notesUseCases: NotesUseCases,
+    private val setting: SettingRepository
 ) : ViewModel() {
+    val visibleLines: Int = setting.getVisibleLines()
     var allFolders: List<Folder> = emptyList()
         private set
     

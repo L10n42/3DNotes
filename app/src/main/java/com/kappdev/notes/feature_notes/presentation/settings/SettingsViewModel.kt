@@ -41,14 +41,23 @@ class SettingsViewModel @Inject constructor(
     private val _imageShade = mutableStateOf(ImageShade())
     val imageShade: State<ImageShade> = _imageShade
 
+    private val _visibleLines = mutableStateOf(2)
+    val visibleLines: State<Int> = _visibleLines
+
     init {
         _theme.value = repository.getTheme()
         _backgroundOpacity.value = repository.getBackgroundOpacity()
         _imageShade.value = repository.getImageShade()
+        _visibleLines.value = repository.getVisibleLines()
     }
 
     fun onScreenLoading() {
         getImagesFromStorage()
+    }
+
+    fun setVisibleLines(value: Int) {
+        _visibleLines.value = value
+        repository.setVisibleLines(value)
     }
 
     private fun getImagesFromStorage() {

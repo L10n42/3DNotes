@@ -114,12 +114,12 @@ private fun Content(viewModel: FolderViewModel) {
     ) {
         items(content) { item ->
             when (item) {
-                is Note -> NoteCard(item) { id ->
+                is Note -> NoteCard(item, visibleLines = viewModel.visibleLines) { id ->
                     viewModel.navigate(
                         Screen.AddEditNote.route.plus("?noteId=$id&folderId=${viewModel.folderId}")
                     )
                 }
-                is TodoList -> TodoListCard(todoList = item) { id ->
+                is TodoList -> TodoListCard(todoList = item, visibleLines = viewModel.visibleLines) { id ->
                     viewModel.navigate(
                         Screen.TodoList.route.plus("?todoListId=$id&folderId=${viewModel.folderId}")
                     )

@@ -64,6 +64,7 @@ fun NotesContent(
                     is Note -> {
                         NoteCard(
                             note = content,
+                            visibleLines = viewModel.visibleLines,
                             selected = selectionList.contains(content) && isSelectionModeOn,
                             onLongClick = {
                                 if (!isSelectionModeOn) viewModel.switchSelectionModeOnAndSelect(content)
@@ -96,6 +97,7 @@ fun NotesContent(
                     is TodoList -> {
                         TodoListCard(
                             todoList = content,
+                            visibleLines = viewModel.visibleLines,
                             selected = selectionList.contains(content) && isSelectionModeOn,
                             onLongClick = {
                                 if (!isSelectionModeOn) viewModel.switchSelectionModeOnAndSelect(content)

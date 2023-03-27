@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kappdev.notes.core.domain.repository.SettingRepository
 import com.kappdev.notes.feature_notes.domain.model.Folder
 import com.kappdev.notes.feature_notes.domain.use_cases.NotesUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,8 +15,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FolderViewModel @Inject constructor(
-    private val notesUseCases: NotesUseCases
+    private val notesUseCases: NotesUseCases,
+    private val setting: SettingRepository
 ) : ViewModel() {
+    val visibleLines = setting.getVisibleLines()
     var folderId: Long = 0
         private set
 

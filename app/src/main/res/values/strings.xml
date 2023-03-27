@@ -53,6 +53,7 @@
     <string name="select_background_title">Select background</string>
     <string name="setting_title_opacity">Background Opacity</string>
     <string name="setting_title_shade">Shade</string>
+    <string name="setting_title_lines_are_visible">Lines are visible</string>
     <string name="title_share">Share</string>
     <string name="title_copy">Copy</string>
     <string name="title_edit">Edit</string>

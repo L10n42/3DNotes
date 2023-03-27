@@ -96,6 +96,7 @@ fun SearchDialog(
                 when (item) {
                     is AnnotatedNote -> AnnotatedNoteCard(
                         modifier = Modifier.padding(horizontal = CustomTheme.spaces.small),
+                        visibleLines = notesViewModel.visibleLines,
                         annotatedNote = item
                     ){ id ->
                         notesViewModel.navigate(Screen.AddEditNote.route.plus("?noteId=$id"))
@@ -103,6 +104,7 @@ fun SearchDialog(
 
                     is AnnotatedTodoList -> AnnotatedTodoListCard(
                         modifier = Modifier.padding(horizontal = CustomTheme.spaces.small),
+                        visibleLines = notesViewModel.visibleLines,
                         annotatedTodoList = item,
                     ) { id ->
                         notesViewModel.navigate(Screen.TodoList.route.plus("?todoListId=$id"))
