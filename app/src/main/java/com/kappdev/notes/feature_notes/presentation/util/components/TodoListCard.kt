@@ -107,7 +107,17 @@ fun TodoListCard(
                     } else return@forEachIndexed
                 }
 
-                Time(todoList.timestamp)
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Time(todoList.timestamp)
+
+                    todoList.alarm?.let { alarmTime ->
+                        AlarmTime(alarmTime)
+                    }
+                }
             }
         }
 

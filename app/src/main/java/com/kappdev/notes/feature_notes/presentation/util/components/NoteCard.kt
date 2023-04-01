@@ -7,6 +7,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Size
@@ -83,7 +84,17 @@ fun NoteCard(
 
                 if (note.content.isNotEmpty()) Content(note.content, visibleLines)
 
-                Time(note.timestamp)
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Time(note.timestamp)
+
+                    note.alarm?.let { alarmTime ->
+                        AlarmTime(alarmTime)
+                    }
+                }
             }
         }
 

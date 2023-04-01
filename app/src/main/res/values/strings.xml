@@ -55,10 +55,23 @@
     <string name="setting_title_shade">Shade</string>
     <string name="setting_title_lines_are_visible">Lines are visible</string>
     <string name="title_share">Share</string>
+    <string name="title_remainder">Remainder</string>
     <string name="title_copy">Copy</string>
     <string name="title_edit">Edit</string>
     <string name="title_move_to">Move to</string>
     <string name="title_share_via">Share via</string>
     <string name="label_finished">(Finished)</string>
+    <string name="pick_date_title">Select Alarm Date</string>
+    <string name="pick_time_title">Select Alarm Time</string>
+    <string name="btn_grant_permission">Grant permission</string>
+    <string name="btn_ok_all_caps">OK</string>
+    <string name="permission_dialog_title">Permission required</string>
+    <string name="vibration_per_declined_text">It seems you permanently declined Vibration permission. You can go to the app settings to grant it.</string>
+    <string name="vibration_per_explain_text">This app needs Vibration permission in order to receive reminders correctly and don\'t miss it.</string>
+    <string name="title_activity_alarm">AlarmActivity</string>
+    <string name="title_alarm_set">alarm is set</string>
+
+    <string name="notification_policy_per_declined_text">It seems you permanently declined access notification policy permission. You can go to the app settings to grant it.</string>
+    <string name="notification_policy_per_explain_text">This app needs access notification policy permission in order to receive reminders correctly and don\'t miss it.</string>
 
 </resources>

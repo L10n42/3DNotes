@@ -3,11 +3,11 @@ package com.kappdev.notes.di
 import android.app.Application
 import android.content.Context
 import androidx.room.Room
-import com.kappdev.notes.core.data.repository.SettingRepositoryImpl
-import com.kappdev.notes.core.domain.repository.SettingRepository
 import com.kappdev.notes.feature_notes.data.data_source.NotesDatabase
+import com.kappdev.notes.feature_notes.data.repository.AndroidAlarmSchedule
 import com.kappdev.notes.feature_notes.data.repository.NotesRepositoryImpl
 import com.kappdev.notes.feature_notes.data.repository.StorageRepositoryImpl
+import com.kappdev.notes.feature_notes.domain.repository.AlarmSchedule
 import com.kappdev.notes.feature_notes.domain.repository.NotesRepository
 import com.kappdev.notes.feature_notes.domain.repository.StorageRepository
 import com.kappdev.notes.feature_notes.domain.use_cases.*
@@ -18,12 +18,14 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ViewModelScoped
+import javax.inject.Named
 
 @Module
 @InstallIn(ViewModelComponent::class)
 object AppModule {
 
     @Provides
+    @Named("viewModelDatabase")
     @ViewModelScoped
     fun provideNotesDatabase(app: Application): NotesDatabase {
         return Room.databaseBuilder(
@@ -34,21 +36,16 @@ object AppModule {
     }
 
     @Provides
+    @Named("viewModelNotesRepository")
     @ViewModelScoped
-    fun provideNotesRepository(db: NotesDatabase): NotesRepository {
+    fun provideNotesRepository(@Named("viewModelDatabase")db: NotesDatabase): NotesRepository {
         return NotesRepositoryImpl(db.noteDao, db.folderDao, db.todoListDao)
     }
 
     @Provides
     @ViewModelScoped
-    fun provideSetting(@ApplicationContext appContext: Context): SettingRepository {
-        return SettingRepositoryImpl(appContext)
-    }
-
-    @Provides
-    @ViewModelScoped
     fun provideNotesUseCases(
-        repository: NotesRepository,
+        @Named("viewModelNotesRepository") repository: NotesRepository,
         @ApplicationContext appContext: Context
     ): NotesUseCases {
         return NotesUseCases(
@@ -100,7 +97,13 @@ object AppModule {
 
     @Provides
     @ViewModelScoped
-    fun provideTodoListShare(@ApplicationContext appContext: Context, shareText: ShareText): ShareTodoList {
-        return ShareTodoList(shareText, appContext)
+    fun provideTodoListShare(shareText: ShareText): ShareTodoList {
+        return ShareTodoList(shareText)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideAlarmSchedule(@ApplicationContext appContext: Context): AlarmSchedule {
+        return AndroidAlarmSchedule(appContext)
     }
 }

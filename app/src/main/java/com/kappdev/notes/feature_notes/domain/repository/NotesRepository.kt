@@ -1,6 +1,5 @@
 package com.kappdev.notes.feature_notes.domain.repository
 
-import com.kappdev.notes.feature_notes.data.data_source.TodoListDao
 import com.kappdev.notes.feature_notes.domain.model.Folder
 import com.kappdev.notes.feature_notes.domain.model.Note
 import com.kappdev.notes.feature_notes.domain.model.TodoList

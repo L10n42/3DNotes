@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.sp
 import com.kappdev.notes.R
 import com.kappdev.notes.feature_notes.presentation.todo_list.TodoListViewModel
@@ -63,7 +64,10 @@ fun TodoInputBar(
             fontSize = 16.sp,
             lineHeight = 16.sp
         ),
-        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+        keyboardOptions = KeyboardOptions(
+            imeAction = ImeAction.Done,
+            capitalization = KeyboardCapitalization.Sentences
+        ),
         keyboardActions = KeyboardActions(
             onDone = { if (valueIsNotEmpty) done() }
         ),

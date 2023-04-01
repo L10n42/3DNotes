@@ -1,6 +1,7 @@
 package com.kappdev.notes.core.presentation.components
 
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,29 +12,25 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
-import com.kappdev.notes.feature_notes.domain.model.ImageShade
-import com.kappdev.notes.feature_notes.domain.util.ShadeColor
+import androidx.compose.ui.platform.LocalContext
+import com.kappdev.notes.R
 
 @Composable
 fun BackgroundImage(
-    image: Bitmap,
-    imageShade: ImageShade,
+    bitmap: Bitmap?,
+    shadeColor: Color,
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
-    val tint = when(imageShade.color) {
-        ShadeColor.Black -> Color.Black.copy(imageShade.opacity)
-        ShadeColor.White -> Color.White.copy(imageShade.opacity)
-    }
+    val context = LocalContext.current
+    val image = bitmap ?: BitmapFactory.decodeResource(context.resources, R.drawable.default_background_image)
 
-    Box(
-        modifier = modifier
-    ) {
+    Box(modifier = modifier) {
         Image(
             bitmap = image.asImageBitmap(),
             contentDescription = "screen background image",
             contentScale = ContentScale.Crop,
-            colorFilter = ColorFilter.tint(tint, BlendMode.Color),
+            colorFilter = ColorFilter.tint(shadeColor, BlendMode.Color),
             modifier = Modifier.fillMaxSize()
         )
 

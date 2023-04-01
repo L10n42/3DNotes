@@ -14,24 +14,29 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kappdev.notes.R
 import com.kappdev.notes.core.presentation.navigation.Screen
-import com.kappdev.notes.feature_notes.domain.model.Folder
-import com.kappdev.notes.feature_notes.domain.model.Note
+import com.kappdev.notes.feature_notes.domain.model.*
+import com.kappdev.notes.feature_notes.domain.repository.AlarmSchedule
 import com.kappdev.notes.feature_notes.domain.use_cases.NotesUseCases
 import com.kappdev.notes.feature_notes.domain.use_cases.ShareText
 import com.kappdev.notes.feature_notes.domain.util.Toaster
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
 class AddEditNoteViewModel @Inject constructor(
     private val notesUseCases: NotesUseCases,
     private val toaster: Toaster,
-    private val shareText: ShareText
+    private val shareText: ShareText,
+    private val alarmSchedule: AlarmSchedule
 ) : ViewModel() {
     private var updateBackStack = true
     private var folderId: Long? = null
+
+    var alarmTime: LocalDateTime? = null
+        private set
 
     var allFolders: List<Folder> = emptyList()
         private set
@@ -69,6 +74,20 @@ class AddEditNoteViewModel @Inject constructor(
         shareText(noteContent.value.text)
     }
 
+    fun scheduleAlarmFor(time: LocalDateTime) {
+        if (currentNoteId.value > 0) {
+            alarmTime = time
+            alarmSchedule.schedule(
+                AlarmItem(
+                    time = time,
+                    content = AlarmContent(id = currentNoteId.value, type = AlarmContentType.Note)
+                )
+            )
+            save(notifyUser = false)
+            toaster.makeToast(R.string.title_alarm_set)
+        }
+    }
+
     fun undo() {
         currentStack--
         val value = textBackStack[currentStack]
@@ -94,14 +113,14 @@ class AddEditNoteViewModel @Inject constructor(
         }
     }
 
-    fun save() {
+    fun save(notifyUser: Boolean = true) {
         if (currentNoteId.value >= 0) {
             viewModelScope.launch(Dispatchers.IO) {
                 val noteId = notesUseCases.insertNote(packNote())
                 if (noteId > 0) {
                     _currentNoteId.value = noteId
                     getNoteById()
-                    makeToast(R.string.msg_saved)
+                    if (notifyUser) makeToast(R.string.msg_saved)
                 }
             }
         }
@@ -112,7 +131,8 @@ class AddEditNoteViewModel @Inject constructor(
         title = noteTitle.value.text,
         content = noteContent.value.text,
         folderId = folderId,
-        timestamp = System.currentTimeMillis()
+        timestamp = System.currentTimeMillis(),
+        alarm = alarmTime
     )
 
     fun moveTo(folderId: Long) {
@@ -144,6 +164,7 @@ class AddEditNoteViewModel @Inject constructor(
         setContent(note.content)
         originalTitle = note.title
         originalContent = note.content
+        alarmTime = note.alarm
     }
 
     fun setTitle(value: TextFieldValue) { _noteTitle.value = value }

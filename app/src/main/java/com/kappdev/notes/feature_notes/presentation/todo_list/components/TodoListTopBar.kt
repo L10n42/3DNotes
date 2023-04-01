@@ -21,7 +21,9 @@ import com.kappdev.notes.core.presentation.components.ConfirmDialog
 import com.kappdev.notes.core.presentation.components.TransparentTextField
 import com.kappdev.notes.feature_notes.presentation.todo_list.TodoListViewModel
 import com.kappdev.notes.feature_notes.presentation.util.components.MorePopupBtn
+import com.kappdev.notes.feature_notes.presentation.util.components.PickDateAndTime
 import com.kappdev.notes.ui.custom_theme.CustomTheme
+import java.time.LocalDateTime
 
 @Composable
 fun TodoListTopBar(
@@ -38,6 +40,15 @@ fun TodoListTopBar(
             confirmText = stringResource(R.string.btn_remove),
             closeDialog = { showRemoveDialog = false },
             onConfirm = { viewModel.removeTodoListAndNavigateBack() }
+        )
+    }
+
+    var showDateTimePicker by remember { mutableStateOf(false) }
+    if (showDateTimePicker) {
+        PickDateAndTime(
+            initialTime = viewModel.alarmTime ?: LocalDateTime.now(),
+            onCancel = { showDateTimePicker = false },
+            onPicked = { viewModel.scheduleAlarmFor(it) }
         )
     }
 
@@ -82,12 +93,13 @@ fun TodoListTopBar(
 
             if (todoListId > 0) {
                 MorePopupBtn(
-                    titlesResIds = listOf(R.string.title_move_to, R.string.title_share, R.string.title_remove),
+                    titlesResIds = listOf(R.string.title_remainder, R.string.title_move_to, R.string.title_share, R.string.title_remove),
                     onItemClick = { id ->
                         when(id) {
                             R.string.title_remove -> showRemoveDialog = true
                             R.string.title_move_to -> viewModel.openBottomSheet()
                             R.string.title_share -> viewModel.shareCurrentTodoList()
+                            R.string.title_remainder -> showDateTimePicker = true
                         }
                     }
                 )

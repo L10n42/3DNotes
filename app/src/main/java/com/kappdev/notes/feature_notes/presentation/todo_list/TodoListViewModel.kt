@@ -9,9 +9,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kappdev.notes.R
 import com.kappdev.notes.core.presentation.navigation.Screen
-import com.kappdev.notes.feature_notes.domain.model.Folder
-import com.kappdev.notes.feature_notes.domain.model.Todo
-import com.kappdev.notes.feature_notes.domain.model.TodoList
+import com.kappdev.notes.feature_notes.domain.model.*
+import com.kappdev.notes.feature_notes.domain.repository.AlarmSchedule
 import com.kappdev.notes.feature_notes.domain.use_cases.NotesUseCases
 import com.kappdev.notes.feature_notes.domain.use_cases.ShareTodoList
 import com.kappdev.notes.feature_notes.domain.util.IdGenerator
@@ -20,17 +19,24 @@ import com.kappdev.notes.feature_notes.domain.util.swap
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
 class TodoListViewModel @Inject constructor(
     private val notesUseCases: NotesUseCases,
-    private val toaster: Toaster,
-    private val shareTodoList: ShareTodoList
+    private val shareTodoList: ShareTodoList,
+    private val alarmSchedule: AlarmSchedule,
+    private val toaster: Toaster
 ) : ViewModel() {
     private var folderId: Long? = null
+
+    var alarmTime: LocalDateTime? = null
+        private set
+
     var editingTodo: Todo? = null
         private set
+
     var allFolders: List<Folder> = emptyList()
         private set
 
@@ -60,14 +66,28 @@ class TodoListViewModel @Inject constructor(
         }
     }
 
-    fun saveTodoList() {
+    fun scheduleAlarmFor(time: LocalDateTime) {
+        if (currentTodoListId.value > 0) {
+            alarmTime = time
+            alarmSchedule.schedule(
+                AlarmItem(
+                    time = time,
+                    content = AlarmContent(id = currentTodoListId.value, type = AlarmContentType.TodoList)
+                )
+            )
+            saveTodoList(notifyUser = false)
+            toaster.makeToast(R.string.title_alarm_set)
+        }
+    }
+
+    fun saveTodoList(notifyUser: Boolean = true) {
         if (currentTodoListId.value >= 0) {
             viewModelScope.launch(Dispatchers.IO) {
                 val todoListId = notesUseCases.insertTodoList(packTodoList())
                 if (todoListId > 0) {
                     _currentTodoListId.value = todoListId
                     getTodoListById()
-                    toaster.makeToast(R.string.msg_saved)
+                    if (notifyUser) toaster.makeToast(R.string.msg_saved)
                 }
             }
         }
@@ -84,7 +104,8 @@ class TodoListViewModel @Inject constructor(
         name = todoListName.value.text,
         content = todoList,
         folderId = folderId,
-        timestamp = System.currentTimeMillis()
+        timestamp = System.currentTimeMillis(),
+        alarm = alarmTime
     )
 
     fun moveTo(folderId: Long) {
@@ -109,6 +130,7 @@ class TodoListViewModel @Inject constructor(
         todoList.clear()
         todoList.addAll(value.content)
         _todoListEdited.value = false
+        alarmTime = value.alarm
     }
 
     fun setCurrentValue(value: TextFieldValue) { _currentValue.value = value }

@@ -1,14 +1,15 @@
 package com.kappdev.notes
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
@@ -16,10 +17,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.google.gson.Gson
 import com.kappdev.notes.core.data.repository.SettingRepositoryImpl
 import com.kappdev.notes.core.domain.repository.SettingRepository
 import com.kappdev.notes.core.presentation.components.BackgroundImage
+import com.kappdev.notes.core.presentation.navigation.Screen
 import com.kappdev.notes.core.presentation.navigation.componets.SetupNavGraph
+import com.kappdev.notes.feature_notes.domain.model.AlarmContent
+import com.kappdev.notes.feature_notes.domain.model.AlarmContentType
 import com.kappdev.notes.feature_notes.domain.model.ImageShade
 import com.kappdev.notes.feature_notes.domain.util.ShadeColor
 import com.kappdev.notes.feature_notes.domain.util.plus
@@ -36,9 +41,10 @@ class MainActivity : ComponentActivity(), SharedPreferences.OnSharedPreferenceCh
     private lateinit var settingsRepository: SettingRepository
 
     private val isThemeDark = mutableStateOf(false)
+    private val imageShade = mutableStateOf(ImageShade())
     private val backgroundOpacity = mutableStateOf(0f)
     private val backgroundImage = mutableStateOf<Bitmap?>(null)
-    private val imageShade = mutableStateOf(ImageShade())
+    private val startScreenRout = mutableStateOf(Screen.Notes.route)
 
     @OptIn(ExperimentalMaterialApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,36 +53,46 @@ class MainActivity : ComponentActivity(), SharedPreferences.OnSharedPreferenceCh
         sharedPreferences = getSharedPreferences(SettingRepositoryImpl.NAME, Context.MODE_PRIVATE)
         sharedPreferences.registerOnSharedPreferenceChangeListener(this)
         getSettings()
+        catchDataFrom(intent)
 
         setContent {
             CustomNotesTheme(
                 darkTheme = isThemeDark.value,
                 opacity = CustomOpacity(backgroundOpacity = backgroundOpacity.value)
             ) {
+                navController = rememberNavController()
                 val systemUiController = rememberSystemUiController()
 
-                val shadeColor = when (imageShade.value.color) {
-                    ShadeColor.White -> Color.White.copy(imageShade.value.opacity)
-                    ShadeColor.Black -> Color.Black.copy(imageShade.value.opacity)
-                }
-                val statusBarColor = CustomTheme.colors.surface.plus(shadeColor)
-                val navigationBarColor = CustomTheme.colors.background.plus(shadeColor)
                 val darkIcons = CustomTheme.colors.isLight
-
+                val statBarColor = CustomTheme.colors.surface.plus(shadeColor())
+                val navBarColor = CustomTheme.colors.surface.plus(shadeColor())
                 SideEffect {
-                    systemUiController.setStatusBarColor(statusBarColor, darkIcons)
-                    systemUiController.setNavigationBarColor(navigationBarColor, darkIcons)
+                    systemUiController.setStatusBarColor(statBarColor, darkIcons)
+                    systemUiController.setNavigationBarColor(navBarColor, darkIcons)
                 }
 
-                navController = rememberNavController()
-                val image = backgroundImage.value ?: BitmapFactory.decodeResource(this.resources, R.drawable.default_background_image)
-                BackgroundImage(
-                    image = image,
-                    imageShade = imageShade.value,
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    SetupNavGraph(navController)
+                LaunchedEffect(key1 = startScreenRout) {
+                    navController.navigate(startScreenRout.value)
                 }
+
+                BackgroundImage(
+                    shadeColor = shadeColor(),
+                    bitmap = backgroundImage.value,
+                    modifier = Modifier.fillMaxSize(),
+                    content = { SetupNavGraph(navController) }
+                )
+            }
+        }
+    }
+
+    private fun catchDataFrom(intent: Intent) {
+        val contentJson = intent.getStringExtra("content")
+        contentJson?.let { json ->
+            val content = Gson().fromJson(json, AlarmContent::class.java)
+
+            when (content.type) {
+                AlarmContentType.Note -> startScreenRout.value = Screen.AddEditNote.route + "?noteId=${content.id}"
+                AlarmContentType.TodoList -> startScreenRout.value = Screen.TodoList.route + "?todoListId=${content.id}"
             }
         }
     }
@@ -100,5 +116,12 @@ class MainActivity : ComponentActivity(), SharedPreferences.OnSharedPreferenceCh
     override fun onDestroy() {
         super.onDestroy()
         sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
+    }
+
+    private fun shadeColor(): Color {
+        return when (imageShade.value.color) {
+            ShadeColor.White -> Color.White.copy(imageShade.value.opacity)
+            ShadeColor.Black -> Color.Black.copy(imageShade.value.opacity)
+        }
     }
 }
