@@ -4,7 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,6 +16,8 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
+import androidx.core.graphics.ColorUtils
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -27,6 +31,8 @@ import com.kappdev.notes.feature_notes.domain.model.AlarmContent
 import com.kappdev.notes.feature_notes.domain.model.AlarmContentType
 import com.kappdev.notes.feature_notes.domain.model.ImageShade
 import com.kappdev.notes.feature_notes.domain.util.ShadeColor
+import com.kappdev.notes.feature_notes.domain.util.getAverageOf
+import com.kappdev.notes.feature_notes.domain.util.overlay
 import com.kappdev.notes.feature_notes.domain.util.plus
 import com.kappdev.notes.ui.custom_theme.CustomNotesTheme
 import com.kappdev.notes.ui.custom_theme.CustomOpacity
@@ -62,13 +68,20 @@ class MainActivity : ComponentActivity(), SharedPreferences.OnSharedPreferenceCh
             ) {
                 navController = rememberNavController()
                 val systemUiController = rememberSystemUiController()
+                val image = backgroundImage.value ?: BitmapFactory.decodeResource(resources, R.drawable.default_background_image)
 
-                val darkIcons = CustomTheme.colors.isLight
-                val statBarColor = CustomTheme.colors.surface.plus(shadeColor())
-                val navBarColor = CustomTheme.colors.surface.plus(shadeColor())
+                Log.e("onCreate", "calculating Colors!!")
+                val statBarColor = image
+                    .getAverageOf(y = 1)
+                    .overlay(shadeTint(), imageShade.value.opacity)
+                val navBarColor =  image
+                    .getAverageOf(y = image.height - 1)
+                    .overlay(shadeTint(), imageShade.value.opacity)
+                val statDarkIcons = ColorUtils.calculateLuminance(statBarColor.toArgb()) > 0.5
+                val navDarkIcons = ColorUtils.calculateLuminance(navBarColor.toArgb()) > 0.5
                 SideEffect {
-                    systemUiController.setStatusBarColor(statBarColor, darkIcons)
-                    systemUiController.setNavigationBarColor(navBarColor, darkIcons)
+                    systemUiController.setStatusBarColor(statBarColor, statDarkIcons)
+                    systemUiController.setNavigationBarColor(navBarColor, navDarkIcons)
                 }
 
                 LaunchedEffect(key1 = startScreenRout) {
@@ -77,7 +90,7 @@ class MainActivity : ComponentActivity(), SharedPreferences.OnSharedPreferenceCh
 
                 BackgroundImage(
                     shadeColor = shadeColor(),
-                    bitmap = backgroundImage.value,
+                    bitmap = image,
                     modifier = Modifier.fillMaxSize(),
                     content = { SetupNavGraph(navController) }
                 )
@@ -124,4 +137,6 @@ class MainActivity : ComponentActivity(), SharedPreferences.OnSharedPreferenceCh
             ShadeColor.Black -> Color.Black.copy(imageShade.value.opacity)
         }
     }
+
+    private fun shadeTint() = if (imageShade.value.color == ShadeColor.White) Color.White else Color.Black
 }

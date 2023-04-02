@@ -17,17 +17,14 @@ import com.kappdev.notes.R
 
 @Composable
 fun BackgroundImage(
-    bitmap: Bitmap?,
+    bitmap: Bitmap,
     shadeColor: Color,
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
-    val context = LocalContext.current
-    val image = bitmap ?: BitmapFactory.decodeResource(context.resources, R.drawable.default_background_image)
-
     Box(modifier = modifier) {
         Image(
-            bitmap = image.asImageBitmap(),
+            bitmap = bitmap.asImageBitmap(),
             contentDescription = "screen background image",
             contentScale = ContentScale.Crop,
             colorFilter = ColorFilter.tint(shadeColor, BlendMode.Color),
