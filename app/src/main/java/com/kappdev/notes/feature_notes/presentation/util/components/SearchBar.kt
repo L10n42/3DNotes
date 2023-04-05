@@ -27,7 +27,6 @@ import com.kappdev.notes.ui.custom_theme.CustomTheme
 fun SearchBar(
     modifier: Modifier = Modifier,
     isSearching: Boolean = false,
-    background: Color = CustomTheme.colors.surface,
     shape: Shape = CustomTheme.shapes.large,
     onCancel: () -> Unit,
     onSearch: (value: String) -> Unit
@@ -52,7 +51,7 @@ fun SearchBar(
                     Icon(
                         imageVector = Icons.Default.Search,
                         contentDescription = "search_icon",
-                        tint = CustomTheme.colors.onSurface
+                        tint = CustomTheme.colors.onTopBarColor
                     )
                 }
             }
@@ -72,7 +71,7 @@ fun SearchBar(
         placeholder = {
             Text(
                 text = stringResource(R.string.hint_search),
-                color = CustomTheme.colors.onSurface,
+                color = CustomTheme.colors.onTopBarColor,
                 fontSize = 18.sp
             )
         },
@@ -81,13 +80,13 @@ fun SearchBar(
             onSearch(newValue)
         },
         colors = TextFieldDefaults.textFieldColors(
-            backgroundColor = background,
+            backgroundColor = CustomTheme.colors.topBarColor,
             cursorColor = CustomTheme.colors.primary,
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
         ),
         textStyle = TextStyle(
-            color = CustomTheme.colors.onSurface,
+            color = CustomTheme.colors.onTopBarColor,
             fontSize = 18.sp
         ),
         modifier = modifier
@@ -123,7 +122,7 @@ private fun ClearButton(
             Icon(
                 imageVector = Icons.Default.Cancel,
                 contentDescription = "clear search button",
-                tint = CustomTheme.colors.onSurface,
+                tint = CustomTheme.colors.onTopBarColor,
                 modifier = Modifier.size(20.dp)
             )
         }

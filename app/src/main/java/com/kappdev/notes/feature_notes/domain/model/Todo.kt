@@ -1,6 +1,10 @@
 package com.kappdev.notes.feature_notes.domain.model
 
+import android.text.Spannable
+import android.text.SpannedString
+import android.text.style.StrikethroughSpan
 import androidx.compose.ui.text.AnnotatedString
+import androidx.core.text.buildSpannedString
 
 data class Todo(
     val id: String,
@@ -13,5 +17,15 @@ data class Todo(
             checked = this.checked,
             text = text
         )
+    }
+
+    fun toSpannedString(): SpannedString {
+        return buildSpannedString {
+            this.append(text)
+
+            if (checked) {
+                this.setSpan(StrikethroughSpan(), 0, text.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            }
+        }
     }
 }

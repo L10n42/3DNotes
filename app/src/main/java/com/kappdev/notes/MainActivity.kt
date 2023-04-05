@@ -6,7 +6,6 @@ import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -33,10 +32,9 @@ import com.kappdev.notes.feature_notes.domain.model.ImageShade
 import com.kappdev.notes.feature_notes.domain.util.ShadeColor
 import com.kappdev.notes.feature_notes.domain.util.getAverageOf
 import com.kappdev.notes.feature_notes.domain.util.overlay
-import com.kappdev.notes.feature_notes.domain.util.plus
 import com.kappdev.notes.ui.custom_theme.CustomNotesTheme
 import com.kappdev.notes.ui.custom_theme.CustomOpacity
-import com.kappdev.notes.ui.custom_theme.CustomTheme
+import com.kappdev.notes.ui.custom_theme.SystemUiColors
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -62,23 +60,25 @@ class MainActivity : ComponentActivity(), SharedPreferences.OnSharedPreferenceCh
         catchDataFrom(intent)
 
         setContent {
+            val image = backgroundImage.value ?: BitmapFactory.decodeResource(resources, R.drawable.default_background_image)
+            val statBarColor = image.getAverageOf(0..10).overlay(shadeTint(), imageShade.value.opacity)
+            val navBarColor =  image.getAverageOf((image.height - 11) until image.height).overlay(shadeTint(), imageShade.value.opacity)
+            val statDarkIcons = ColorUtils.calculateLuminance(statBarColor.toArgb()) > 0.5
+            val navDarkIcons = ColorUtils.calculateLuminance(navBarColor.toArgb()) > 0.5
+
             CustomNotesTheme(
                 darkTheme = isThemeDark.value,
-                opacity = CustomOpacity(backgroundOpacity = backgroundOpacity.value)
+                opacity = CustomOpacity(backgroundOpacity = backgroundOpacity.value),
+                systemUiColors = SystemUiColors(
+                    statusBarColor = statBarColor,
+                    navigationBarColor = navBarColor,
+                    isStatusBarIconsLight = !statDarkIcons,
+                    isNavigationBarIconsLight = !navDarkIcons
+                )
             ) {
                 navController = rememberNavController()
                 val systemUiController = rememberSystemUiController()
-                val image = backgroundImage.value ?: BitmapFactory.decodeResource(resources, R.drawable.default_background_image)
 
-                Log.e("onCreate", "calculating Colors!!")
-                val statBarColor = image
-                    .getAverageOf(y = 1)
-                    .overlay(shadeTint(), imageShade.value.opacity)
-                val navBarColor =  image
-                    .getAverageOf(y = image.height - 1)
-                    .overlay(shadeTint(), imageShade.value.opacity)
-                val statDarkIcons = ColorUtils.calculateLuminance(statBarColor.toArgb()) > 0.5
-                val navDarkIcons = ColorUtils.calculateLuminance(navBarColor.toArgb()) > 0.5
                 SideEffect {
                     systemUiController.setStatusBarColor(statBarColor, statDarkIcons)
                     systemUiController.setNavigationBarColor(navBarColor, navDarkIcons)

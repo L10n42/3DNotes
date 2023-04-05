@@ -11,6 +11,7 @@ fun CustomNotesTheme(
     spaces: CustomSpaces = CustomTheme.spaces,
     typography: CustomTypography = CustomTheme.typography,
     shapes: CustomShapes = CustomTheme.shapes,
+    systemUiColors: SystemUiColors = SystemUiColors(),
     opacity: CustomOpacity = CustomOpacity(),
     lightColors: CustomColors = lightColors(),
     darkColors: CustomColors = darkColors(),
@@ -19,7 +20,11 @@ fun CustomNotesTheme(
 ) {
     val currentColor = (if (darkTheme) darkColors else lightColors)
     val finalColor = currentColor.copy(
-        transparentSurface = currentColor.surface.copy(alpha = opacity.backgroundOpacity)
+        transparentSurface = currentColor.surface.copy(alpha = opacity.backgroundOpacity),
+        topBarColor = systemUiColors.statusBarColor,
+        bottomBarColor = systemUiColors.navigationBarColor,
+        onTopBarColor = if (systemUiColors.isStatusBarIconsLight) Color.White else Color.Black,
+        onBottomBarColor = if (systemUiColors.isNavigationBarIconsLight) Color.White else Color.Black
     )
     val rememberedColors = remember { finalColor.copy() }.apply { updateColorsFrom(finalColor) }
     CompositionLocalProvider(
@@ -72,12 +77,16 @@ private fun darkColors() = CustomColors(
     background = BackgroundGray,
     surface = SurfaceGray,
     error = LightRed,
+    topBarColor = SurfaceGray,
+    bottomBarColor = BackgroundGray,
     onPrimary = Color.Black,
     onSecondary = Color.Black,
     onBackground = White_60A,
     onSurface = White_87A,
     onError = Color.Black,
-    isLight = false
+    isLight = false,
+    onTopBarColor = White_87A,
+    onBottomBarColor = White_60A
     // transparentSurface = surface.copy(alpha = 0.12f)
 )
 
@@ -87,11 +96,15 @@ private fun lightColors() = CustomColors(
     background = BackgroundWhite,
     surface = Color.White,
     error = ErrorRed,
+    topBarColor = Color.White,
+    bottomBarColor = BackgroundWhite,
     onPrimary = Color.White,
     onSecondary = Color.Black,
     onBackground = Black_60A,
     onSurface = Black_87A,
     onError = Color.White,
-    isLight = true
+    isLight = true,
+    onTopBarColor = Black_87A,
+    onBottomBarColor = Black_60A
     // transparentSurface = surface.copy(alpha = 0.12f)
 )

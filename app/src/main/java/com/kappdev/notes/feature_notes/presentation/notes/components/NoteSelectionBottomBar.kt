@@ -51,7 +51,7 @@ fun NoteSelectionBottomBar(
     ) {
         CustomBar(
             height = 64.dp,
-            background = CustomTheme.colors.background,
+            background = CustomTheme.colors.bottomBarColor,
             dividerPosition = DividerPosition.TOP,
         ) {
             Row(
@@ -89,13 +89,13 @@ private fun Button(
         Icon(
             imageVector = icon,
             contentDescription = null,
-            tint = CustomTheme.colors.onSurface
+            tint = CustomTheme.colors.onBottomBarColor
         )
 
         Text(
             text = stringResource(titleResId),
             fontSize = 14.sp,
-            color = CustomTheme.colors.onSurface
+            color = CustomTheme.colors.onBottomBarColor
         )
     }
 }

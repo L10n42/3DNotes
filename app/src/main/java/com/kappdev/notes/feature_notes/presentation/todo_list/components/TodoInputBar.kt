@@ -34,13 +34,13 @@ fun TodoInputBar(
         value = value,
         shape = RectangleShape,
         colors = TextFieldDefaults.textFieldColors(
-            textColor = CustomTheme.colors.onSurface,
-            unfocusedLabelColor = CustomTheme.colors.onBackground,
-            focusedLabelColor = CustomTheme.colors.onBackground,
-            backgroundColor = CustomTheme.colors.surface,
+            textColor = CustomTheme.colors.onBottomBarColor,
+            unfocusedLabelColor = CustomTheme.colors.onBottomBarColor.copy(0.6f),
+            focusedLabelColor = CustomTheme.colors.onBottomBarColor.copy(0.6f),
+            backgroundColor = CustomTheme.colors.bottomBarColor,
             cursorColor = CustomTheme.colors.primary,
             focusedIndicatorColor = CustomTheme.colors.primary,
-            unfocusedIndicatorColor = Color.Transparent
+            unfocusedIndicatorColor = CustomTheme.colors.onBottomBarColor.copy(0.6f)
         ),
         trailingIcon = {
             IconButton(
@@ -50,7 +50,11 @@ fun TodoInputBar(
                 Icon(
                     imageVector = Icons.Default.Done,
                     contentDescription = "done",
-                    tint = CustomTheme.colors.onSurface
+                    tint = if (valueIsNotEmpty) {
+                        CustomTheme.colors.onBottomBarColor
+                    } else {
+                        CustomTheme.colors.onBottomBarColor.copy(0.6f)
+                    }
                 )
             }
         },
@@ -58,7 +62,10 @@ fun TodoInputBar(
             viewModel.setCurrentValue(newText)
         },
         placeholder = {
-            Text(text = stringResource(R.string.hint_text), color = CustomTheme.colors.onBackground)
+            Text(
+                text = stringResource(R.string.hint_text),
+                color = CustomTheme.colors.onBottomBarColor.copy(0.6f)
+            )
         },
         textStyle = TextStyle(
             fontSize = 16.sp,

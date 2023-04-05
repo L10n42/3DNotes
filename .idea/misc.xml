@@ -5,6 +5,8 @@
       <map>
         <entry key="..\:/My Android Studio Projects/3DNotes/app/src/main/res/drawable/app_logo_foreground.xml" value="0.1755" />
         <entry key="..\:/My Android Studio Projects/3DNotes/app/src/main/res/drawable/ic_outline_notifications_24.xml" value="0.1755" />
+        <entry key="..\:/My Android Studio Projects/3DNotes/app/src/main/res/layout/notification_todo_list.xml" value="0.36666666666666664" />
+        <entry key="..\:/My Android Studio Projects/3DNotes/app/src/main/res/layout/notification_todo_list_item.xml" value="0.365625" />
         <entry key="..\:/My Android Studio Projects/3DNotes/app/src/main/res/mipmap-anydpi-v26/app_logo_round.xml" value="0.1755" />
       </map>
     </option>

@@ -11,13 +11,17 @@ class CustomColors(
     surface: Color,
     background: Color,
     transparentSurface: Color = surface.copy(alpha = 0.12f),
+    topBarColor: Color,
+    bottomBarColor: Color,
     error: Color,
     onPrimary: Color,
     onSecondary: Color,
     onSurface: Color,
     onBackground: Color,
     onError: Color,
-    isLight: Boolean
+    isLight: Boolean,
+    onTopBarColor: Color,
+    onBottomBarColor: Color
 ) {
     var primary by mutableStateOf(primary)
         private set
@@ -28,6 +32,10 @@ class CustomColors(
     var background by mutableStateOf(background)
         private set
     var transparentSurface by mutableStateOf(transparentSurface)
+        private set
+    var topBarColor by mutableStateOf(topBarColor)
+        private set
+    var bottomBarColor by mutableStateOf(bottomBarColor)
         private set
     var error by mutableStateOf(error)
         private set
@@ -43,6 +51,10 @@ class CustomColors(
         private set
     var isLight by mutableStateOf(isLight)
         private set
+    var onTopBarColor by mutableStateOf(onTopBarColor)
+        private set
+    var onBottomBarColor by mutableStateOf(onBottomBarColor)
+        private set
 
     fun copy(
         primary: Color = this.primary,
@@ -50,26 +62,34 @@ class CustomColors(
         surface: Color = this.surface,
         background: Color = this.background,
         transparentSurface: Color = this.transparentSurface,
+        topBarColor: Color = this.topBarColor,
+        bottomBarColor: Color = this.bottomBarColor,
         error: Color = this.error,
         onPrimary: Color = this.onPrimary,
         onSecondary: Color = this.onSecondary,
         onSurface: Color = this.onSurface,
         onBackground: Color = this.onBackground,
         onError: Color = this.onError,
-        isLight: Boolean = this.isLight
+        isLight: Boolean = this.isLight,
+        onTopBarColor: Color = this.onTopBarColor,
+        onBottomBarColor: Color = this.onBottomBarColor
     ) = CustomColors(
         primary,
         secondary,
         surface,
         background,
         transparentSurface,
+        topBarColor,
+        bottomBarColor,
         error,
         onPrimary,
         onSecondary,
         onSurface,
         onBackground,
         onError,
-        isLight
+        isLight,
+        onTopBarColor,
+        onBottomBarColor
     )
 
     fun updateColorsFrom(other: CustomColors) {
@@ -78,6 +98,8 @@ class CustomColors(
         surface = other.surface
         background = other.background
         transparentSurface = other.transparentSurface
+        topBarColor = other.topBarColor
+        bottomBarColor = other.bottomBarColor
         error = other.error
         onPrimary = other.onPrimary
         onSecondary = other.onSecondary
@@ -85,6 +107,8 @@ class CustomColors(
         onBackground = other.onBackground
         onError = other.onError
         isLight = other.isLight
+        onTopBarColor = other.onTopBarColor
+        onBottomBarColor = other.onBottomBarColor
     }
 }
 

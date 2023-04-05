@@ -1,10 +1,13 @@
 package com.kappdev.notes.feature_notes.domain.model
 
+import android.text.Spannable
+import android.text.SpannedString
+import android.text.style.StrikethroughSpan
 import androidx.compose.ui.text.AnnotatedString
+import androidx.core.text.buildSpannedString
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
-import com.kappdev.notes.R
 import com.kappdev.notes.feature_notes.domain.util.TodoConvertor
 import java.time.LocalDateTime
 
@@ -29,6 +32,22 @@ data class TodoList(
             timestamp = this.timestamp,
             alarm = this.alarm
         )
+    }
+
+    fun toSpannedString(): SpannedString {
+        return buildSpannedString {
+            var lastPoint = 0
+            content.reversed().forEachIndexed { index, todo ->
+                this.append(todo.text)
+
+                if (todo.checked) {
+                    this.setSpan(StrikethroughSpan(), lastPoint, lastPoint + todo.text.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                }
+
+                lastPoint += todo.text.length
+                if (index != content.lastIndex) this.append("\n")
+            }
+        }
     }
 
     fun toStringList(includeName: Boolean = true): String {

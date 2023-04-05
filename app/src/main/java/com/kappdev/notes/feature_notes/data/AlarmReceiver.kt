@@ -6,7 +6,6 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.media.AudioAttributes
 import android.media.RingtoneManager
 import android.os.Build
@@ -33,7 +32,6 @@ class AlarmReceiver: BroadcastReceiver() {
     @Inject
     @Named("singletonNotesRepository")
     lateinit var repository: NotesRepository
-
     private var contentJson = ""
 
     override fun onReceive(context: Context?, intent: Intent?) {
@@ -46,13 +44,19 @@ class AlarmReceiver: BroadcastReceiver() {
             when (alarmContent.type) {
                 AlarmContentType.Note -> {
                     val note = repository.getNoteById(alarmContent.id)
-                    createNotification(context!!, alarmId, note.title, note.content)
                     removeAlarmFromNote(note)
+                    createNotification(context!!, alarmId, note.title, note.content)
                 }
                 AlarmContentType.TodoList -> {
                     val todoList = repository.getTodoListById(alarmContent.id)
-                    createNotification(context!!, alarmId, todoList.name, todoList.toStringList())
                     removeAlarmFromTodoList(todoList)
+                    createNotification(
+                        context = context!!,
+                        id = alarmId,
+                        title = todoList.name,
+                        shortMessage = todoList.content.last().toSpannedString(),
+                        fullMessage = todoList.toSpannedString()
+                    )
                 }
             }
         }
@@ -70,29 +74,34 @@ class AlarmReceiver: BroadcastReceiver() {
         )
     }
 
-    private fun createNotification(context: Context, id: Int, title: String, msg: String) {
+    private fun createNotification(
+        context: Context,
+        id: Int,
+        title: String,
+        shortMessage: CharSequence,
+        fullMessage: CharSequence = shortMessage
+    ) {
         val builder = NotificationCompat.Builder(context, "default").apply {
             setSmallIcon(R.drawable.ic_baseline_notifications_24)
             setContentTitle(title)
-            setContentText(msg)
+            setContentText(shortMessage)
             setAutoCancel(true)
-            setCategory(NotificationCompat.CATEGORY_MESSAGE)
-            setLights(Color.WHITE, 1000, 1000)
-            setVibrate(longArrayOf(500))
-            setStyle(bigMessage(msg))
-            setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+            setCategory(NotificationCompat.CATEGORY_ALARM)
+            setStyle(bigMessage(fullMessage))
             setContentIntent(getPaddingIntent(context))
             setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             priority = NotificationCompat.PRIORITY_HIGH
+            setDefaults(NotificationCompat.DEFAULT_LIGHTS)
+            setDefaults(NotificationCompat.DEFAULT_SOUND)
+            setDefaults(NotificationCompat.DEFAULT_VIBRATE)
         }
 
-        registerNotificationChannel(context)
-
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        registerNotificationChannel(notificationManager)
         notificationManager.notify(id, builder.build())
     }
 
-    private fun bigMessage(msg: String): NotificationCompat.BigTextStyle {
+    private fun bigMessage(msg: CharSequence): NotificationCompat.BigTextStyle {
         return NotificationCompat.BigTextStyle().bigText(msg)
     }
 
@@ -103,12 +112,10 @@ class AlarmReceiver: BroadcastReceiver() {
         return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
     }
 
-    private fun registerNotificationChannel(context: Context) {
+    private fun registerNotificationChannel(manager: NotificationManager) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-
             val channel = createNotificationChannel()
-            val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
+            manager.createNotificationChannel(channel)
         }
     }
 
@@ -116,8 +123,6 @@ class AlarmReceiver: BroadcastReceiver() {
     private fun createNotificationChannel(): NotificationChannel {
         return NotificationChannel("default", "Note notification", NotificationManager.IMPORTANCE_HIGH).apply {
             enableVibration(true)
-            vibrationPattern = longArrayOf(500)
-            lightColor = Color.WHITE
             enableLights(true)
             setSound(
                 RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION),

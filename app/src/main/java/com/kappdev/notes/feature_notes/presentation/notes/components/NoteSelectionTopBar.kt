@@ -26,7 +26,7 @@ fun NoteSelectionTopBar(
     viewModel: NotesViewModel
 ) {
     val selectAllIconColor by animateColorAsState(
-        targetValue = if (viewModel.selectedAll()) CustomTheme.colors.primary else CustomTheme.colors.onSurface,
+        targetValue = if (viewModel.selectedAll()) CustomTheme.colors.primary else CustomTheme.colors.onTopBarColor,
         animationSpec = tween(easing = LinearEasing)
     )
 
@@ -36,7 +36,8 @@ fun NoteSelectionTopBar(
         exit = fadeOut() + slideOutVertically { size -> -size }
     ) {
         CustomBar(
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceBetween,
+            background = CustomTheme.colors.topBarColor
         ) {
             IconButton(
                 onClick = {
@@ -46,7 +47,7 @@ fun NoteSelectionTopBar(
                 Icon(
                     imageVector = Icons.Default.Close,
                     contentDescription = "close select mode button",
-                    tint = CustomTheme.colors.onSurface
+                    tint = CustomTheme.colors.onTopBarColor
                 )
             }
 
@@ -79,6 +80,6 @@ private fun SelectedItems(items: Int) {
         text = text,
         fontSize = 18.sp,
         fontWeight = FontWeight.Bold,
-        color = CustomTheme.colors.onSurface
+        color = CustomTheme.colors.onTopBarColor
     )
 }
